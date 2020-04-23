@@ -17,7 +17,7 @@ Upgrated to version 9.0.4.
 ```text
 ng new <project path>
 ```
-update src/polyfills.ts to handle bootstrap 4 by runnning 
+update src/polyfills.ts to handle bootstrap 4 by runnning (WARNING: may cause error beyond repair!!!)
 ```text
 ng add @angular/localize
 ```
