@@ -1,5 +1,5 @@
 /***********************************************************************
-* Automatically generated on 4/23/2020 3:21:54 PM
+* Automatically generated on 4/23/2020 4:24:29 PM
 ***********************************************************************/
 
 import { HttpClient } from '@angular/common/http';
@@ -662,8 +662,8 @@ export class TblRefFiles extends TableBase {
     this.tableCode="rf";
 
 	this.columns.push(new ColumnInfo('RF_ID', 'number', '', '', 0, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('RF_TYPE', 'number', '', '', -1, -1, 0, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_DESC', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
-	this.columns.push(new ColumnInfo('RF_TYPE', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_CLASS', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_UPLDATE', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_REF_NO', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
@@ -703,8 +703,8 @@ export class TblRefFiles extends TableBase {
 export class TblRefFilesRow extends TableRowBase{
 	constructor(
 		public RF_ID?:number, 
-		public RF_DESC?:string, 
 		public RF_TYPE?:number, 
+		public RF_DESC?:string, 
 		public RF_CLASS?:number, 
 		public RF_UPLDATE?:Date, 
 		public RF_REF_NO?:string, 
