@@ -1,3 +1,4 @@
+import { TableLinkCollection } from './../mod/app-table-link.model';
 /**************************************************************************************************
  * Note(s):
  *   1. 2019/10/03 - Pending enhancement on unsubscribing when unsuccessful request did not
@@ -6,14 +7,14 @@
  *                   after a long period from the time they were requested (say... 5mins)
  **************************************************************************************************/
 
-import { KeyValuePair } from "../mod/app-common.model";
-import { AppReturn } from "../mod/app-return.model";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { ColumnInfo } from "../mod/app-column.model";
-import { Subscription } from "rxjs";
-import { AppCommonMethods } from "./app-common.methods";
-import { group } from "@angular/animations";
-import { StringifyOptions } from "querystring";
+import { KeyValuePair } from '../mod/app-common.model';
+import { AppReturn } from '../mod/app-return.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ColumnInfo } from '../mod/app-column.model';
+import { Subscription } from 'rxjs';
+import { AppCommonMethods } from './app-common.methods';
+import { group } from '@angular/animations';
+import { StringifyOptions } from 'querystring';
 import { RecurseVisitor } from '@angular/compiler/src/i18n/i18n_ast';
 
 export class TableBase extends AppCommonMethods {
@@ -35,67 +36,101 @@ export class TableBase extends AppCommonMethods {
   public keySortFields: Array<ColumnInfo> = [];
   public keyDisplayFields: Array<ColumnInfo> = [];
 
+  //public tableLinkCollection:TableLinkCollection=null;
+  public tableLinkCollection: TableLinkCollection = new TableLinkCollection(
+    null,
+    null
+  );
+
+  /* Dictionary of TableLink objects
+   {
+      "<childTableCode>":TableLink(this,childTable)
+   }
+   */
+  //public TableLinks:any = null;
+
   // initial value is undefined to allow null value when
   // non of the tables links to thi particular table
   public _parentTable: any = undefined;
 
   private __Item: any = {};
   public Item(key: number, groupId?: number): any {
-    let ret: any = this.__Item["r_" + String(key)];
+    let ret: any = this.__Item['r_' + String(key)];
     if (!ret && groupId != undefined) {
       //this.GetRowById(key);
-      this.GetRowsByGroup({key:groupId});
+      this.GetRowsByGroup({ key: groupId });
     }
     return ret;
   }
 
-  public Purge(key:number,removeFromState?:boolean){
+  public Purge(key: number, removeFromState?: boolean) {
     /**
      * Executes deletion of record from the client row state collection
      */
 
-    if(removeFromState==undefined) removeFromState=false;
+    if (removeFromState == undefined) removeFromState = false;
 
-    let keyField:string = this.keyName;
-    let itemKey:string = "r_" + String(key)
-    let item:any = this.__Item[itemKey];
+    let keyField: string = this.keyName;
+    let itemKey: string = 'r_' + String(key);
+    let item: any = this.__Item[itemKey];
 
-    if(item){
+    if (item) {
       item.isDeleting = true;
-      if(removeFromState || item.isNew){
+      if (removeFromState || item.isNew) {
         // purge from the client's memory
-        delete this.__Item[itemKey];  // remove from index object
+        delete this.__Item[itemKey]; // remove from index object
 
         // remove from rows array
 
         // find index of object
         // .findIndex(obj => obj.id == 3
-        let dataRows:Array<any> = this.GetRows();
-        let itemIndex:number = dataRows.findIndex(elem => elem[keyField] == key);
+        let dataRows: Array<any> = this.GetRows();
+        let itemIndex: number = dataRows.findIndex(
+          (elem) => elem[keyField] == key
+        );
 
-        let numStr:string='';
-        dataRows.forEach(e =>{numStr+= (numStr ? "," : "")+e[keyField];});
+        let numStr: string = '';
+        dataRows.forEach((e) => {
+          numStr += (numStr ? ',' : '') + e[keyField];
+        });
 
-        console.log("Rows:",dataRows,"Index:",itemIndex,"Key:",key,"keys:",numStr);
+        console.log(
+          'Rows:',
+          dataRows,
+          'Index:',
+          itemIndex,
+          'Key:',
+          key,
+          'keys:',
+          numStr
+        );
 
         // remove element from array
-        if(itemIndex!=-1)dataRows.splice(itemIndex,1);
+        if (itemIndex != -1) dataRows.splice(itemIndex, 1);
 
-        numStr='';
-        dataRows.forEach(e =>{numStr+= (numStr ? "," : "")+e[keyField];});
+        numStr = '';
+        dataRows.forEach((e) => {
+          numStr += (numStr ? ',' : '') + e[keyField];
+        });
 
-        console.log("Rows after purge:",dataRows,"Index:",itemIndex,"Key:",key,"keys:",numStr);
-
+        console.log(
+          'Rows after purge:',
+          dataRows,
+          'Index:',
+          itemIndex,
+          'Key:',
+          key,
+          'keys:',
+          numStr
+        );
       }
-  
     }
 
     return;
 
     //this.rows.find(myObj => myObj.id < 0)
 
-
-    if(item)delete this.__Item[itemKey];
+    if (item) delete this.__Item[itemKey];
   }
 
   public pendingRequest: boolean = false;
@@ -128,7 +163,7 @@ export class TableBase extends AppCommonMethods {
     return this.keyFields[0];
   }
 
-  get keyName():string{
+  get keyName(): string {
     return this.keyCol.name;
   }
 
@@ -157,7 +192,7 @@ export class TableBase extends AppCommonMethods {
   }
 
   get tblUrl(): string {
-    return this.apiUrl + "/" + this.tableCode;
+    return this.apiUrl + '/' + this.tableCode;
   }
 
   get keyIndices(): string {
@@ -174,16 +209,18 @@ export class TableBase extends AppCommonMethods {
   private _subsCounter: number = 0;
   private get newSubsKey(): string {
     this._subsCounter++;
-    return "sKey_" + this._subsCounter;
+    return 'sKey_' + this._subsCounter;
   }
   protected __dirtyRows(parentId?: number): Array<any> {
     if (parentId == undefined) {
-      return this.GetRows().filter(e => e.isDirty);
+      return this.GetRows().filter((e) => e.isDirty);
     } else {
       let groupFieldObj: ColumnInfo = this.keyGroupFields[0];
       if (groupFieldObj == null) return [];
       let groupField: string = this.keyGroupFields[0].name;
-      return this.GetRows().filter(e => e.isDirty && e[groupField] == parentId);
+      return this.GetRows().filter(
+        (e) => e.isDirty && e[groupField] == parentId
+      );
     }
   }
 
@@ -196,7 +233,7 @@ export class TableBase extends AppCommonMethods {
   }
 
   protected __newRows(): Array<any> {
-    return this.GetRows().filter(e => e._newId != undefined);
+    return this.GetRows().filter((e) => e._newId != undefined);
   }
 
   get forRestoreColumns(): Array<ColumnInfo> {
@@ -208,9 +245,10 @@ export class TableBase extends AppCommonMethods {
 
     // collect all updated/new records
     //let toPost: Array<any> = this.__dirtyRows();
-    let toPost: Array<any> = this.GetRows().filter(e => e.toSubmit);
-    toPost.forEach(e => {ret.push(e.toPostData);});
-
+    let toPost: Array<any> = this.GetRows().filter((e) => e.toSubmit);
+    toPost.forEach((e) => {
+      ret.push(e.toPostData);
+    });
 
     /*
     let links:Array<string> = this.TableLinks();
@@ -225,21 +263,19 @@ export class TableBase extends AppCommonMethods {
     return ret;
   }
 
-  set currentKey(value:number){
+  set currentKey(value: number) {
     // sets the current record given the id
-    let rec:any = this.Item(value);
-    if(rec){
+    let rec: any = this.Item(value);
+    if (rec) {
       rec.SetAsCurrent();
-
-    }else{
-      this._cl("record not found!")
-      this.__currentRow(null);  // set current row to null
+    } else {
+      this._cl('record not found!');
+      this.__currentRow(null); // set current row to null
     }
   }
-  get currentKey():number{
+  get currentKey(): number {
+    if (!this.__currentRow()) return undefined; // if not current row is set
 
-    if(!this.__currentRow()) return undefined;  // if not current row is set
-    
     return this.__currentRow()[this.keyName];
   }
 
@@ -247,26 +283,21 @@ export class TableBase extends AppCommonMethods {
     // returns the current row set in the table
     // this is the same method called from in the specific derived table object's get/set properties
 
-    let isNull:boolean = this.isNullVal(value);
+    let isNull: boolean = this.isNullVal(value);
 
-    if(isNull){
-
+    if (isNull) {
       if (this._currentRow != null) this._currentRow.UnSetRestoreValues();
-      console.log("Set current row to null!...")
+      console.log('Set current row to null!...');
       this._currentRow = null;
-
-    }else if (value != undefined) {
-
+    } else if (value != undefined) {
       // remove restore value of the previous current row
       if (this._currentRow != null) this._currentRow.UnSetRestoreValues();
-
 
       // set current row of the table equal to the argument row object
       this._currentRow = value;
 
       // set restore value of the new current row
       this._currentRow.SetRestoreValues();
-
     }
 
     // return current row
@@ -288,17 +319,18 @@ export class TableBase extends AppCommonMethods {
       // a parent field to the child key field
       //
 
-      this.Links().forEach(lnk => {
+      this.Links().forEach((lnk) => {
         if (lnk.child_code == childTableCode) {
-          if (lnk.link_type == "1to1" || lnk.link_type == "lookup") {
+          if (lnk.link_type == '1to1' || lnk.link_type == 'lookup') {
             ret.value = child.Item(row[lnk.local_field], groupId);
-            ret.key = lnk.child_code + "_" + lnk.local_field;
+            ret.key = lnk.child_code + '_' + lnk.local_field;
           }
         }
       });
     }
 
-    if (!ret.value && groupId != undefined) this.GetRowsByGroup({key:groupId});
+    if (!ret.value && groupId != undefined)
+      this.GetRowsByGroup({ key: groupId });
 
     return ret;
   }
@@ -315,19 +347,19 @@ export class TableBase extends AppCommonMethods {
 
     if(child){
       // iterate through the links definition and look for one which corresponds to
-      // this child table. this is to identify the parent field to use when linking 
+      // this child table. this is to identify the parent field to use when linking
       // a parent field to the child key field
       //
 
       this.Links().forEach(lnk=>{
         if(lnk.child_code == childTableCode){
-          
+
           if(lnk.link_type == "1to1" || lnk.link_type == "lookup"){
-            
+
             ret = child.Item(row[lnk.local_field], groupId);
             if(lnk.link_type=="lookup"){
               console.log("LOCAL FIELD:" ,lnk.local_field,
-                "row[lnk.local_field]:",row[lnk.local_field], 
+                "row[lnk.local_field]:",row[lnk.local_field],
                 " RET: ",ret);
             }
 
@@ -342,7 +374,7 @@ export class TableBase extends AppCommonMethods {
   }
 */
   public ChildTable(childTableCode?: string): any {
-    let childCode: string = "";
+    let childCode: string = '';
     if (childTableCode == undefined) {
       // if undefined, search only the children table collection because
       // this only means that the request was intended to retreive
@@ -358,11 +390,11 @@ export class TableBase extends AppCommonMethods {
   }
 
   GetColumnIndices(cols: Array<ColumnInfo>): string {
-    let ret: string = "";
+    let ret: string = '';
     cols.forEach((c: ColumnInfo) => {
       ret +=
-        (ret.length != 0 ? "`" : "") +
-        this.columns.findIndex(e => {
+        (ret.length != 0 ? '`' : '') +
+        this.columns.findIndex((e) => {
           return e.name == c.name;
         });
     });
@@ -399,8 +431,7 @@ export class TableBase extends AppCommonMethods {
 
     if (isNew) {
       rec._newId = this.TempId;
-      rec[keyField]= -rec._newId
-
+      rec[keyField] = -rec._newId;
     } else {
       rec._newId = undefined;
     }
@@ -410,20 +441,18 @@ export class TableBase extends AppCommonMethods {
     rec._parentTable = this._derivedTable;
 
     // get unique key field name
-    
+
     // get unique key value
     let key: number = rec[keyField];
     let existing: any = this.Item(rec[keyField]);
-    
 
     if (!existing) {
-      
       this._derivedRecords.push(rec);
-      this.__Item["r_" + String(key)] = rec;
+      this.__Item['r_' + String(key)] = rec;
     } else {
       // (pending) update existing record if not modified or obsolete
 
-      console.log("Did not add the record")
+      console.log('Did not add the record');
     }
 
     return rec;
@@ -469,9 +498,7 @@ export class TableBase extends AppCommonMethods {
     if (idx == -1) this._pendingRequests.push(url);
   }
 
-  Save():void{
-    
-  }
+  Save(): void {}
 
   Get(args?: {
     onSuccess?: Function;
@@ -484,26 +511,25 @@ export class TableBase extends AppCommonMethods {
     //return this.http.get(this.tblUrl);
     //return []
     const hdrs = new HttpHeaders();
-    hdrs.set("Content-Type", "application/json; charset=utf-8");
-    hdrs.set("Access-Control-Allow-Origin", "*");
+    hdrs.set('Content-Type', 'application/json; charset=utf-8');
+    hdrs.set('Access-Control-Allow-Origin', '*');
     hdrs.set(
-      "Access-Control-Allow-Origin",
-      "Origin, X-Requested-With, Content-Type, Accept"
+      'Access-Control-Allow-Origin',
+      'Origin, X-Requested-With, Content-Type, Accept'
     );
 
-    let prmKey: string = "";
-    let prmKeyFields: string = "";
-
+    let prmKey: string = '';
+    let prmKeyFields: string = '';
 
     if (args) {
       // key must have a final value of v0`v1`...`vN
       // values are separated by back-ticks
 
       if (args.key != undefined) {
-        if (typeof args.key == "object") {
+        if (typeof args.key == 'object') {
           // contatenate all key values delimited by a back-tick
-          args.key.forEach(k => {
-            prmKey += (prmKey.length != 0 ? "`" : "") + k;
+          args.key.forEach((k) => {
+            prmKey += (prmKey.length != 0 ? '`' : '') + k;
           });
         } else {
           // assign key to prmKey
@@ -511,13 +537,13 @@ export class TableBase extends AppCommonMethods {
         }
       }
       if (args.keyFields != undefined) {
-        if (typeof args.keyFields == "object") {
+        if (typeof args.keyFields == 'object') {
           // keyfield is an array of field names or indices of fielda
-          args.keyFields.forEach(kf => {
+          args.keyFields.forEach((kf) => {
             let tempKeyIndex: string;
             if (isNaN(kf)) {
               tempKeyIndex = String(
-                this.columns.findIndex(c => {
+                this.columns.findIndex((c) => {
                   return c.name == kf;
                 })
               );
@@ -525,7 +551,7 @@ export class TableBase extends AppCommonMethods {
               tempKeyIndex = String(kf);
             }
             prmKeyFields +=
-              (prmKeyFields.length == 0 ? "" : "`") + tempKeyIndex;
+              (prmKeyFields.length == 0 ? '' : '`') + tempKeyIndex;
           });
         } else {
           //uprm_user_id, is numeric this is the index of the column,
@@ -534,7 +560,7 @@ export class TableBase extends AppCommonMethods {
             // not a number, resolve column index
             //this.co.findIndex((e)=>{return e.name=="field3"});
             prmKeyFields = String(
-              this.columns.findIndex(c => {
+              this.columns.findIndex((c) => {
                 return c.name == args.keyFields;
               })
             );
@@ -546,13 +572,11 @@ export class TableBase extends AppCommonMethods {
       }
     }
 
-
     let url: string =
       this.tblUrl +
       (prmKey.length != 0
-        ? "/" + prmKey + (prmKeyFields.length != 0 ? "/" + prmKeyFields : "")
-        : "");
-
+        ? '/' + prmKey + (prmKeyFields.length != 0 ? '/' + prmKeyFields : '')
+        : '');
 
     // these two tests is important to preceed any alteration to the
     // url (eg. adding auto-generated parameters for each request)
@@ -560,15 +584,14 @@ export class TableBase extends AppCommonMethods {
     if (this.IsWithPending(url)) return null;
 
     this.AddRequestFlag(url);
-    console.log("request url:",url);
+    console.log('request url:', url);
 
     // url alteration begins here
-    let urlParams: string = "";
+    let urlParams: string = '';
     if (args.subsKey != undefined)
-      urlParams = (url.indexOf("?") == -1 ? "?" : "&") + "skey=" + args.subsKey;
+      urlParams = (url.indexOf('?') == -1 ? '?' : '&') + 'skey=' + args.subsKey;
 
     this.pendingRequest = true;
-
 
     let ret: Subscription = this.http.get<AppReturn>(url + urlParams).subscribe(
       (data: any) => {
@@ -588,10 +611,12 @@ export class TableBase extends AppCommonMethods {
           // this is to allow processing multi-recordset in a single request
 
           // filter only objects with returnType = 'table'
-          let retTables: Array<any> = data.filter(o => o.returnType == "table");
+          let retTables: Array<any> = data.filter(
+            (o) => o.returnType == 'table'
+          );
 
           // loop through objects and call the local ProcessRequestedRecords method
-          retTables.forEach(t => {
+          retTables.forEach((t) => {
             let tbl: any = this.tables[t.returnCode];
 
             if (tbl) tbl.ProcessRequestedRecords(t);
@@ -630,10 +655,9 @@ export class TableBase extends AppCommonMethods {
     if (!retObj) return;
     let recs: any = retObj.recordsList;
     if (recs) {
-
       let dataColumns: Array<ColumnInfo> = this.DataColumns(retObj.fieldNames);
 
-      recs.forEach(e => {
+      recs.forEach((e) => {
         // create new table row
         let row: any = this.NewRow();
 
@@ -656,7 +680,7 @@ export class TableBase extends AppCommonMethods {
   private _GetRowsByGroup: any = {}; // groups that were already requested previously
 
   /**
-   * 
+   *
    *       this.subs = this.ds.tblUserParams.Get({
         onSuccess:(data)=>{
           params  = this.ds.tblUserParams.rows.filter(e => {return e.uprm_user_id==r.user_id});
@@ -666,31 +690,34 @@ export class TableBase extends AppCommonMethods {
         keyFields:this.ds.tblUserParams.groupIndices
       });
 
-   * 
-   * 
+   *
+   *
    */
   private _GetRowsByGroupSubs: Subscription = null;
   private _GroupRows: any = {};
 
   private _TblSubs: any = {};
 
-  GetRowsByGroup(args:{key?: any,keyField?: string,
-    onSuccess?: Function,onError?: Function,row?: any}): Array<any> {
-
+  GetRowsByGroup(args: {
+    key?: any;
+    keyField?: string;
+    onSuccess?: Function;
+    onError?: Function;
+    row?: any;
+  }): Array<any> {
     let parKey: string;
-    let tbl:any;
+    let tbl: any;
 
-    let {key, keyField, onSuccess, onError, row} = args;
+    let { key, keyField, onSuccess, onError, row } = args;
 
-    if (typeof key == "object") {
+    if (typeof key == 'object') {
       // key supplied is a row object which is expected to contain
       // the key value to be passed as group key of records in the child table
-      tbl=key.Table;
+      tbl = key.Table;
       if (tbl) {
-
         parKey = tbl.keyName;
         key = key[parKey];
-        console.log("parKey:",parKey,"key:",key,this.tableCode);
+        console.log('parKey:', parKey, 'key:', key, this.tableCode);
 
         /*if (tbl.currentRow) {
           parKey = tbl.keyName;
@@ -699,7 +726,6 @@ export class TableBase extends AppCommonMethods {
           key = undefined;
           this.cl([this.tableCode + ": no current row",this.tableCode=="upln"])
         }*/
-
       } else {
         key = undefined;
       }
@@ -707,11 +733,11 @@ export class TableBase extends AppCommonMethods {
 
     // define data group key that will be used for
     // identification in the memory cache
-    let groupKey: string = "";
+    let groupKey: string = '';
 
     if (key != undefined) {
       // check if group rows already defined in the table object and return it if it does
-      groupKey = "g" + key;
+      groupKey = 'g' + key;
       if (this._GroupRows[groupKey]) return this._GroupRows[groupKey]; // this affects retreival of data
     }
 
@@ -729,23 +755,22 @@ export class TableBase extends AppCommonMethods {
 
     let subsKey: string = this.newSubsKey;
 
-
     // call Get method which executes requests from the server when
     // request has not been done before and no pending request already
     // made and simply waiting for the response
     this.Get({
-      onSuccess: e => {
+      onSuccess: (e) => {
         this.UnSubscribe(e);
-        if(onSuccess!=undefined)onSuccess(e);
+        if (onSuccess != undefined) onSuccess(e);
       },
-      onError: e => {
+      onError: (e) => {
         if (onError) onError(e);
       },
       subsKey: subsKey,
       key: key,
-      keyFields: keyField
+      keyFields: keyField,
     });
-    let ret = this.GetRows().filter(e => e[keyField] == key);
+    let ret = this.GetRows().filter((e) => e[keyField] == key);
 
     if (ret != null) {
       if (ret.length != 0)
@@ -763,7 +788,12 @@ export class TableBase extends AppCommonMethods {
       this._UnSubscribeCounter++;
       for (var key in this._TblSubs) {
         let subs: any = this._TblSubs[key];
-        this._cl("Unsubscribe abandoned!",abandoned,Date.now(),this._UnSubscribeCounter);
+        this._cl(
+          'Unsubscribe abandoned!',
+          abandoned,
+          Date.now(),
+          this._UnSubscribeCounter
+        );
         if (subs) {
           // if subscription is not null
           let when: number = subs.when;
@@ -801,25 +831,25 @@ export class TableBase extends AppCommonMethods {
     return ret;
   }
 
-  GetRowById(key: number, resolve?:Function, reject?:Function): any {
+  GetRowById(key: number, resolve?: Function, reject?: Function): any {
     let keyField: string = this.keyName;
     let _newSubsKey: string = this.newSubsKey;
-    let row: any = this.GetRows().find(r => r[keyField] == key);
+    let row: any = this.GetRows().find((r) => r[keyField] == key);
 
     if (!row) {
       // execute request from the server
 
       this.Get({
-        onSuccess: e => {
+        onSuccess: (e) => {
           this.UnSubscribe(e);
-          if(resolve!=undefined) resolve(e);
+          if (resolve != undefined) resolve(e);
         },
-        onError: e => {
+        onError: (e) => {
           //if(onError)onError(e);
-          if(reject!=undefined) reject(e);
+          if (reject != undefined) reject(e);
         },
         key: key,
-        subsKey: _newSubsKey
+        subsKey: _newSubsKey,
       });
     }
     return row;
@@ -828,12 +858,12 @@ export class TableBase extends AppCommonMethods {
   // GetRowById(key:number):any{return null;}  // dummy just suppress errors
   GetRowById_Obsolete(key: number): any {
     let keyField: string = this.keyName;
-    return this.GetRows().find(r => r[keyField] == key);
+    return this.GetRows().find((r) => r[keyField] == key);
   }
 
   SeekRecord(row: Array<any>): any {
     //this
-    return this._derivedRecords.find(r => {
+    return this._derivedRecords.find((r) => {
       return row[0] == r[this.keyName];
     });
   }
@@ -854,7 +884,7 @@ export class TableBase extends AppCommonMethods {
   KeyColumns(prop: string, desc?: boolean): Array<ColumnInfo> {
     if (desc == undefined) desc = false;
     return this.columns
-      .filter(e => {
+      .filter((e) => {
         return e[prop] != -1;
       })
       .sort((a, b) => {
@@ -872,23 +902,23 @@ export class TableBase extends AppCommonMethods {
 
   DataColumns(fieldNames: Array<string>): Array<ColumnInfo> {
     let ret: Array<ColumnInfo> = [];
-    fieldNames.forEach(f => {
-      ret.push(this.columns.find(c => c.name == f));
+    fieldNames.forEach((f) => {
+      ret.push(this.columns.find((c) => c.name == f));
     });
     return ret;
   }
 
   InitializeTable(): void {
-    this.keyFields = this.KeyColumns("keyPosition");
-    this.keyGroupFields = this.KeyColumns("groupPosition");
-    this.keyUniqueFields = this.KeyColumns("uniquePosition");
-    this.keySortFields = this.KeyColumns("sortPosition");
-    this.keyDisplayFields = this.KeyColumns("displayPosition");
+    this.keyFields = this.KeyColumns('keyPosition');
+    this.keyGroupFields = this.KeyColumns('groupPosition');
+    this.keyUniqueFields = this.KeyColumns('uniquePosition');
+    this.keySortFields = this.KeyColumns('sortPosition');
+    this.keyDisplayFields = this.KeyColumns('displayPosition');
   }
 
   get NewRows(): Array<any> {
     return this.GetRows()
-      .filter(r => {
+      .filter((r) => {
         return r._newId != null && r._newId != undefined;
       })
       .sort((a, b) => {
@@ -899,13 +929,13 @@ export class TableBase extends AppCommonMethods {
 
   get TempId(): number {
     let newRows: Array<any> = this.NewRows;
-    console.log("NewRows,",newRows)
+    console.log('NewRows,', newRows);
     if (newRows.length == 0) {
       // if no new record has already been created
       return 1;
     } else {
       //return newRows[newRows.length-1]["_newId"]+1;
-      return newRows[0]["_newId"] + 1;
+      return newRows[0]['_newId'] + 1;
     }
   }
 }
