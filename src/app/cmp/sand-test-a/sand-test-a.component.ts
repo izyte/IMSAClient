@@ -10,6 +10,32 @@ export class SandTestAComponent implements OnInit {
   constructor(public ds: AppDataset) {}
 
   ngOnInit(): void {
+    // this.ds.tblFailureThreats.Get({
+    //   onSuccess: (data) => {
+    //     console.log(this.ds.tblFailureThreats);
+    //   },
+    // });
+
+    // return;
+
+    const json = [
+      { code: 'an' ,fields:"1,2,3,4",sort:"2,3",filter:"an_ref='2020-01' And an_type=8080"},
+      { code: 'rf' , sort:"3",filter:"rf_type=8200"}
+    ];
+
+    //const str = 'JavaScript is fun!!';
+    const str =JSON.stringify(json);
+
+    // encode the string
+    const encodedStr = btoa(str);
+
+    // print encoded string
+    console.log('ENCODED STRING:' + encodedStr);
+
+    // encode the string
+    const decodedStr = atob(encodedStr);
+    console.log('DECODED STRING:' + decodedStr);
+
     this.ds.tblUsers.Get({
       onSuccess: (data) => {
         console.log(this.ds.tblUsers);
@@ -18,69 +44,33 @@ export class SandTestAComponent implements OnInit {
             console.log(this.ds.tblAnomalies);
 
             this.ds.tblLookups.Get({
-              onSuccess:(data)=>{
+              onSuccess: (data) => {
                 console.log(this.ds.tblLookups);
 
                 this.ds.tblRefFiles.Get({
-                  onSuccess:(data)=>{
-                    console.log(this.ds.tblRefFiles);
-                  }
-                });
-
-
-              }
-            });
-
-          }
-        });
-      },
-    });
-
-    return;
-
-    this.ds.tblUsers.Get({
-      onSuccess: (data) => {
-        console.log(this.ds.tblUsers);
-        this.ds.tblAnomalies.Get({
-          onSuccess: (data) => {
-            console.log(this.ds.tblAnomalies);
-            this.ds.tblRefFiles.Get({
-              onSuccess: (data) => {
-                console.log(this.ds.tblRefFiles);
-                this.ds.tblLookups.Get({
                   onSuccess: (data) => {
-                    console.log(this.ds.tblLookups);
+                    console.log(this.ds.tblRefFiles);
+
+                    this.ds.tblNodesAttrib.Get({
+                      onSuccess: (data) => {
+                        console.log(this.ds.tblNodesAttrib);
+
+                        this.ds.tblFailureThreats.Get({
+                          onSuccess: (data) => {
+                            console.log(this.ds.tblFailureThreats);
+                          },
+                        });
+                      },
+                    });
                   },
                 });
               },
             });
-
-            /*this.ds.tblRefFiles.GetRowsByGroup({
-              key: 8205,
-              onSuccess: (data) => {
-                console.log(this.ds.tblRefFiles);
-              },
-            });*/
-
-            /*
-            this.ds.tblRefFiles.GetRowsByGroup({
-              key: 8204,
-              onSuccess: (data) => {
-                console.log(this.ds.tblRefFiles);
-                this.ds.tblRefFiles.GetRowsByGroup({
-                  key: 8207,
-                  onSuccess: (data) => {
-                    console.log(this.ds.tblRefFiles);
-                  },
-                });
-
-              },
-            });
-
-*/
           },
         });
       },
     });
   }
+
+  loadTables(tbls: Array<any>) {}
 }
