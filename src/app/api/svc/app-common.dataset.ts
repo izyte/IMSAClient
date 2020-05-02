@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ColumnInfo } from '../mod/app-column.model';
-import { AppCommonMethods } from './app-common.methods'; 
+import { AppCommonMethods } from './app-common.methods';
 
 export class DatasetBase extends AppCommonMethods {
 
@@ -8,7 +9,7 @@ export class DatasetBase extends AppCommonMethods {
         super();
      }
 
-    
+
     public tables:any = {};
 
     public AddTable(dataTable:any){
@@ -24,7 +25,7 @@ export class DatasetBase extends AppCommonMethods {
         let link:Array<string>=table.TableLinks();
         let tableCode:string=null;
         let dirtyChildren:any=null;
-        
+
         if(link != null){
             // collect all dirty rows from all linked tables
             dirtyChildren = {};
@@ -59,8 +60,28 @@ export class DatasetBase extends AppCommonMethods {
                   }
               })
           }
-        })        
+        })
         return ret; // tableCode ? ret[tableCode] : ret;
+    }
+
+    Get(args?: {
+      onSuccess?: Function;
+      onError?: Function;
+      key?: any;
+      keyFields?: any;
+      subsKey?: string;
+    }):Subscription {
+      // get table data based on base64 encoded json parameters
+      const hdrs = new HttpHeaders();
+
+      hdrs.set('Content-Type', 'application/json; charset=utf-8');
+      hdrs.set('Access-Control-Allow-Origin', '*');
+      hdrs.set(
+        'Access-Control-Allow-Origin',
+        'Origin, X-Requested-With, Content-Type, Accept'
+      );
+
+      return null;
     }
 
     CloneData(data:any):any{
@@ -82,7 +103,7 @@ export class DatasetBase extends AppCommonMethods {
         let strNorm:string=str.toLowerCase().replace(/  /gi," ");
         while(strNorm.indexOf("  ")!=-1){
             strNorm=strNorm.replace(/  /gi," ");
-        } 
+        }
 
         let wordArr:Array<string>=strNorm.split(" ");
         let word:string;

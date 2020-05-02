@@ -19,8 +19,9 @@ export class SandTestAComponent implements OnInit {
     // return;
 
     const json = [
-      { code: 'an' ,fields:"1,2,3,4",sort:"2,3",filter:"an_ref='2020-01' And an_type=8080"},
-      { code: 'rf' , sort:"3",filter:"rf_type=8200"}
+      { code: 'user' ,sort:"2,3",filter:"an_ref='2020-01' And an_type=8080"},
+      { code: 'ft' ,includedFields:"0`1`2", sort:"3",filter:"rf_type=8200"},
+      { code: 'param',includedFields:"0`1" , sort:"3",filter:"rf_type=8200"}
     ];
 
     //const str = 'JavaScript is fun!!';
@@ -35,6 +36,12 @@ export class SandTestAComponent implements OnInit {
     // encode the string
     const decodedStr = atob(encodedStr);
     console.log('DECODED STRING:' + decodedStr);
+
+    this.ds.Get({onSuccess:(data)=>{
+      console.log(data);
+    }})
+
+    return;
 
     this.ds.tblUsers.Get({
       onSuccess: (data) => {
@@ -54,12 +61,13 @@ export class SandTestAComponent implements OnInit {
                     this.ds.tblNodesAttrib.Get({
                       onSuccess: (data) => {
                         console.log(this.ds.tblNodesAttrib);
+                        console.log("this.ds.tblFailureThreats",this.ds.tblFailureThreats);
 
-                        this.ds.tblFailureThreats.Get({
-                          onSuccess: (data) => {
-                            console.log(this.ds.tblFailureThreats);
-                          },
-                        });
+                        // this.ds.tblFailureThreats.Get({
+                        //   onSuccess: (data) => {
+                        //     console.log(this.ds.tblFailureThreats);
+                        //   },
+                        // });
                       },
                     });
                   },
