@@ -1,5 +1,5 @@
 export interface AppReturn{
-
+  returnDescription:string;
     requestDateTime:Date;
     recordsFormat:string;
     recordCount:number;

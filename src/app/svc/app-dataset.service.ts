@@ -1,7 +1,9 @@
-import { DatasetBase } from "../api/svc/app-common.dataset";
-import { Subscription } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { AppCommonService } from './app-common.service';
+import { AppCommonMethods } from './../../../docs/src/app/api/svc/app-common.methods';
+import { DatasetBase } from '../api/svc/app-common.dataset';
+import { Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 /**Application tables *****/
 /*
@@ -20,29 +22,29 @@ import { TblUsers, TblUsersRow } from './app.tables';
 //</INCLUDES>
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root',
 })
 export class AppDataset extends DatasetBase {
-  APP_TITLE: string = "My Application";
-  APP_ICON: string = "fa-id-card";
+  APP_TITLE: string = 'My Application';
+  APP_ICON: string = 'fa-id-card';
 
-  NAV_BACK: string = "#2b579a";
+  NAV_BACK: string = '#2b579a';
 
   testRow: any = {
     table: {},
-    an_id: 1
+    an_id: 1,
   };
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public appCommonService:AppCommonService ) {
     super(http);
   }
 
   // setup aplication source api url
-  public apiUrl: string = "http://soga-alv/NgArbi/api/app";
+  public apiUrl: string = 'http://soga-alv/NgArbi/api/app';
   //public apiUrl: string = "http://soga-alv/NgIMSAPub/api/app";
   // public apiUrl: string = "http://107.180.71.181/plesk-site-preview/ngimsa.ivideolib.com/107.180.71.181/api/app";
 
-//<INSTANTIATE>
+  //<INSTANTIATE>
 public tblAnomalies:TblAnomalies = this.AddTable(new TblAnomalies(this.http, this.apiUrl, this.tables));
 public tblChangeTracker:TblChangeTracker = this.AddTable(new TblChangeTracker(this.http, this.apiUrl, this.tables));
 public tblFailureThreats:TblFailureThreats = this.AddTable(new TblFailureThreats(this.http, this.apiUrl, this.tables));
@@ -59,6 +61,4 @@ public tblUsers:TblUsers = this.AddTable(new TblUsers(this.http, this.apiUrl, th
   */
 
   /************************** Application Specific Methods ******************************************/
-
-
 }

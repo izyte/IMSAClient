@@ -19,13 +19,27 @@ export class SandTestAComponent implements OnInit {
     // return;
 
     const json = [
-      { code: 'user' ,sort:"2,3",filter:"an_ref='2020-01' And an_type=8080"},
-      { code: 'ft' ,includedFields:"0`1`2", sort:"3",filter:"rf_type=8200"},
-      { code: 'param',includedFields:"0`1" , sort:"3",filter:"rf_type=8200"}
+      {
+        code: 'user',
+        sort: '2,3',
+        filter: "an_ref='2020-01' And an_type=8080",
+      },
+      {
+        code: 'ft',
+        includedFields: '0`1`2',
+        sort: '3',
+        filter: 'rf_type=8200',
+      },
+      {
+        code: 'param',
+        includedFields: '0`1',
+        sort: '3',
+        filter: 'rf_type=8200',
+      },
     ];
 
     //const str = 'JavaScript is fun!!';
-    const str =JSON.stringify(json);
+    const str = JSON.stringify(json);
 
     // encode the string
     const encodedStr = btoa(str);
@@ -37,9 +51,28 @@ export class SandTestAComponent implements OnInit {
     const decodedStr = atob(encodedStr);
     console.log('DECODED STRING:' + decodedStr);
 
-    this.ds.Get({onSuccess:(data)=>{
-      console.log(data);
-    }})
+    this.ds.Get({
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    });
+
+    this.ds.tblNodesAttrib.Get({
+      onSuccess: (data) => {
+        console.log(this.ds.tblNodesAttrib);
+        console.log('this.ds.tblFailureThreats', this.ds.tblFailureThreats);
+
+        // this.ds.tblFailureThreats.Get({
+        //   onSuccess: (data) => {
+        //     console.log(this.ds.tblFailureThreats);
+        //   },
+        // });
+      },
+    });
+
+    setTimeout(() => {
+      console.log(this.ds.History);
+    }, 5000);
 
     return;
 
@@ -61,7 +94,10 @@ export class SandTestAComponent implements OnInit {
                     this.ds.tblNodesAttrib.Get({
                       onSuccess: (data) => {
                         console.log(this.ds.tblNodesAttrib);
-                        console.log("this.ds.tblFailureThreats",this.ds.tblFailureThreats);
+                        console.log(
+                          'this.ds.tblFailureThreats',
+                          this.ds.tblFailureThreats
+                        );
 
                         // this.ds.tblFailureThreats.Get({
                         //   onSuccess: (data) => {

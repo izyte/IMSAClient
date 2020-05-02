@@ -458,45 +458,45 @@ export class TableBase extends AppCommonMethods {
     return rec;
   }
 
-  private _pendingRequests: Array<string> = [];
-  private _historicalRequests: Array<string> = [];
+  // private _pendingRequests: Array<string> = [];
+  // private _historicalRequests: Array<string> = [];
 
-  public get History(): Array<string> {
-    return this._historicalRequests;
-  }
-  public get Pending(): Array<string> {
-    return this._pendingRequests;
-  }
+  // public get History(): Array<string> {
+  //   return this._historicalRequests;
+  // }
+  // public get Pending(): Array<string> {
+  //   return this._pendingRequests;
+  // }
 
-  IsWithHistory(url: string): boolean {
-    let idx: number = this._historicalRequests.indexOf(url);
-    return idx != -1;
-  }
+  // IsWithHistory(url: string): boolean {
+  //   let idx: number = this._historicalRequests.indexOf(url);
+  //   return idx != -1;
+  // }
 
-  AddHistoryLog(url: string) {
-    let idx: number = this._historicalRequests.indexOf(url);
-    if (idx == -1) this._historicalRequests.push(url);
-  }
+  // AddHistoryLog(url: string) {
+  //   let idx: number = this._historicalRequests.indexOf(url);
+  //   if (idx == -1) this._historicalRequests.push(url);
+  // }
 
-  ClearHistoryLog(url: string) {
-    let idx: number = this._historicalRequests.indexOf(url);
-    if (idx != -1) this._historicalRequests.splice(idx, 1);
-  }
+  // ClearHistoryLog(url: string) {
+  //   let idx: number = this._historicalRequests.indexOf(url);
+  //   if (idx != -1) this._historicalRequests.splice(idx, 1);
+  // }
 
-  IsWithPending(url: string): boolean {
-    let idx: number = this._pendingRequests.indexOf(url);
-    return idx != -1;
-  }
+  // IsWithPending(url: string): boolean {
+  //   let idx: number = this._pendingRequests.indexOf(url);
+  //   return idx != -1;
+  // }
 
-  ClearRequestFlag(url: string) {
-    let idx: number = this._pendingRequests.indexOf(url);
-    if (idx != -1) this._pendingRequests.splice(idx, 1);
-  }
+  // ClearRequestFlag(url: string) {
+  //   let idx: number = this._pendingRequests.indexOf(url);
+  //   if (idx != -1) this._pendingRequests.splice(idx, 1);
+  // }
 
-  AddRequestFlag(url: string) {
-    let idx: number = this._pendingRequests.indexOf(url);
-    if (idx == -1) this._pendingRequests.push(url);
-  }
+  // AddRequestFlag(url: string) {
+  //   let idx: number = this._pendingRequests.indexOf(url);
+  //   if (idx == -1) this._pendingRequests.push(url);
+  // }
 
   Save(): void {}
 
@@ -593,6 +593,8 @@ export class TableBase extends AppCommonMethods {
 
     this.pendingRequest = true;
 
+    console.log('url + urlParams', url, urlParams);
+
     let ret: Subscription = this.http.get<AppReturn>(url + urlParams).subscribe(
       (data: any) => {
         // recs will have the array of returned records if the
@@ -631,6 +633,9 @@ export class TableBase extends AppCommonMethods {
         // add request to history log. this log will be checked for subsequent requests
         // where calls for existing entries will be bypassed to improve performance efficiency
         this.AddHistoryLog(url);
+        setTimeout(() => {
+          console.log('HHH', this.History);
+        }, 7000);
 
         // this removes entry to collection if URL that is used to prevent same-request concurrency issues
         // request concurrency check is necessary to prevent duplicate records post-processing
@@ -653,6 +658,8 @@ export class TableBase extends AppCommonMethods {
 
   public ProcessRequestedRecords(retObj: any): void {
     if (!retObj) return;
+
+    console.log('retObj', retObj);
 
     let recs: any = retObj.recordsList;
     if (recs) {

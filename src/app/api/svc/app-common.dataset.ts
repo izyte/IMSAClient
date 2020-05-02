@@ -1,3 +1,4 @@
+import { AppReturn } from './../../../../docs/src/app/api/mod/app-return.model';
 import { Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ColumnInfo } from '../mod/app-column.model';
@@ -81,6 +82,60 @@ export class DatasetBase extends AppCommonMethods {
         'Origin, X-Requested-With, Content-Type, Accept'
       );
 
+        let url:string;
+      // let ret: Subscription = this.http.get<AppReturn>(url).subscribe(
+      //   (data: any) => {
+      //     // recs will have the array of returned records if the
+      //     // server-side return value is a single table object
+      //     let retObj: any = null;
+      //     let recs: Array<any> = data.recordsList;
+      //     if (data.recordsList) {
+      //       retObj = data;
+      //     } else {
+      //       // recs is null if data is an array of AppReturn
+      //       // need to find data specific to the current table
+      //       // using the tableCode property
+
+      //       // iterate through the results array element where the returnType == 'table'
+      //       // then call tableObj.ProcessRequestedRecords for each return object
+      //       // this is to allow processing multi-recordset in a single request
+
+      //       // filter only objects with returnType = 'table'
+      //       let retTables: Array<any> = data.filter(
+      //         (o) => o.returnType == 'table'
+      //       );
+
+      //       // loop through objects and call the local ProcessRequestedRecords method
+      //       retTables.forEach((t) => {
+      //         let tbl: any = this.tables[t.returnCode];
+
+      //         if (tbl) tbl.ProcessRequestedRecords(t);
+      //         else console.log("Table object '" + t.returnCode + "' not found!");
+      //       });
+      //     }
+
+      //     // call onSuccess parameter function if defined
+      //     if (args) if (args.onSuccess != undefined) args.onSuccess(data);
+      //     this.pendingRequest = false;
+
+      //     // add request to history log. this log will be checked for subsequent requests
+      //     // where calls for existing entries will be bypassed to improve performance efficiency
+      //     this.AddHistoryLog(url);
+
+      //     // this removes entry to collection if URL that is used to prevent same-request concurrency issues
+      //     // request concurrency check is necessary to prevent duplicate records post-processing
+      //     // action when similar multiple requests return back to the client.
+      //     this.ClearRequestFlag(url);
+      //   }, // end of success
+      //   (error: any) => {
+      //     // call onError parameter function if defined
+      //     if (args) if (args.onError != undefined) args.onError(error);
+      //     this.pendingRequest = false;
+      //     this.ClearRequestFlag(url);
+      //   }
+      // );
+
+      // return ret;
       return null;
     }
 
