@@ -59,8 +59,8 @@ export class SandTestAComponent implements OnInit {
 
     this.ds.tblNodesAttrib.Get({
       onSuccess: (data) => {
+        //this.ds.tblNodesAttrib.apiCommon.
         console.log(this.ds.tblNodesAttrib);
-        console.log('this.ds.tblFailureThreats', this.ds.tblFailureThreats);
 
         // this.ds.tblFailureThreats.Get({
         //   onSuccess: (data) => {
@@ -69,10 +69,6 @@ export class SandTestAComponent implements OnInit {
         // });
       },
     });
-
-    setTimeout(() => {
-      console.log(this.ds.History);
-    }, 5000);
 
     return;
 

@@ -1,12 +1,13 @@
-import { AppReturn } from './../../../../docs/src/app/api/mod/app-return.model';
+import { AppReturn } from './../mod/app-return.model';
 import { Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ColumnInfo } from '../mod/app-column.model';
 import { AppCommonMethods } from './app-common.methods';
+import { AppCommonMethodsService } from './app-common-methods.service';
 
 export class DatasetBase extends AppCommonMethods {
 
-    constructor(public http: HttpClient) {
+    constructor(public http: HttpClient,public apiCommon?:AppCommonMethodsService) {
         super();
      }
 

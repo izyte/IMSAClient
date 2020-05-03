@@ -1,7 +1,8 @@
 /***********************************************************************
-* Automatically generated on 5/2/2020 11:46:37 PM
+* Automatically generated on 5/3/2020 5:39:47 PM
 ***********************************************************************/
 
+import { AppCommonMethodsService } from '../api/svc/app-common-methods.service';
 import { HttpClient } from '@angular/common/http';
 import { TableBase } from '../api/svc/app-common.datatable';
 import { TableRowBase }from '../api/svc/app-common.datarow';
@@ -20,8 +21,8 @@ export class TblAnomalies extends TableBase {
 	private _tableLinks:Array<string>=[];
 	private _links:Array<any>=[];
 
-  constructor(public http:HttpClient,public apiUrl:string, public tables?:Array<any>) {
-    super(http, apiUrl);
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
 
     this.derivedTable = this;
 
@@ -228,8 +229,8 @@ export class TblChangeTracker extends TableBase {
 	private _tableLinks:Array<string>=[];
 	private _links:Array<any>=[];
 
-  constructor(public http:HttpClient,public apiUrl:string, public tables?:Array<any>) {
-    super(http, apiUrl);
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
 
     this.derivedTable = this;
 
@@ -296,8 +297,8 @@ export class TblFailureThreats extends TableBase {
 	private _tableLinks:Array<string>=[];
 	private _links:Array<any>=[];
 
-  constructor(public http:HttpClient,public apiUrl:string, public tables?:Array<any>) {
-    super(http, apiUrl);
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
 
     this.derivedTable = this;
 
@@ -364,8 +365,8 @@ export class TblLookups extends TableBase {
 	private _tableLinks:Array<string>=[];
 	private _links:Array<any>=[];
 
-  constructor(public http:HttpClient,public apiUrl:string, public tables?:Array<any>) {
-    super(http, apiUrl);
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
 
     this.derivedTable = this;
 
@@ -470,8 +471,8 @@ export class TblNodesAttrib extends TableBase {
 	private _tableLinks:Array<string>=[];
 	private _links:Array<any>=[];
 
-  constructor(public http:HttpClient,public apiUrl:string, public tables?:Array<any>) {
-    super(http, apiUrl);
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
 
     this.derivedTable = this;
 
@@ -584,8 +585,8 @@ export class TblUserParam extends TableBase {
 	private _tableLinks:Array<string>=[];
 	private _links:Array<any>=[];
 
-  constructor(public http:HttpClient,public apiUrl:string, public tables?:Array<any>) {
-    super(http, apiUrl);
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
 
     this.derivedTable = this;
 
@@ -654,8 +655,8 @@ export class TblRefFiles extends TableBase {
 	private _tableLinks:Array<string>=[];
 	private _links:Array<any>=[];
 
-  constructor(public http:HttpClient,public apiUrl:string, public tables?:Array<any>) {
-    super(http, apiUrl);
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
 
     this.derivedTable = this;
 
@@ -740,8 +741,8 @@ export class TblTreeStruc extends TableBase {
 	private _tableLinks:Array<string>=[];
 	private _links:Array<any>=[];
 
-  constructor(public http:HttpClient,public apiUrl:string, public tables?:Array<any>) {
-    super(http, apiUrl);
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
 
     this.derivedTable = this;
 
@@ -814,8 +815,8 @@ export class TblUsers extends TableBase {
 	private _tableLinks:Array<string>=[];
 	private _links:Array<any>=[];
 
-  constructor(public http:HttpClient,public apiUrl:string, public tables?:Array<any>) {
-    super(http, apiUrl);
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
 
     this.derivedTable = this;
 

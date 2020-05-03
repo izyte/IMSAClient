@@ -13,15 +13,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ColumnInfo } from '../mod/app-column.model';
 import { Subscription } from 'rxjs';
 import { AppCommonMethods } from './app-common.methods';
-import { group } from '@angular/animations';
-import { StringifyOptions } from 'querystring';
-import { RecurseVisitor } from '@angular/compiler/src/i18n/i18n_ast';
+import { AppCommonMethodsService } from './app-common-methods.service';
 
 export class TableBase extends AppCommonMethods {
   constructor(
     public http: HttpClient,
     public apiUrl: string,
-    public tables?: Array<any>
+    public tables: Array<any>,
+    public apiCommon:AppCommonMethodsService
   ) {
     super();
     this.UnSubscribe(null, true);
@@ -580,11 +579,10 @@ export class TableBase extends AppCommonMethods {
 
     // these two tests is important to preceed any alteration to the
     // url (eg. adding auto-generated parameters for each request)
-    if (this.IsWithHistory(url)) return null;
-    if (this.IsWithPending(url)) return null;
+    if (this.apiCommon.IsWithHistory(url)) return null;
+    if (this.apiCommon.IsWithPending(url)) return null;
 
-    this.AddRequestFlag(url);
-    console.log('request url:', url);
+    this.apiCommon.AddRequestFlag(url);
 
     // url alteration begins here
     let urlParams: string = '';
@@ -592,8 +590,6 @@ export class TableBase extends AppCommonMethods {
       urlParams = (url.indexOf('?') == -1 ? '?' : '&') + 'skey=' + args.subsKey;
 
     this.pendingRequest = true;
-
-    console.log('url + urlParams', url, urlParams);
 
     let ret: Subscription = this.http.get<AppReturn>(url + urlParams).subscribe(
       (data: any) => {
@@ -632,21 +628,18 @@ export class TableBase extends AppCommonMethods {
 
         // add request to history log. this log will be checked for subsequent requests
         // where calls for existing entries will be bypassed to improve performance efficiency
-        this.AddHistoryLog(url);
-        setTimeout(() => {
-          console.log('HHH', this.History);
-        }, 7000);
+        this.apiCommon.AddHistoryLog(url);
 
         // this removes entry to collection if URL that is used to prevent same-request concurrency issues
         // request concurrency check is necessary to prevent duplicate records post-processing
         // action when similar multiple requests return back to the client.
-        this.ClearRequestFlag(url);
+        this.apiCommon.ClearRequestFlag(url);
       }, // end of success
       (error: any) => {
         // call onError parameter function if defined
         if (args) if (args.onError != undefined) args.onError(error);
         this.pendingRequest = false;
-        this.ClearRequestFlag(url);
+        this.apiCommon.ClearRequestFlag(url);
       }
     );
 

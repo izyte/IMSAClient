@@ -1,5 +1,4 @@
-import { AppCommonService } from './app-common.service';
-import { AppCommonMethods } from './../../../docs/src/app/api/svc/app-common.methods';
+import { AppCommonMethodsService } from '../api/svc/app-common-methods.service';
 import { DatasetBase } from '../api/svc/app-common.dataset';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -35,7 +34,7 @@ export class AppDataset extends DatasetBase {
     an_id: 1,
   };
 
-  constructor(public http: HttpClient, public appCommonService:AppCommonService ) {
+  constructor(public http: HttpClient,public apiCommon:AppCommonMethodsService ) {
     super(http);
   }
 
@@ -45,15 +44,15 @@ export class AppDataset extends DatasetBase {
   // public apiUrl: string = "http://107.180.71.181/plesk-site-preview/ngimsa.ivideolib.com/107.180.71.181/api/app";
 
   //<INSTANTIATE>
-public tblAnomalies:TblAnomalies = this.AddTable(new TblAnomalies(this.http, this.apiUrl, this.tables));
-public tblChangeTracker:TblChangeTracker = this.AddTable(new TblChangeTracker(this.http, this.apiUrl, this.tables));
-public tblFailureThreats:TblFailureThreats = this.AddTable(new TblFailureThreats(this.http, this.apiUrl, this.tables));
-public tblLookups:TblLookups = this.AddTable(new TblLookups(this.http, this.apiUrl, this.tables));
-public tblNodesAttrib:TblNodesAttrib = this.AddTable(new TblNodesAttrib(this.http, this.apiUrl, this.tables));
-public tblUserParam:TblUserParam = this.AddTable(new TblUserParam(this.http, this.apiUrl, this.tables));
-public tblRefFiles:TblRefFiles = this.AddTable(new TblRefFiles(this.http, this.apiUrl, this.tables));
-public tblTreeStruc:TblTreeStruc = this.AddTable(new TblTreeStruc(this.http, this.apiUrl, this.tables));
-public tblUsers:TblUsers = this.AddTable(new TblUsers(this.http, this.apiUrl, this.tables));
+public tblAnomalies:TblAnomalies = this.AddTable(new TblAnomalies(this.http, this.apiUrl, this.tables, this.apiCommon));
+public tblChangeTracker:TblChangeTracker = this.AddTable(new TblChangeTracker(this.http, this.apiUrl, this.tables, this.apiCommon));
+public tblFailureThreats:TblFailureThreats = this.AddTable(new TblFailureThreats(this.http, this.apiUrl, this.tables, this.apiCommon));
+public tblLookups:TblLookups = this.AddTable(new TblLookups(this.http, this.apiUrl, this.tables, this.apiCommon));
+public tblNodesAttrib:TblNodesAttrib = this.AddTable(new TblNodesAttrib(this.http, this.apiUrl, this.tables, this.apiCommon));
+public tblUserParam:TblUserParam = this.AddTable(new TblUserParam(this.http, this.apiUrl, this.tables, this.apiCommon));
+public tblRefFiles:TblRefFiles = this.AddTable(new TblRefFiles(this.http, this.apiUrl, this.tables, this.apiCommon));
+public tblTreeStruc:TblTreeStruc = this.AddTable(new TblTreeStruc(this.http, this.apiUrl, this.tables, this.apiCommon));
+public tblUsers:TblUsers = this.AddTable(new TblUsers(this.http, this.apiUrl, this.tables, this.apiCommon));
 //</INSTANTIATE>
 
   /*

@@ -1,51 +1,6 @@
 export class AppCommonMethods {
   constructor() {}
 
-  /*******************************************************************
-   * Manage hitorical requests and current request
-   *******************************************************************/
-
-  private _pendingRequests: Array<string> = [];
-  private _historicalRequests: Array<string> = [];
-
-  public get History(): Array<string> {
-    return this._historicalRequests;
-  }
-  public get Pending(): Array<string> {
-    return this._pendingRequests;
-  }
-
-  IsWithHistory(url: string): boolean {
-    let idx: number = this._historicalRequests.indexOf(url);
-    return idx != -1;
-  }
-
-  AddHistoryLog(url: string) {
-    let idx: number = this._historicalRequests.indexOf(url);
-    if (idx == -1) this._historicalRequests.push(url);
-  }
-
-  ClearHistoryLog(url: string) {
-    console.log("ClearHistoryLog",url);
-    let idx: number = this._historicalRequests.indexOf(url);
-    if (idx != -1) this._historicalRequests.splice(idx, 1);
-  }
-
-  IsWithPending(url: string): boolean {
-    let idx: number = this._pendingRequests.indexOf(url);
-    return idx != -1;
-  }
-
-  ClearRequestFlag(url: string) {
-    let idx: number = this._pendingRequests.indexOf(url);
-    if (idx != -1) this._pendingRequests.splice(idx, 1);
-  }
-
-  AddRequestFlag(url: string) {
-    let idx: number = this._pendingRequests.indexOf(url);
-    if (idx == -1) this._pendingRequests.push(url);
-  }
-  // *******************************************************************
 
   get productionMode(): boolean {
     return false;

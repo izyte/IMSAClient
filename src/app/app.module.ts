@@ -13,6 +13,7 @@ import { AppDataset } from './svc/app-dataset.service';
 
 // custom components
 import { SandTestAComponent } from './cmp/sand-test-a/sand-test-a.component';
+import { AppCommonMethodsService } from './api/svc/app-common-methods.service';
 
 
 @NgModule({
@@ -25,7 +26,7 @@ import { SandTestAComponent } from './cmp/sand-test-a/sand-test-a.component';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [AppDataset],
+  providers: [AppDataset,AppCommonMethodsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
