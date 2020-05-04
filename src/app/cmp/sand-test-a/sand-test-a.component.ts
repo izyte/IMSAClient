@@ -21,20 +21,18 @@ export class SandTestAComponent implements OnInit {
     const json = [
       {
         code: 'user',
-        sort: '2,3',
-        filter: "an_ref='2020-01' And an_type=8080",
+        pageNumber:1,
+        pageSize:10
       },
       {
         code: 'ft',
-        includedFields: '0`1`2',
-        sort: '3',
-        filter: 'rf_type=8200',
+        pageNumber:2,
+        pageSize:15
       },
       {
         code: 'param',
-        includedFields: '0`1',
-        sort: '3',
-        filter: 'rf_type=8200',
+        pageNumber:3,
+        pageSize:25
       },
     ];
 
