@@ -16,6 +16,8 @@ import { TblLookups, TblLookupsRow } from './app.tables';
 import { TblNodesAttrib, TblNodesAttribRow } from './app.tables';
 import { TblUserParam, TblUserParamRow } from './app.tables';
 import { TblRefFiles, TblRefFilesRow } from './app.tables';
+import { TblSurveyHeader, TblSurveyHeaderRow } from './app.tables';
+import { TblSurveyPosition, TblSurveyPositionRow } from './app.tables';
 import { TblTreeStruc, TblTreeStrucRow } from './app.tables';
 import { TblUsers, TblUsersRow } from './app.tables';
 //</INCLUDES>
@@ -51,6 +53,8 @@ public tblLookups:TblLookups = this.AddTable(new TblLookups(this.http, this.apiU
 public tblNodesAttrib:TblNodesAttrib = this.AddTable(new TblNodesAttrib(this.http, this.apiUrl, this.tables, this.apiCommon));
 public tblUserParam:TblUserParam = this.AddTable(new TblUserParam(this.http, this.apiUrl, this.tables, this.apiCommon));
 public tblRefFiles:TblRefFiles = this.AddTable(new TblRefFiles(this.http, this.apiUrl, this.tables, this.apiCommon));
+public tblSurveyHeader:TblSurveyHeader = this.AddTable(new TblSurveyHeader(this.http, this.apiUrl, this.tables, this.apiCommon));
+public tblSurveyPosition:TblSurveyPosition = this.AddTable(new TblSurveyPosition(this.http, this.apiUrl, this.tables, this.apiCommon));
 public tblTreeStruc:TblTreeStruc = this.AddTable(new TblTreeStruc(this.http, this.apiUrl, this.tables, this.apiCommon));
 public tblUsers:TblUsers = this.AddTable(new TblUsers(this.http, this.apiUrl, this.tables, this.apiCommon));
 //</INSTANTIATE>

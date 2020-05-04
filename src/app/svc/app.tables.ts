@@ -1,5 +1,5 @@
 /***********************************************************************
-* Automatically generated on 5/3/2020 5:39:47 PM
+* Automatically generated on 5/4/2020 3:10:31 PM
 ***********************************************************************/
 
 import { AppCommonMethodsService } from '../api/svc/app-common-methods.service';
@@ -726,6 +726,284 @@ export class TblRefFilesRow extends TableRowBase{
 
   // Returs the table object where the row is a member of.
   public get Table():TblRefFiles{ return super._Table(); }
+
+
+}
+
+
+
+
+export class TblSurveyHeader extends TableBase {
+
+  public rows:Array<TblSurveyHeaderRow> = [];
+
+  public tableFieldPrefix="SVY_HDR_";
+	private _tableLinks:Array<string>=[];
+	private _links:Array<any>=[];
+
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
+
+    this.derivedTable = this;
+
+    this.tableCode="svyhdr";
+
+	this.columns.push(new ColumnInfo('SVY_HDR_ID', 'number', '', '', 0, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_EVT_ID', 'number', '', '', -1, -1, 0, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_MAIN_ID', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_EVT_NUM', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_NOD_ID', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_START_POS_ID', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_END_POS_ID', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_RECORDER', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_COMMENT', 'string', '', '', -1, -1, -1, -1, -1, false, false, true, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_UPDATE_DATE', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_UPDATE_BY', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_COLOUR', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_ASS_DATE', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_ASS_BY', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_ANOM_ID', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_YESNO_A', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_YESNO_B', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_YESNO_C', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_YESNO_D', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_YESNO_E', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_YESNO_F', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_YESNO_G', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_YESNO_H', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_YESNO_I', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_YESNO_J', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_TEXT_A', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_TEXT_B', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_TEXT_C', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_TEXT_D', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_TEXT_E', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_TEXT_F', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_TEXT_G', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_TEXT_H', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_TEXT_I', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_TEXT_J', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_MEMO_A', 'string', '', '', -1, -1, -1, -1, -1, false, false, true, this));
+	this.columns.push(new ColumnInfo('SVY_MEMO_B', 'string', '', '', -1, -1, -1, -1, -1, false, false, true, this));
+	this.columns.push(new ColumnInfo('SVY_MEMO_C', 'string', '', '', -1, -1, -1, -1, -1, false, false, true, this));
+	this.columns.push(new ColumnInfo('SVY_MEMO_D', 'string', '', '', -1, -1, -1, -1, -1, false, false, true, this));
+	this.columns.push(new ColumnInfo('SVY_DATETIME_A', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_DATETIME_B', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_DATETIME_C', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_DATETIME_D', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_DATETIME_E', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_DATETIME_F', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_INTEGER_A', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_INTEGER_B', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_INTEGER_C', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_INTEGER_D', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_INTEGER_E', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_ASS_DETAILS', 'string', '', '', -1, -1, -1, -1, -1, false, false, true, this));
+	this.columns.push(new ColumnInfo('AB_HDR_ID', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_PAR_ID', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_ANOM_CODE', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_HDR_ANOM_COMMENT', 'string', '', '', -1, -1, -1, -1, -1, false, false, true, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_F', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_G', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_H', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_I', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_J', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_K', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_L', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_A', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_B', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_C', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_D', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_SINGLE_E', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+
+    this.InitializeTable();
+
+  }
+
+  Add(row?:TblSurveyHeaderRow):TblSurveyHeaderRow
+  {
+    return super.Add(row);
+  }
+
+  NewRow():TblSurveyHeaderRow{return new TblSurveyHeaderRow();}
+  GetRows():Array<TblSurveyHeaderRow>{return this.rows;}
+  public set currentRow(value:TblSurveyHeaderRow){super.__currentRow(value);}
+  public get currentRow():TblSurveyHeaderRow{return super.__currentRow();}
+  public TableLinks():Array<string>{return this._tableLinks;}
+  public Links():Array<any>{return this._links;}
+  public get dirtyRows():Array<TblSurveyHeaderRow>{return super.__dirtyRows();}
+  public get newRows():Array<TblSurveyHeaderRow>{return super.__newRows();}
+
+
+}
+
+export class TblSurveyHeaderRow extends TableRowBase{
+	constructor(
+		public SVY_HDR_ID?:number, 
+		public SVY_HDR_EVT_ID?:number, 
+		public SVY_HDR_MAIN_ID?:number, 
+		public SVY_HDR_EVT_NUM?:number, 
+		public SVY_HDR_NOD_ID?:number, 
+		public SVY_HDR_START_POS_ID?:number, 
+		public SVY_HDR_END_POS_ID?:number, 
+		public SVY_HDR_RECORDER?:string, 
+		public SVY_HDR_COMMENT?:string, 
+		public SVY_HDR_UPDATE_DATE?:Date, 
+		public SVY_HDR_UPDATE_BY?:string, 
+		public SVY_HDR_COLOUR?:number, 
+		public SVY_HDR_ASS_DATE?:Date, 
+		public SVY_HDR_ASS_BY?:string, 
+		public SVY_HDR_ANOM_ID?:number, 
+		public SVY_YESNO_A?:number, 
+		public SVY_YESNO_B?:number, 
+		public SVY_YESNO_C?:number, 
+		public SVY_YESNO_D?:number, 
+		public SVY_YESNO_E?:number, 
+		public SVY_YESNO_F?:number, 
+		public SVY_YESNO_G?:number, 
+		public SVY_YESNO_H?:number, 
+		public SVY_YESNO_I?:number, 
+		public SVY_YESNO_J?:number, 
+		public SVY_TEXT_A?:string, 
+		public SVY_TEXT_B?:string, 
+		public SVY_TEXT_C?:string, 
+		public SVY_TEXT_D?:string, 
+		public SVY_TEXT_E?:string, 
+		public SVY_TEXT_F?:string, 
+		public SVY_TEXT_G?:string, 
+		public SVY_TEXT_H?:string, 
+		public SVY_TEXT_I?:string, 
+		public SVY_TEXT_J?:string, 
+		public SVY_MEMO_A?:string, 
+		public SVY_MEMO_B?:string, 
+		public SVY_MEMO_C?:string, 
+		public SVY_MEMO_D?:string, 
+		public SVY_DATETIME_A?:Date, 
+		public SVY_DATETIME_B?:Date, 
+		public SVY_DATETIME_C?:Date, 
+		public SVY_DATETIME_D?:Date, 
+		public SVY_DATETIME_E?:Date, 
+		public SVY_DATETIME_F?:Date, 
+		public SVY_INTEGER_A?:number, 
+		public SVY_INTEGER_B?:number, 
+		public SVY_INTEGER_C?:number, 
+		public SVY_INTEGER_D?:number, 
+		public SVY_INTEGER_E?:number, 
+		public SVY_HDR_ASS_DETAILS?:string, 
+		public AB_HDR_ID?:number, 
+		public SVY_HDR_PAR_ID?:number, 
+		public SVY_HDR_ANOM_CODE?:string, 
+		public SVY_HDR_ANOM_COMMENT?:string, 
+		public SVY_SINGLE_F?:number, 
+		public SVY_SINGLE_G?:number, 
+		public SVY_SINGLE_H?:number, 
+		public SVY_SINGLE_I?:number, 
+		public SVY_SINGLE_J?:number, 
+		public SVY_SINGLE_K?:number, 
+		public SVY_SINGLE_L?:number, 
+		public SVY_SINGLE_A?:number, 
+		public SVY_SINGLE_B?:number, 
+		public SVY_SINGLE_C?:number, 
+		public SVY_SINGLE_D?:number, 
+		public SVY_SINGLE_E?:number){
+    super();
+
+  }
+
+  // Returs the table object where the row is a member of.
+  public get Table():TblSurveyHeader{ return super._Table(); }
+
+
+}
+
+
+
+
+export class TblSurveyPosition extends TableBase {
+
+  public rows:Array<TblSurveyPositionRow> = [];
+
+  public tableFieldPrefix="SVY_POS_";
+	private _tableLinks:Array<string>=[];
+	private _links:Array<any>=[];
+
+  constructor(public http:HttpClient,public apiUrl:string, public tables:Array<any>, public apiCommon:AppCommonMethodsService) {
+    super(http, apiUrl,tables,apiCommon);
+
+    this.derivedTable = this;
+
+    this.tableCode="svypos";
+
+	this.columns.push(new ColumnInfo('SVY_POS_ID', 'number', '', '', 0, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_DATE_TIME', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_KP', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_DEPTH', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_EASTING', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_NORTHING', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_VID_TAG', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_OFFSET', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_HEADING', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_PITCH', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_ROLL', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_ALTITUDE', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_TEMPERATURE', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_LONGITUDE', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_LATITUDE', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_XCOORD', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_YCOORD', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_ZCOORD', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_UPDATE_DATE', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('SVY_POS_VIDEO_CTR', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
+
+    this.InitializeTable();
+
+  }
+
+  Add(row?:TblSurveyPositionRow):TblSurveyPositionRow
+  {
+    return super.Add(row);
+  }
+
+  NewRow():TblSurveyPositionRow{return new TblSurveyPositionRow();}
+  GetRows():Array<TblSurveyPositionRow>{return this.rows;}
+  public set currentRow(value:TblSurveyPositionRow){super.__currentRow(value);}
+  public get currentRow():TblSurveyPositionRow{return super.__currentRow();}
+  public TableLinks():Array<string>{return this._tableLinks;}
+  public Links():Array<any>{return this._links;}
+  public get dirtyRows():Array<TblSurveyPositionRow>{return super.__dirtyRows();}
+  public get newRows():Array<TblSurveyPositionRow>{return super.__newRows();}
+
+
+}
+
+export class TblSurveyPositionRow extends TableRowBase{
+	constructor(
+		public SVY_POS_ID?:number, 
+		public SVY_POS_DATE_TIME?:Date, 
+		public SVY_POS_KP?:number, 
+		public SVY_POS_DEPTH?:number, 
+		public SVY_POS_EASTING?:number, 
+		public SVY_POS_NORTHING?:number, 
+		public SVY_POS_VID_TAG?:number, 
+		public SVY_POS_OFFSET?:number, 
+		public SVY_POS_HEADING?:number, 
+		public SVY_POS_PITCH?:number, 
+		public SVY_POS_ROLL?:number, 
+		public SVY_POS_ALTITUDE?:number, 
+		public SVY_POS_TEMPERATURE?:number, 
+		public SVY_POS_LONGITUDE?:number, 
+		public SVY_POS_LATITUDE?:number, 
+		public SVY_POS_XCOORD?:number, 
+		public SVY_POS_YCOORD?:number, 
+		public SVY_POS_ZCOORD?:number, 
+		public SVY_POS_UPDATE_DATE?:Date, 
+		public SVY_POS_VIDEO_CTR?:number){
+    super();
+
+  }
+
+  // Returs the table object where the row is a member of.
+  public get Table():TblSurveyPosition{ return super._Table(); }
 
 
 }

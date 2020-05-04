@@ -49,7 +49,9 @@ export class SandTestAComponent implements OnInit {
 
     // encode the string
     const decodedStr = atob(encodedStr);
-    console.log('DECODED STRING:' + decodedStr);
+    console.log('DECODED STRING:' + decodedStr,"length: "+encodedStr.length);
+
+
 
     this.ds.Get({
       onSuccess: (data) => {

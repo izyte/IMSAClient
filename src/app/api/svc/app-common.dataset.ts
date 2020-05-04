@@ -19,6 +19,12 @@ export class DatasetBase extends AppCommonMethods {
         return dataTable;
     }
 
+    // declaration of property is necessary to gain access to it
+    // locally during desing time, and when the value is overwritten
+    // in the derived class, the new value will take effect even
+    // even when used locally in the parent class....
+    public apiUrl:string;
+
     public toPostData(table:any):any{
 
         let ret:Array<any> = [];
@@ -74,6 +80,7 @@ export class DatasetBase extends AppCommonMethods {
       subsKey?: string;
     }):Subscription {
       // get table data based on base64 encoded json parameters
+      console.log("this.apiUrl",this.apiUrl);
       const hdrs = new HttpHeaders();
 
       hdrs.set('Content-Type', 'application/json; charset=utf-8');
@@ -84,6 +91,7 @@ export class DatasetBase extends AppCommonMethods {
       );
 
         let url:string;
+
       // let ret: Subscription = this.http.get<AppReturn>(url).subscribe(
       //   (data: any) => {
       //     // recs will have the array of returned records if the
