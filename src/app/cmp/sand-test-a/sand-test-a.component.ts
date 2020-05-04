@@ -18,57 +18,90 @@ export class SandTestAComponent implements OnInit {
 
     // return;
 
-    const json = [
-      {
-        code: 'user',
-        pageNumber:1,
-        pageSize:10
-      },
-      {
-        code: 'ft',
-        pageNumber:2,
-        pageSize:15
-      },
-      {
-        code: 'param',
-        pageNumber:3,
-        pageSize:25
-      },
-    ];
+    // const json = [
+    //   {
+    //     code: 'user',
+    //     pageNumber: 1,
+    //     pageSize: 10,
+    //   },
+    //   {
+    //     code: 'ft',
+    //     pageNumber: 2,
+    //     pageSize: 15,
+    //   },
+    //   {
+    //     code: 'param',
+    //     pageNumber: 3,
+    //     pageSize:25,
+    //   },
+    // ];
 
     //const str = 'JavaScript is fun!!';
-    const str = JSON.stringify(json);
+    //const str = JSON.stringify(json);
 
     // encode the string
-    const encodedStr = btoa(str);
+    //const encodedStr = btoa(str);
 
     // print encoded string
-    console.log('ENCODED STRING:' + encodedStr);
+    //console.log('ENCODED STRING:' + encodedStr);
 
     // encode the string
-    const decodedStr = atob(encodedStr);
-    console.log('DECODED STRING:' + decodedStr,"length: "+encodedStr.length);
+    //const decodedStr = atob(encodedStr);
+    //console.log('DECODED STRING:' + decodedStr, 'length: ' + encodedStr.length);
 
+    console.log(this.ds.tables);
 
+    this.ds.Get(
+      [
+        {
+          code: 'user',
+          pageNumber: 1,
+          pageSize: 35,
+        },
+        {
+          code: 'ft',
+          pageNumber: 2,
+          pageSize: 25,
+        },
+        {
+          code: 'an',
+          pageNumber: 2,
+          pageSize: 15,
+        },
+        {
+          code: 'param',
+          pageNumber: 3,
+          pageSize: 25,
+        },
+        {
+          code: 'node',
+          pageNumber: 3,
+          pageSize: 2000,
+        }
+      ],
+      {
+        onSuccess: (data) => {
+          //console.log(data);
+          console.log("Data received!");
+        },
+        onError:(error)=>{
+          console.log("Error:" ,error);
+        }
+      }
+    );
 
-    this.ds.Get({
-      onSuccess: (data) => {
-        console.log(data);
-      },
-    });
+    // this.ds.tblNodesAttrib.Get({
+    //   onSuccess: (data) => {
+    //     //this.ds.tblNodesAttrib.apiCommon.
+    //     console.log(this.ds.tblNodesAttrib);
 
-    this.ds.tblNodesAttrib.Get({
-      onSuccess: (data) => {
-        //this.ds.tblNodesAttrib.apiCommon.
-        console.log(this.ds.tblNodesAttrib);
-
-        // this.ds.tblFailureThreats.Get({
-        //   onSuccess: (data) => {
-        //     console.log(this.ds.tblFailureThreats);
-        //   },
-        // });
-      },
-    });
+    //     // this.ds.tblFailureThreats.Get({
+    //     //   onSuccess: (data) => {
+    //     //     console.log(this.ds.tblFailureThreats);
+    //     //   },
+    //     // });
+    //   },
+    // });
 
     return;
 

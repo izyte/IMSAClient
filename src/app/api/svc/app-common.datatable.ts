@@ -652,8 +652,6 @@ export class TableBase extends AppCommonMethods {
   public ProcessRequestedRecords(retObj: any): void {
     if (!retObj) return;
 
-    console.log('retObj', retObj);
-
     let recs: any = retObj.recordsList;
     if (recs) {
       let dataColumns: Array<ColumnInfo> = this.DataColumns(retObj.fieldNames);
