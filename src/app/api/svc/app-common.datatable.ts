@@ -35,11 +35,7 @@ export class TableBase extends AppCommonMethods {
   public keySortFields: Array<ColumnInfo> = [];
   public keyDisplayFields: Array<ColumnInfo> = [];
 
-  //public tableLinkCollection:TableLinkCollection=null;
-  public tableLinkCollection: TableLinkCollection = new TableLinkCollection(
-    null,
-    null
-  );
+  public tableLinkCollection: TableLinkCollection = new TableLinkCollection();
 
   /* Dictionary of TableLink objects
    {

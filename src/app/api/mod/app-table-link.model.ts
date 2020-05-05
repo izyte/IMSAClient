@@ -14,25 +14,35 @@
 }*/
 
 export class TableLinkCollection {
-  constructor(public childTable: any, public parentTable: any) {}
+  // Modified: May 5, 2020
+  constructor() {}
 
-  private _Links: Array<TableLinkRecord> = null;
-  public get Links(): Array<TableLinkRecord> {
-    if (!this._Links) {
-      // get records from the server
-      // http://<domain>/api/app/<parent table code>/+/<child table code>
-      // /+/ means get all link records from the repository
-      // /[parentId]/ means get records under the given parentId
-      // /[parentId1],[parentId2],[...],[parentId#]/ means get records
-      // under the given comman delimited parentId's
-      this._Links=[];
-      this._Links.push(new TableLinkRecord(1,1));
-    }
+  private _Links: Array<TableLinkObject> = [];
+  public get Links(): Array<TableLinkObject> {
+    return this._Links;
+  }
 
-    return this._Links || [];
+  public Add(tableLinkObject: TableLinkObject) {
+    if (!this._Links) this._Links = [];
+    this._Links.push(tableLinkObject);
+  }
+
+  public GetLinkObject(childCode: string): TableLinkObject {
+    return this._Links.find((L) => {
+      return L.childCode == childCode;
+    });
+  }
+
+  public GetLinkRows(childCode: string): Array<TableLinkRecord> {
+    const linkObject = this.GetLinkObject(childCode);
+    if(!linkObject) return null;
+    return linkObject.rows;
   }
 }
 
+export class TableLinkObject {
+  constructor(public childCode: string, public rows: Array<TableLinkRecord>) {}
+}
 export class TableLinkRecord {
-  constructor(public parentId: number,public childId: number) {}
+  constructor(public parentId: number, public childId: number) {}
 }
