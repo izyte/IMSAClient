@@ -8,3 +8,10 @@
 <p>Failure Threat: {{ds.tblFailureThreats.rows.length || 0}}</p>
 <p>Lookups: {{ds.tblLookups.rows.length || 0}}</p>
 <p>Locations/Equipment: {{ds.tblNodesAttrib.rows.length || 0}}</p>
+
+<div id="ft" style="overflow-y: auto;height:400px;" class="bg-light" *ngIf="ds.tblFailureThreats && ds.tblFailureThreats.rows.length">
+  <div class="" *ngFor="let r of ds.tblFailureThreats.rows;let i=index;" class="d-flex">
+    <div class="bg-primary" style="width: 10%;">{{ r.FT_ID}}</div>
+    <div class="bg-info" style="width: 90%;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;">{{r.FT_NAME}}</div>
+  </div>
+</div>

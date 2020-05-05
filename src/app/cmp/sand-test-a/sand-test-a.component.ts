@@ -49,47 +49,83 @@ export class SandTestAComponent implements OnInit {
     //const decodedStr = atob(encodedStr);
     //console.log('DECODED STRING:' + decodedStr, 'length: ' + encodedStr.length);
 
-    console.log(this.ds.tables);
-
-    this.ds.Get(
-      [
-        {
-          code: 'user',
-          pageNumber: 1,
-          pageSize: 35,
-        },
-        {
-          code: 'ft',
-          pageNumber: 2,
-          pageSize: 25,
-        },
-        {
-          code: 'an',
-          pageNumber: 2,
-          pageSize: 15,
-        },
-        {
-          code: 'param',
-          pageNumber: 3,
-          pageSize: 25,
-        },
-        {
-          code: 'node',
-          pageNumber: 3,
-          pageSize: 2000,
-        }
-      ],
+    const reqParams: Array<any> = [
       {
+        code: 'user',
+        pageNumber: 1,
+        pageSize: 35,
+      },
+      {
+        code: 'ft',
+        pageNumber: 2,
+        pageSize: 10,
+      },
+      {
+        code: 'ft',
+        pageNumber: 2,
+        pageSize: 10,
+      },
+      {
+        code: 'ft',
+        pageNumber: 4,
+        pageSize: 10,
+      },
+      {
+        code: 'an',
+        pageNumber: 1,
+        pageSize: 15,
+      },
+      {
+        code: 'param',
+        pageNumber: 3,
+        pageSize: 25,
+      },
+      {
+        code: 'node',
+        pageNumber: 3,
+        pageSize: 2000,
+      },
+    ];
+
+    this.ds.Get(reqParams, {
+      onSuccess: (data) => {
+        //console.log(data);
+        console.log('First try Data received!');
+      },
+      onError: (error) => {
+        console.log('Error:', error);
+      },
+    });
+
+    let subParam: any = reqParams.find((e) => {
+      return e.code == 'an';
+    });
+    if (subParam) {
+      subParam.pageSize = 20;
+      subParam.pageNumber = 2;
+    }
+
+    subParam = reqParams.find((e) => {
+      return e.code == 'ft';
+    });
+    if (subParam) {
+      subParam.pageSize = 62;
+      subParam.pageNumber = 1;
+    } else {
+      reqParams.push({ code: 'ft', pageSize: 62, pageNumber: 1 });
+    }
+
+    setTimeout(() => {
+      this.ds.Get(reqParams, {
         onSuccess: (data) => {
           //console.log(data);
-          console.log("Data received!");
+          console.log('Second try Data received!');
         },
-        onError:(error)=>{
-          console.log("Error:" ,error);
-        }
-      }
-    );
-
+        onError: (error) => {
+          console.log('Error:', error);
+        },
+      });
+    }, 10);
     // this.ds.tblNodesAttrib.Get({
     //   onSuccess: (data) => {
     //     //this.ds.tblNodesAttrib.apiCommon.

@@ -36,14 +36,15 @@ export class AppCommonMethodsService extends AppCommonMethods {
     return idx != -1;
   }
 
-  AddHistoryLog(url: string) {
-    let idx: number = this._historicalRequests.indexOf(url);
-    if (idx == -1) this._historicalRequests.push(url);
+  AddHistoryLog(key: string) {
+    console.log("AddHistoryLog...",key);
+    let idx: number = this._historicalRequests.indexOf(key);
+    if (idx == -1) this._historicalRequests.push(key);
   }
 
-  ClearHistoryLog(url: string) {
-    console.log('ClearHistoryLog', url);
-    let idx: number = this._historicalRequests.indexOf(url);
+  ClearHistoryLog(key: string) {
+    console.log('ClearHistoryLog', key);
+    let idx: number = this._historicalRequests.indexOf(key);
     if (idx != -1) this._historicalRequests.splice(idx, 1);
   }
 
@@ -52,14 +53,15 @@ export class AppCommonMethodsService extends AppCommonMethods {
     return idx != -1;
   }
 
-  ClearRequestFlag(url: string) {
-    let idx: number = this._pendingRequests.indexOf(url);
+  ClearRequestFlag(reqKey: string) {
+    console.log('Clear request flag', reqKey);
+    let idx: number = this._pendingRequests.indexOf(reqKey);
     if (idx != -1) this._pendingRequests.splice(idx, 1);
   }
 
-  AddRequestFlag(url: string) {
-    let idx: number = this._pendingRequests.indexOf(url);
-    if (idx == -1) this._pendingRequests.push(url);
+  AddRequestFlag(reqKey: string) {
+    let idx: number = this._pendingRequests.indexOf(reqKey);
+    if (idx == -1) this._pendingRequests.push(reqKey);
   }
 
   ProcessRequestData(data: Array<any>, tables?: any, url?: string, reqTableCodes?:Array<string>) {
@@ -68,15 +70,6 @@ export class AppCommonMethodsService extends AppCommonMethods {
 
     // filter only objects with returnType = 'table'
     let retTables: Array<any> = data.filter((o) => o.returnType == 'table');
-
-    // add request to history log. this log will be checked for subsequent requests
-    // where calls for existing entries will be bypassed to improve performance efficiency
-    this.AddHistoryLog(url);
-
-    // this removes entry to collection if URL that is used to prevent same-request concurrency issues
-    // request concurrency check is necessary to prevent duplicate records post-processing
-    // action when similar multiple requests return back to the client.
-    this.ClearRequestFlag(url);
 
     // loop through objects and call the local ProcessRequestedRecords method
     retTables.forEach((t) => {

@@ -73,8 +73,10 @@ export class DatasetBase extends AppCommonMethods {
     return ret; // tableCode ? ret[tableCode] : ret;
   }
 
-  Get(reqParams:Array<RequestParams>, args?: { onSuccess?: Function; onError?: Function }): Subscription {
-
+  Get(
+    reqParams: Array<RequestParams>,
+    args?: { onSuccess?: Function; onError?: Function }
+  ): Subscription {
     // get table data based on base64 encoded json parameters
 
     const hdrs = new HttpHeaders();
@@ -86,32 +88,54 @@ export class DatasetBase extends AppCommonMethods {
       'Origin, X-Requested-With, Content-Type, Accept'
     );
 
+    // initialize parameter array
+    const jsonParams: Array<any> = [];
+    const jsonParamsStr: Array<string> = [];
 
-    // stringify json params
-    const str = JSON.stringify(reqParams);
+    reqParams.forEach((p) => {
+      const jStr: string = JSON.stringify(p);
+      if (
+        !this.apiCommon.IsWithHistory(jStr) &&
+        !this.apiCommon.IsWithPending(jStr)
+      ) {
+        // get table object
+        const tbl: any = this.tables[p.code];
+        console.log('table...', tbl);
 
-    // encode the string
-    const encodedParams = btoa(str);
+        // set pendingRequest flag on each table
+        tbl.pendingRequest = true;
 
+        // set request flag
+        this.apiCommon.AddRequestFlag(jStr);
 
-    // form url here
-    let url: string = this.apiUrl + '?_p=' + encodedParams;
-      //'?_p=W3siY29kZSI6InVzZXIiLCJwYWdlTnVtYmVyIjoxLCJwYWdlU2l6ZSI6MTB9LHsiY29kZSI6ImZ0IiwicGFnZU51bWJlciI6MiwicGFnZVNpemUiOjE1fSx7ImNvZGUiOiJwYXJhbSIsInBhZ2VOdW1iZXIiOjMsInBhZ2VTaXplIjoyNX1d'; // + '/user';
+        jsonParams.push(p);
+        jsonParamsStr.push(jStr);
+      }
+    });
 
-    // these two tests is important to preceed any alteration to the
-    // url (eg. adding auto-generated parameters for each request)
-    if (this.apiCommon.IsWithHistory(url)) return null;
-    if (this.apiCommon.IsWithPending(url)) return null;
+    // if all set of parameters are already in the history
+    if (jsonParams.length == 0) {
+      console.log("No request to process!");
+      return;
+    }else{
+      console.log("There are "+ jsonParams.length + " requests to process!");
+    }
 
-    this.apiCommon.AddRequestFlag(url);
-
-    // get all table objects from the parameters and
-    // set pendingRequest flag on each table
-    // this.pendingRequest = true;
+    // form url here with encoded parameters
+    let url: string = this.apiUrl + '?_p=' + btoa(JSON.stringify(jsonParams));
 
     let ret: Subscription = this.http.get<Array<AppReturn>>(url).subscribe(
       (data: any) => {
         this.apiCommon.ProcessRequestData(data, this.tables, url);
+
+        // add request to history log. this log will be checked for subsequent requests
+        // where calls for existing entries will be bypassed to improve performance efficiency
+        jsonParamsStr.forEach((key) => this.apiCommon.AddHistoryLog(key));
+
+        // this removes entry to collection if URL that is used to prevent same-request concurrency issues
+        // request concurrency check is necessary to prevent duplicate records post-processing
+        // action when similar multiple requests return back to the client.
+        jsonParamsStr.forEach((key) => this.apiCommon.ClearRequestFlag(key));
 
         // call onSuccess parameter function if defined
         if (args) if (args.onSuccess != undefined) args.onSuccess(data);
