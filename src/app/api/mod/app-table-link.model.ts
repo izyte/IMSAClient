@@ -35,7 +35,7 @@ export class TableLinkCollection {
 
   public GetLinkRows(childCode: string): Array<TableLinkRecord> {
     const linkObject = this.GetLinkObject(childCode);
-    if(!linkObject) return null;
+    if (!linkObject) return null;
     return linkObject.rows;
   }
 }
