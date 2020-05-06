@@ -100,7 +100,7 @@ export class DatasetBase extends AppCommonMethods {
       ) {
         // get table object
         const tbl: any = this.tables[p.code];
-        console.log('table...', tbl);
+        //console.log('table...', tbl);
 
         // set pendingRequest flag on each table
         tbl.pendingRequest = true;

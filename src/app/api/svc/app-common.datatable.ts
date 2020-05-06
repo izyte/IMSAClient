@@ -20,7 +20,7 @@ export class TableBase extends AppCommonMethods {
     public http: HttpClient,
     public apiUrl: string,
     public tables: Array<any>,
-    public apiCommon:AppCommonMethodsService
+    public apiCommon: AppCommonMethodsService
   ) {
     super();
     this.UnSubscribe(null, true);
@@ -36,6 +36,8 @@ export class TableBase extends AppCommonMethods {
   public keyDisplayFields: Array<ColumnInfo> = [];
 
   public tableLinkCollection: TableLinkCollection = new TableLinkCollection();
+
+  public tableRelations: Map<string, Relation> = new Map<string, Relation>();
 
   /* Dictionary of TableLink objects
    {
@@ -661,9 +663,10 @@ export class TableBase extends AppCommonMethods {
 
         // assign column values
         let idx: number;
+
         for (idx = 0; idx < dataColumns.length; idx++) {
           let col: ColumnInfo = dataColumns[idx];
-          row[col.name] = e[idx];
+          if (col) row[col.name] = e[idx];
         }
 
         // push row to table rows collection
@@ -933,4 +936,32 @@ export class TableBase extends AppCommonMethods {
       return newRows[0]['_newId'] + 1;
     }
   }
+}
+
+export class Relation {
+  constructor(public type: string, public table: any, public tableChild) {}
+
+  // if a linked type relation, this will contain the collection
+  // of parentId's(par) and childId's(chi)
+  public linkMapping = [];
+
+  AddMap(parentId: number, childId: number) {}
+
+  RemoveMap(parentId?: number, childId?: number) {
+    if (parentId != undefined && childId != undefined) {
+      // remove specific map
+    } else if (parentId != undefined) {
+      // remove all maps with par=parentId
+    } else if (childId != undefined) {
+      // remove all maps with chi=childId
+    } else {
+      // remove all maps. DANGER!
+    }
+  }
+
+  // private DALTable table { get; set; }            // Owner Data Table
+  // private DALTable tableChild { get; set; }            // Linked Data Table
+
+  // public string type { get; set; }                // TableRelationTypes class
+  // public string foreignTableCode { get; set; }    // code assigned to the linked table
 }

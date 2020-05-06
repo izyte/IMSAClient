@@ -1,3 +1,4 @@
+import { Relation } from './../../api/svc/app-common.datatable';
 import { AppDataset } from './../../svc/app-dataset.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,6 +11,12 @@ export class SandTestAComponent implements OnInit {
   constructor(public ds: AppDataset) {}
 
   ngOnInit(): void {
+
+    //this.ds.tblAnomalies.tableRelations["an"]=new Relation("lnk",this.ds.tblAnomalies,this.ds.tblFailureThreats);
+    //console.log(this.ds.tblAnomalies.tableRelations);
+    console.log(this.ds.tblAnomalies.tableRelations["ft"]);
+    console.log(this.ds.tblAnomalies.tableRelations["rf"]);
+
     // this.ds.tblFailureThreats.Get({
     //   onSuccess: (data) => {
     //     console.log(this.ds.tblFailureThreats);
@@ -99,7 +106,7 @@ export class SandTestAComponent implements OnInit {
 
     this.ds.Get(reqParams, {
       onSuccess: (data) => {
-        //console.log(data);
+        console.log("Data:",data);
         console.log('First try Data received!');
       },
       onError: (error) => {
