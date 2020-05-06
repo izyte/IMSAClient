@@ -1,4 +1,23 @@
 export class RequestParams{
+  /***** Server side routeTemplate *******
+   *
+   * api/{controller}/{table}/{key}/{keyField}/{includedFields}/{filterExpression}/{sortFields}/{pageNumber}/{pageSize}",
+   * {controller} = app
+   * {table} = code
+   * {key} = key (back-tick delimited)
+   * {keyField} = keyField (back-tick delimited)
+   * {includedFields} = includedFields (back-tick delimited)
+   *
+   * ??? thinking of removing if the key/keyField construction will suffice
+   * as filter expression
+   * {filterExpression} = filterExpression
+   *
+   * {sortFields} = sortFields  (back-tick delimited)
+   * ??? thinking of accommodating multi-page parameter
+   * i.e. p1,p2,p3   ps-pe  p1,p2,p3,p4-p#
+   * {pageNumber} = pageNumber
+   * {pageSize} = pageSize
+  *****************************************/
   code:string;
   key?:string;
   keyField?:string;

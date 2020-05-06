@@ -55,21 +55,21 @@ export class SandTestAComponent implements OnInit {
         pageNumber: 1,
         pageSize: 35,
       },
-      {
-        code: 'ft',
-        pageNumber: 2,
-        pageSize: 10,
-      },
-      {
-        code: 'ft',
-        pageNumber: 2,
-        pageSize: 10,
-      },
-      {
-        code: 'ft',
-        pageNumber: 4,
-        pageSize: 10,
-      },
+      // {
+      //   code: 'ft',
+      //   pageNumber: 2,
+      //   pageSize: 10,
+      // },
+      // {
+      //   code: 'ft',
+      //   pageNumber: 2,
+      //   pageSize: 10,
+      // },
+      // {
+      //   code: 'ft',
+      //   pageNumber: 4,
+      //   pageSize: 10,
+      // },
       {
         code: 'an',
         pageNumber: 1,
@@ -85,6 +85,16 @@ export class SandTestAComponent implements OnInit {
         pageNumber: 3,
         pageSize: 2000,
       },
+      {
+        code: 'ft',
+        key:"850,734,841,747",
+        keyField:"@an"
+      },
+      {
+        code: 'rf',
+        key:"1014,884,794,672,671,631",
+        keyField:"@an"
+      },
     ];
 
     this.ds.Get(reqParams, {
@@ -97,35 +107,36 @@ export class SandTestAComponent implements OnInit {
       },
     });
 
-    let subParam: any = reqParams.find((e) => {
-      return e.code == 'an';
-    });
-    if (subParam) {
-      subParam.pageSize = 20;
-      subParam.pageNumber = 2;
-    }
+    // let subParam: any = reqParams.find((e) => {
+    //   return e.code == 'an';
+    // });
 
-    subParam = reqParams.find((e) => {
-      return e.code == 'ft';
-    });
-    if (subParam) {
-      subParam.pageSize = 62;
-      subParam.pageNumber = 1;
-    } else {
-      reqParams.push({ code: 'ft', pageSize: 62, pageNumber: 1 });
-    }
+    // if (subParam) {
+    //   subParam.pageSize = 20;
+    //   subParam.pageNumber = 2;
+    // }
 
-    setTimeout(() => {
-      this.ds.Get(reqParams, {
-        onSuccess: (data) => {
-          //console.log(data);
-          console.log('Second try Data received!');
-        },
-        onError: (error) => {
-          console.log('Error:', error);
-        },
-      });
-    }, 10);
+    // subParam = reqParams.find((e) => {
+    //   return e.code == 'ft';
+    // });
+    // if (subParam) {
+    //   subParam.pageSize = 62;
+    //   subParam.pageNumber = 1;
+    // } else {
+    //   reqParams.push({ code: 'ft', pageSize: 62, pageNumber: 1 });
+    // }
+
+    // setTimeout(() => {
+    //   this.ds.Get(reqParams, {
+    //     onSuccess: (data) => {
+    //       //console.log(data);
+    //       console.log('Second try Data received!');
+    //     },
+    //     onError: (error) => {
+    //       console.log('Error:', error);
+    //     },
+    //   });
+    // }, 10);
     // this.ds.tblNodesAttrib.Get({
     //   onSuccess: (data) => {
     //     //this.ds.tblNodesAttrib.apiCommon.
