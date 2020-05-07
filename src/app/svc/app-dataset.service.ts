@@ -49,13 +49,15 @@ export class AppDataset extends DatasetBase {
     this.tblAnomalies.tableRelations["ft"] = new Relation("lnk",this.tblAnomalies,this.tblFailureThreats);
 //</RELATIONS>
 
+  //<DECLARE>
+  this.apiCommon.PARAMS_DELIM_CHAR = '`';
+  this.apiCommon.PARAMS_VAL_DELIM_CHAR = ',';
+  this.apiCommon.FIELD_PARENT_LINK_ALIAS = 'lnk_id';
+  //</DECLARE>
+
   }
 
-  //<DECLARE>
-  public PARAMS_DELIM_CHAR = '`';
-  public PARAMS_VAL_DELIM_CHAR = ',';
-  public FIELD_PARENT_LINK_ALIAS = 'lnk_id';
-  //</DECLARE>
+
 
   // setup aplication source api url
   public apiUrl: string = 'http://soga-alv/NgArbi/api/app';

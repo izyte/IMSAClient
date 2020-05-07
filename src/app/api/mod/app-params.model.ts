@@ -26,6 +26,7 @@ export class RequestParams{
   sortFields?:string;
   pageNumber?:number;
   pageSize?:number;
+  subsKey?:string;
 // jArgs.Add("code", table);
 // jArgs.Add("key", (key == "-" ? "" : key));
 // jArgs.Add("keyField", (keyField == "-" ? "" : keyField));

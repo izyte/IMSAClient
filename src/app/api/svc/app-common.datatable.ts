@@ -23,7 +23,8 @@ export class TableBase extends AppCommonMethods {
     public apiCommon: AppCommonMethodsService
   ) {
     super();
-    this.UnSubscribe(null, true);
+    // clear any pending subscription
+    // this.apiCommon.UnSubscribe(null, true);
   }
 
   public apiHttp: HttpClient;
@@ -203,11 +204,6 @@ export class TableBase extends AppCommonMethods {
     return this.__currentRow() == null;
   }
 
-  private _subsCounter: number = 0;
-  private get newSubsKey(): string {
-    this._subsCounter++;
-    return 'sKey_' + this._subsCounter;
-  }
   protected __dirtyRows(parentId?: number): Array<any> {
     if (parentId == undefined) {
       return this.GetRows().filter((e) => e.isDirty);
@@ -642,7 +638,7 @@ export class TableBase extends AppCommonMethods {
     );
 
     if (args.subsKey != undefined && args.subsKey != null) {
-      this._TblSubs[args.subsKey] = { subs: ret, when: Date.now };
+      this.apiCommon.TblSubs[args.subsKey] = { subs: ret, when: Date.now };
     }
     return ret;
   }
@@ -650,9 +646,27 @@ export class TableBase extends AppCommonMethods {
   public ProcessRequestedRecords(retObj: any): void {
     if (!retObj) return;
 
+    const returnDataParams = retObj.returnDataParams;
+    let rel: Relation = null;
+
+    if (returnDataParams) {
+      const linkCode = returnDataParams.linkToParentCode + '';
+      if (linkCode.length) {
+        let parentTable = this.tables[linkCode];
+        rel = parentTable.tableRelations[this.tableCode];
+        console.log('returnDataParams', returnDataParams, parentTable, rel);
+      }
+    }
+
     let recs: any = retObj.recordsList;
     if (recs) {
+      // map fieldNames to dataColumns definition
       let dataColumns: Array<ColumnInfo> = this.DataColumns(retObj.fieldNames);
+
+      // get parent link fieldName index
+      let linkParentIdx = retObj.fieldNames.indexOf(
+        this.apiCommon.FIELD_PARENT_LINK_ALIAS
+      );
 
       recs.forEach((e) => {
         // create new table row
@@ -671,6 +685,11 @@ export class TableBase extends AppCommonMethods {
 
         // push row to table rows collection
         this.Add(row);
+
+        if (rel && linkParentIdx != -1) {
+          // if parent relation exists then Add new mappedRecord
+          rel.AddMap(Number(e[linkParentIdx]), row[this.keyName], row);
+        }
       });
     }
   }
@@ -693,8 +712,6 @@ export class TableBase extends AppCommonMethods {
    */
   private _GetRowsByGroupSubs: Subscription = null;
   private _GroupRows: any = {};
-
-  private _TblSubs: any = {};
 
   GetRowsByGroup(args: {
     key?: any;
@@ -751,14 +768,15 @@ export class TableBase extends AppCommonMethods {
     //let keyField:string = this.grpCol.name;
     if (keyField == undefined) keyField = this.grpCol.name;
 
-    let subsKey: string = this.newSubsKey;
+    let subsKey: string = this.apiCommon.newSubsKey;
 
     // call Get method which executes requests from the server when
     // request has not been done before and no pending request already
     // made and simply waiting for the response
     this.Get({
       onSuccess: (e) => {
-        this.UnSubscribe(e);
+        console.log('e:', e);
+        this.apiCommon.UnSubscribe(e);
         if (onSuccess != undefined) onSuccess(e);
       },
       onError: (e) => {
@@ -777,61 +795,9 @@ export class TableBase extends AppCommonMethods {
     return ret;
   }
 
-  private _UnSubscribeCounter: number = 0;
-  UnSubscribe(e: any, abandoned?: boolean) {
-    if (abandoned == undefined) abandoned = false;
-    if (abandoned) {
-      // clean all abandoned subscriptions which did not return to the client
-      // after a duration set in seconds(e.g. dur=60*5 - i,e, 5mins);
-      this._UnSubscribeCounter++;
-      for (var key in this._TblSubs) {
-        let subs: any = this._TblSubs[key];
-        this._cl(
-          'Unsubscribe abandoned!',
-          abandoned,
-          Date.now(),
-          this._UnSubscribeCounter
-        );
-        if (subs) {
-          // if subscription is not null
-          let when: number = subs.when;
-          if (this.MSSince(when) >= 5 * 60 * 1000) {
-            // unsubscribe substriptions without response for at least 5 mins
-            subs.subs.unsubscribe();
-            delete this._TblSubs[key];
-          }
-        }
-      }
-      setTimeout(() => {
-        this.UnSubscribe(null, true);
-      }, 60 * 1000);
-      return;
-    }
-
-    let retSubsKey: string =
-      typeof e.length != undefined ? e[0].subsKey : e.subsKey;
-
-    let subs: any = this._TblSubs[retSubsKey];
-
-    if (subs) {
-      let currSubs: number = this.SubsCounter();
-      subs.subs.unsubscribe();
-      this._TblSubs[retSubsKey] = null;
-      delete this._TblSubs[retSubsKey];
-    }
-  }
-
-  SubsCounter(): number {
-    let ret: number = 0;
-    for (var key in this._TblSubs) {
-      ret++;
-    }
-    return ret;
-  }
-
   GetRowById(key: number, resolve?: Function, reject?: Function): any {
     let keyField: string = this.keyName;
-    let _newSubsKey: string = this.newSubsKey;
+    let _newSubsKey: string = this.apiCommon.newSubsKey;
     let row: any = this.GetRows().find((r) => r[keyField] == key);
 
     if (!row) {
@@ -839,7 +805,7 @@ export class TableBase extends AppCommonMethods {
 
       this.Get({
         onSuccess: (e) => {
-          this.UnSubscribe(e);
+          this.apiCommon.UnSubscribe(e);
           if (resolve != undefined) resolve(e);
         },
         onError: (e) => {
@@ -936,6 +902,22 @@ export class TableBase extends AppCommonMethods {
       return newRows[0]['_newId'] + 1;
     }
   }
+
+  GetRelation(relationCode:string):Relation{
+    if(!this.tableRelations) return null;
+    let rel:Relation = this.tableRelations[relationCode];
+    if(!rel) return null;
+    return rel;
+  }
+
+  GetLinkedRows(childTableCode: string,parentId:number): Array<any> {
+    let rel:Relation = this.GetRelation(childTableCode);
+    if(!rel) return [];
+    let row:any = this.GetRowById(parentId);
+    if(!row) return [];
+    return rel.GetLinkedRows(parentId);
+  }
+
 }
 
 export class Relation {
@@ -945,11 +927,35 @@ export class Relation {
   // of parentId's(par) and childId's(chi)
   public linkMapping = [];
 
-  AddMap(parentId: number, childId: number) {}
+  AddMap(parentId: number, childId: number, childRow?: any) {
+    // find if existing
+    if (!this.linkMapping.find((e) => e.par == parentId && e.chi == childId)) {
+      this.linkMapping.push({ par: parentId, chi: childId, row: childRow });
 
-  RemoveMap(parentId?: number, childId?: number) {
+      // add option to directly post record to the database...
+    }
+  }
+
+  GetLinkedRows(parentId: number): Array<any> {
+    if (this.linkMapping.length == 0) return [];
+    let ret: Array<any> = this.linkMapping.filter((e) =>e.par == parentId);
+    let retVal:Array<any>=[];
+    ret.forEach((e) => {
+      retVal.push(e.row);
+      //console.log(e);
+    });
+    return retVal;
+  }
+
+  RemoveLinkedRows(parentId?: number, childId?: number){
+    if (this.linkMapping.length == 0) return;
+    let lnk:any;
+
     if (parentId != undefined && childId != undefined) {
       // remove specific map
+      // this.linkMapping.indexOf()
+      lnk = this.linkMapping.find(e=>e.par==parentId && e.chi==childId);
+
     } else if (parentId != undefined) {
       // remove all maps with par=parentId
     } else if (childId != undefined) {

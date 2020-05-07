@@ -17,6 +17,8 @@ export class DatasetBase extends AppCommonMethods {
 
   public tables: any = {};
 
+
+
   public AddTable(dataTable: any) {
     this.tables[dataTable.tableCode] = dataTable;
     return dataTable;
@@ -92,40 +94,62 @@ export class DatasetBase extends AppCommonMethods {
     const jsonParams: Array<any> = [];
     const jsonParamsStr: Array<string> = [];
 
+    let reqConfig: RequestParams = null;
+
     reqParams.forEach((p) => {
       const jStr: string = JSON.stringify(p);
       if (
         !this.apiCommon.IsWithHistory(jStr) &&
         !this.apiCommon.IsWithPending(jStr)
       ) {
+        const paramCode = p.code;
         // get table object
-        const tbl: any = this.tables[p.code];
-        //console.log('table...', tbl);
+        if (paramCode == undefined) {
+        } else {
+          if (paramCode == '@config') {
+            // set subsciption
+            reqConfig = p;
+          } else {
+            const tbl: any = this.tables[paramCode];
+            if (tbl != null) {
+              // set pendingRequest flag on each table
+              tbl.pendingRequest = true;
 
-        // set pendingRequest flag on each table
-        tbl.pendingRequest = true;
-
-        // set request flag
-        this.apiCommon.AddRequestFlag(jStr);
-
-        jsonParams.push(p);
-        jsonParamsStr.push(jStr);
+              // set request flag
+              this.apiCommon.AddRequestFlag(jStr);
+              jsonParamsStr.push(jStr);
+            }
+          }
+          jsonParams.push(p);
+        }
       }
     });
 
     // if all set of parameters are already in the history
     if (jsonParams.length == 0) {
-      console.log("No request to process!");
+      console.log('No request to process!');
       return;
-    }else{
-      console.log("There are "+ jsonParams.length + " requests to process!");
+    } else {
+      console.log('There are ' + jsonParams.length + ' requests to process!');
     }
+
+    // create request internally in the Get method
+    if (reqConfig == null) reqConfig = new RequestParams();
+
+    if (reqConfig.subsKey == undefined)
+      reqConfig.subsKey = this.apiCommon.newSubsKey;
+    if (reqConfig.code == undefined) reqConfig.code = '@config';
+
+    jsonParams.push(reqConfig);
 
     // form url here with encoded parameters
     let url: string = this.apiUrl + '?_p=' + btoa(JSON.stringify(jsonParams));
+    console.log(url);
 
     let ret: Subscription = this.http.get<Array<AppReturn>>(url).subscribe(
       (data: any) => {
+        // process data including setting pendingRequest flag
+        // for each table.
         this.apiCommon.ProcessRequestData(data, this.tables, url);
 
         // add request to history log. this log will be checked for subsequent requests
@@ -139,69 +163,35 @@ export class DatasetBase extends AppCommonMethods {
 
         // call onSuccess parameter function if defined
         if (args) if (args.onSuccess != undefined) args.onSuccess(data);
+
+        // unsubscrbe! to prevent memory leak
+        this.apiCommon.UnSubscribe(data);
+
+        setTimeout(() => {
+          console.log('Subscriptions!!!', this.apiCommon.TblSubs);
+        }, 5000);
       }, // end of success
       (error: any) => {
         // call onError parameter function if defined
         if (args) if (args.onError != undefined) args.onError(error);
-        // this.pendingRequest = false;
-        // this.ClearRequestFlag(url);
+
+        // clear flags for each table/request params
+        jsonParams.forEach((p) => {
+          const tbl: any = this.tables[p.code];
+          if (tbl) tbl.pendingRequest = false;
+        });
+        jsonParamsStr.forEach((key) => this.apiCommon.ClearRequestFlag(key));
       }
     );
+    //console.log('reqSubsKey:', reqConfig.subsKey);
+    // log subscription to the subscription collection in apiCommon
 
-    // let ret: Subscription = this.http.get<AppReturn>(url).subscribe(
-    //   (data: any) => {
-    //     // recs will have the array of returned records if the
-    //     // server-side return value is a single table object
-    //     let retObj: any = null;
-    //     let recs: Array<any> = data.recordsList;
-    //     if (data.recordsList) {
-    //       retObj = data;
-    //     } else {
-    //       // recs is null if data is an array of AppReturn
-    //       // need to find data specific to the current table
-    //       // using the tableCode property
+    if (reqConfig.subsKey != undefined && reqConfig.subsKey != null) {
+      this.apiCommon.TblSubs[reqConfig.subsKey] = { subs: ret, when: Date.now };
+    }
 
-    //       // iterate through the results array element where the returnType == 'table'
-    //       // then call tableObj.ProcessRequestedRecords for each return object
-    //       // this is to allow processing multi-recordset in a single request
-
-    //       // filter only objects with returnType = 'table'
-    //       let retTables: Array<any> = data.filter(
-    //         (o) => o.returnType == 'table'
-    //       );
-
-    //       // loop through objects and call the local ProcessRequestedRecords method
-    //       retTables.forEach((t) => {
-    //         let tbl: any = this.tables[t.returnCode];
-
-    //         if (tbl) tbl.ProcessRequestedRecords(t);
-    //         else console.log("Table object '" + t.returnCode + "' not found!");
-    //       });
-    //     }
-
-    //     // call onSuccess parameter function if defined
-    //     if (args) if (args.onSuccess != undefined) args.onSuccess(data);
-    //     this.pendingRequest = false;
-
-    //     // add request to history log. this log will be checked for subsequent requests
-    //     // where calls for existing entries will be bypassed to improve performance efficiency
-    //     this.AddHistoryLog(url);
-
-    //     // this removes entry to collection if URL that is used to prevent same-request concurrency issues
-    //     // request concurrency check is necessary to prevent duplicate records post-processing
-    //     // action when similar multiple requests return back to the client.
-    //     this.ClearRequestFlag(url);
-    //   }, // end of success
-    //   (error: any) => {
-    //     // call onError parameter function if defined
-    //     if (args) if (args.onError != undefined) args.onError(error);
-    //     this.pendingRequest = false;
-    //     this.ClearRequestFlag(url);
-    //   }
-    // );
-
+    console.log('this.apiCommon.TblSubs:', this.apiCommon.TblSubs);
     return ret;
-    //return null;
   }
 
   CloneData(data: any): any {
