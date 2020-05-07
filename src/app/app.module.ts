@@ -14,12 +14,14 @@ import { AppDataset } from './svc/app-dataset.service';
 // custom components
 import { SandTestAComponent } from './cmp/sand-test-a/sand-test-a.component';
 import { AppCommonMethodsService } from './api/svc/app-common-methods.service';
+import { SandTestBComponent } from './cmp/sand-test-b/sand-test-b.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    SandTestAComponent
+    SandTestAComponent,
+    SandTestBComponent
   ],
   imports: [
     BrowserModule,

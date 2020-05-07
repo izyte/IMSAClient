@@ -15,6 +15,11 @@ export class AppCommonMethodsService extends AppCommonMethods {
   public PARAMS_DELIM_CHAR = '';
   public PARAMS_VAL_DELIM_CHAR = '';
   public FIELD_PARENT_LINK_ALIAS = '';
+  public APP_CONFIG = {
+    appTitleMain:"Main Application",
+    appTitleSub:"Sub Title"
+  };
+
 
   private _TestProp: number = 0;
   public get TestProp(): number {

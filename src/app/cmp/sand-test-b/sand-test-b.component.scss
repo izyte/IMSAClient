@@ -1,0 +1,24 @@
+// Variables
+$back_color_dark:#071e3e;
+$back_color_light:#304c86;
+$menu_undeline:#859dbf;
+
+nav{
+  background-image: linear-gradient($back_color_dark, $back_color_light);
+  font-family: 'Alegreya Sans SC';
+
+  #menu span.active, #sub-menu span.active{
+    border-bottom:2px solid $menu_undeline;
+  }
+  #menu span, #sub-menu span{
+    font-size:.85em;
+    margin-left:12px;
+    cursor: pointer;
+  }
+  #menu span:hover,#sub-menu span:hover{
+    color: yellow;
+  }
+  #menu span{
+    font-size:.9em;
+  }
+}
