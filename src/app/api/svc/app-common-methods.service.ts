@@ -17,7 +17,10 @@ export class AppCommonMethodsService extends AppCommonMethods {
   public FIELD_PARENT_LINK_ALIAS = '';
   public APP_CONFIG = {
     appTitleMain:"Main Application",
-    appTitleSub:"Sub Title"
+    appTitleSub:"Sub Title",
+    appModules:[
+      {}
+    ]
   };
 
 

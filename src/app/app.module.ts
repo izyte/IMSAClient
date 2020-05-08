@@ -15,13 +15,15 @@ import { AppDataset } from './svc/app-dataset.service';
 import { SandTestAComponent } from './cmp/sand-test-a/sand-test-a.component';
 import { AppCommonMethodsService } from './api/svc/app-common-methods.service';
 import { SandTestBComponent } from './cmp/sand-test-b/sand-test-b.component';
+import { MainFrameComponent } from './cmp/main-frame/main-frame.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SandTestAComponent,
-    SandTestBComponent
+    SandTestBComponent,
+    MainFrameComponent
   ],
   imports: [
     BrowserModule,

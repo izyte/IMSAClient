@@ -1,0 +1,78 @@
+<div class="container-fluid m-0 p-0 flex-column">
+  <nav id="nav-main" class="navbar p-0 px-2">
+    <!-- left side of navigation bar -->
+    <img src="./assets/shell_logo_d.png" alt="">
+    <p class="m-0 mx-1">
+      <span class="nav-brand text-white h5">Integrity Management System Application - IMSA</span><br />
+      <span class="nav-brand text-warning h6">Shell Philippines Exploration B.V. - SPEX</span>
+    </p>
+
+    <!-- navigation bar middle spacer-->
+    <p style="margin: auto auto;">&nbsp;</p>
+
+    <!-- right side of navigation bar -->
+    <div class="d-flex flex-column">
+      <!--menu start-->
+      <div id="menu" class="d-flex text-white justify-content-end">
+        <span class="active">Modules</span>
+        <span>Tools</span>
+        <span>Help</span>
+        <span>Hi User Name [id]</span>
+      </div>
+      <!--menu end-->
+
+      <!--sub menu start-->
+      <div id="sub-menu" class="d-flex text-white justify-content-end">
+        <span>Anomaly</span>
+        <span>Design Data</span>
+        <span>Chemical Database</span>
+        <span>Risk Based Inspection</span>
+        <span class="active">Survey Data</span>
+        <span>Freespan</span>
+        <span>Reference Library</span>
+        <span>Seismic</span>
+      </div>
+      <!--sub menu end-->
+    </div>
+  </nav>
+  <div id="detail-container" class="card">
+    <div *ngIf="false" class="card-header">
+      <h1>Header</h1>
+    </div>
+    <div class="card-body p-0">
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, magni!</p>
+    </div>
+    <div class="card-footer py-0 d-flex" title="Arrange panels in columns">
+      <span>Left footer</span>
+      <span class="sp">&nbsp;</span>
+      <span>Middle Footer</span>
+      <span class="sp">&nbsp;</span>
+      <div class="d-flex">
+        <div class="d-flex">
+
+          <div id="view-cols" class="d-flex bg-light">
+            <div class="d-flex flex-column">
+              <div></div>
+              <div></div>
+            </div>
+            <div></div>
+            <div></div>
+          </div>
+
+          <div id="view-rows" class="d-flex bg-light">
+            <div class="d-flex flex-column">
+              <div></div>
+              <div></div>
+            </div>
+            <div class="d-flex flex-column">
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+
+        </div>
+        <div>&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
