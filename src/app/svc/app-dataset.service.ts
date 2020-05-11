@@ -47,6 +47,9 @@ export class AppDataset extends DatasetBase {
 //<RELATIONS>
     this.tblAnomalies.tableRelations["rf"] = new Relation("lnk",this.tblAnomalies,this.tblRefFiles);
     this.tblAnomalies.tableRelations["ft"] = new Relation("lnk",this.tblAnomalies,this.tblFailureThreats);
+    this.tblAnomalies.tableRelations["lkp"] = new Relation("lkp",this.tblAnomalies,this.tblLookups);
+    this.tblAnomalies.tableRelations["node"] = new Relation("lkp",this.tblAnomalies,this.tblNodesAttrib);
+    this.tblTreeStruc.tableRelations["node"] = new Relation("1to1",this.tblTreeStruc,this.tblNodesAttrib);
 //</RELATIONS>
 
   //<DECLARE>

@@ -1,0 +1,15 @@
+// Size Variables
+$header_height: 60px;
+
+// Colour Variables
+$back_color_dark: #071e3e;
+$back_color_light: #304c86;
+
+$line_color_dark: #25427f;
+$menu_undeline: #859dbf;
+
+//$line_color_view: #c0c0c0;
+$line_color_view:$menu_undeline;
+// Notes
+//   1. Usage of varibles in calc expression #{$varname}
+//   2.
