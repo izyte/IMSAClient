@@ -167,9 +167,9 @@ export class DatasetBase extends AppCommonMethods {
         // unsubscrbe! to prevent memory leak
         this.apiCommon.UnSubscribe(data);
 
-        setTimeout(() => {
-          console.log('Subscriptions!!!', this.apiCommon.TblSubs);
-        }, 5000);
+        // setTimeout(() => {
+        //   console.log('Subscriptions!!!', this.apiCommon.TblSubs);
+        // }, 5000);
       }, // end of success
       (error: any) => {
         // call onError parameter function if defined
