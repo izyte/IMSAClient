@@ -650,6 +650,7 @@ export class TableBase extends AppCommonMethods {
     let rel: Relation = null;
 
     if (returnDataParams) {
+      // get relation code from the raw returnDataParams
       const linkCode = returnDataParams.linkToParentCode + '';
       if (linkCode.length) {
         let parentTable = this.tables[linkCode];
@@ -664,13 +665,13 @@ export class TableBase extends AppCommonMethods {
       let dataColumns: Array<ColumnInfo> = this.DataColumns(retObj.fieldNames);
 
       // get parent link fieldName index
-      let linkParentIdx = retObj.fieldNames.indexOf(
-        this.apiCommon.FIELD_PARENT_LINK_ALIAS
-      );
+      const linkParentIdx = retObj.fieldNames.indexOf(this.apiCommon.FIELD_PARENT_LINK_ALIAS);
+      const childFirst = retObj.fieldNames.indexOf(this.apiCommon.FIELD_CHILD_FIRST_ALIAS);
+      const childCount = retObj.fieldNames.indexOf(this.apiCommon.FIELD_CHILD_COUNT_ALIAS);
 
       recs.forEach((e) => {
         // create new table row
-        let row: any = this.NewRow();
+        const row: any = this.NewRow();
 
         // assign request data/time stamp
         row._requestDate = new Date(retObj.requestDateTime);
@@ -680,13 +681,22 @@ export class TableBase extends AppCommonMethods {
 
         for (idx = 0; idx < dataColumns.length; idx++) {
           let col: ColumnInfo = dataColumns[idx];
+
+          // add column value to the new row when
           if (col) row[col.name] = e[idx];
         }
 
         // push row to table rows collection
         this.Add(row);
 
+        // set childFirst property of the row
+        if(childFirst!=-1)row.childFirst = e[childFirst];
+
+        // set childCount property of the row
+        if(childCount!=-1)row.childCount = e[childCount];
+
         if (rel && linkParentIdx != -1) {
+          // applicable to parent_table -> link_table -> child-table(collection) relation
           // if parent relation exists then Add new mappedRecord
           rel.AddMap(Number(e[linkParentIdx]), row[this.keyName], row);
         }
@@ -865,6 +875,9 @@ export class TableBase extends AppCommonMethods {
   }
 
   DataColumns(fieldNames: Array<string>): Array<ColumnInfo> {
+    // Navigates to the table columns definition and build a subset
+    // of ColumnInfo which only contains columns with names included in
+    // fieldNames string array parameter.
     let ret: Array<ColumnInfo> = [];
     fieldNames.forEach((f) => {
       ret.push(this.columns.find((c) => c.name == f));
@@ -922,7 +935,11 @@ export class TableBase extends AppCommonMethods {
 
 export class Relation {
   constructor(public type: string, public table: any, public tableChild,
-    localField?:string, foreignField?:string) {
+    localField?:string, foreignField?:string,parentDetail?:boolean) {
+      if(localField==undefined) localField="";
+      if(foreignField==undefined) foreignField="";
+      if(parentDetail==undefined) parentDetail=false;
+
   }
 
   // if a linked type relation, this will contain the collection

@@ -15,6 +15,9 @@ export class AppCommonMethodsService extends AppCommonMethods {
   public PARAMS_DELIM_CHAR = '';
   public PARAMS_VAL_DELIM_CHAR = '';
   public FIELD_PARENT_LINK_ALIAS = '';
+  public FIELD_CHILD_FIRST_ALIAS = '';
+  public FIELD_CHILD_COUNT_ALIAS = '';
+
   public APP_CONFIG = {
     appTitleMain:"Main Application",
     appTitleSub:"Sub Title",

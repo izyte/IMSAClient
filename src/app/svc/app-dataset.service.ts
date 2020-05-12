@@ -45,18 +45,20 @@ export class AppDataset extends DatasetBase {
 
 
 //<RELATIONS>
-    this.tblAnomalies.tableRelations["rf"] = new Relation("lnk",this.tblAnomalies,this.tblRefFiles,"","");
-    this.tblAnomalies.tableRelations["ft"] = new Relation("lnk",this.tblAnomalies,this.tblFailureThreats,"","");
-    this.tblAnomalies.tableRelations["lkp"] = new Relation("lkp",this.tblAnomalies,this.tblLookups,"AN_STATUS","LKP_ID");
-    this.tblAnomalies.tableRelations["node"] = new Relation("lkp",this.tblAnomalies,this.tblNodesAttrib,"AN_ASSET_ID","REC_TAG");
-    this.tblTreeStruc.tableRelations["node"] = new Relation("1to1",this.tblTreeStruc,this.tblNodesAttrib,"TRE_DAT_TAG","");
-    this.tblTreeStruc.tableRelations["tre"] = new Relation("1tom",this.tblTreeStruc,this.tblTreeStruc,"","TRE_NOD_TAG_PAR");
+    this.tblAnomalies.tableRelations["rf"] = new Relation("lnk", this.tblAnomalies, this.tblRefFiles, "", "", false);
+    this.tblAnomalies.tableRelations["ft"] = new Relation("lnk", this.tblAnomalies, this.tblFailureThreats, "", "", false);
+    this.tblAnomalies.tableRelations["lkp"] = new Relation("lkp", this.tblAnomalies, this.tblLookups, "AN_STATUS", "LKP_ID", false);
+    this.tblAnomalies.tableRelations["node"] = new Relation("lkp", this.tblAnomalies, this.tblNodesAttrib, "AN_ASSET_ID", "REC_TAG", false);
+    this.tblTreeStruc.tableRelations["node"] = new Relation("1to1", this.tblTreeStruc, this.tblNodesAttrib, "TRE_DAT_TAG", "", false);
+    this.tblTreeStruc.tableRelations["tre"] = new Relation("1tom", this.tblTreeStruc, this.tblTreeStruc, "", "TRE_NOD_TAG_PAR", true);
 //</RELATIONS>
 
   //<DECLARE>
   this.apiCommon.PARAMS_DELIM_CHAR = '`';
   this.apiCommon.PARAMS_VAL_DELIM_CHAR = ',';
   this.apiCommon.FIELD_PARENT_LINK_ALIAS = 'lnk_id';
+  this.apiCommon.FIELD_CHILD_FIRST_ALIAS = 'lnk_child_first';
+  this.apiCommon.FIELD_CHILD_COUNT_ALIAS = 'lnk_child_count';
   //</DECLARE>
 
   }

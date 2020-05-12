@@ -95,6 +95,7 @@ export class MainFrameComponent implements OnInit {
               code: 'tre',
               key: this.currentParent,
               keyField: '1',
+              requestConfig:'count=tre,first=tre',
             },
             { code: 'node', key: this.currentParent, keyField: '@tre|1' },
           ]);
