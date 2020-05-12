@@ -921,7 +921,9 @@ export class TableBase extends AppCommonMethods {
 }
 
 export class Relation {
-  constructor(public type: string, public table: any, public tableChild) {}
+  constructor(public type: string, public table: any, public tableChild,
+    localField?:string, foreignField?:string) {
+  }
 
   // if a linked type relation, this will contain the collection
   // of parentId's(par) and childId's(chi)
