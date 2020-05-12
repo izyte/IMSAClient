@@ -2,6 +2,7 @@ import { ComponentFactoryResolver } from '@angular/core';
 import { ColumnInfo } from '../mod/app-column.model';
 import { AppCommonMethods } from './app-common.methods';
 import { Relation } from './app-common.datatable';
+import { IfStmt } from '@angular/compiler';
 
 export class TableRowBase {
   public _parentTable: any = null;
@@ -459,7 +460,7 @@ export class TableRowBase {
 /********************************************************************************
  * Modifications: 12 May 2020
 ********************************************************************************/
-private _childCount:number=0;
+private _childCount:number=-1;
 public get childCount():number{
   // this property function can be further enhanced to return
   // count of child-rows from the extracted data when they are already available
@@ -467,19 +468,33 @@ public get childCount():number{
   // when the parent record was extracted and is only valid if the actual
   // children records are not yet extracted from the server.
   //const children = this.parentTable.rows.filter()
+
+  if(this._childCount == -1){
+    const tbl = this._parentTable;
+    const rel =tbl.ParentDetailRelation;
+
+    if(rel){
+      const childTable = rel.tableChild;
+      const children = childTable.rows.filter(r=>r[rel.foreignField]==this.keyVal);
+      //console.log("TBLC",childTable,rel.foreignField,children.length,"chiend");
+      this._childCount = children.length;
+    }
+  }
+
   return this._childCount;
 }
 public set childCount(value:number){
   this._childCount = value;
 }
 
-private _childFirst:number=0;
+private _childFirst:number=-1;
 public get childFirst():number{
   // this property function can be further enhanced to return
   // count of child-rows from the extracted data when they are already available
   // the use of _childFirst private variable is a result of an aggregate field expression
   // when the parent record was extracted and is only valid if the actual
   // children records are not yet extracted from the server.
+
   return this._childFirst;
 }
 public set childFirst(value:number){

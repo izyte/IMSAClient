@@ -45,12 +45,12 @@ export class AppDataset extends DatasetBase {
 
 
 //<RELATIONS>
-    this.tblAnomalies.tableRelations["rf"] = new Relation("lnk", this.tblAnomalies, this.tblRefFiles, "", "", false);
-    this.tblAnomalies.tableRelations["ft"] = new Relation("lnk", this.tblAnomalies, this.tblFailureThreats, "", "", false);
-    this.tblAnomalies.tableRelations["lkp"] = new Relation("lkp", this.tblAnomalies, this.tblLookups, "AN_STATUS", "LKP_ID", false);
-    this.tblAnomalies.tableRelations["node"] = new Relation("lkp", this.tblAnomalies, this.tblNodesAttrib, "AN_ASSET_ID", "REC_TAG", false);
-    this.tblTreeStruc.tableRelations["node"] = new Relation("1to1", this.tblTreeStruc, this.tblNodesAttrib, "TRE_DAT_TAG", "", false);
-    this.tblTreeStruc.tableRelations["tre"] = new Relation("1tom", this.tblTreeStruc, this.tblTreeStruc, "", "TRE_NOD_TAG_PAR", true);
+    this.tblAnomalies.tableRelations.push(new Relation("rf", "lnk", this.tblAnomalies, this.tblRefFiles, "", "", false));
+    this.tblAnomalies.tableRelations.push(new Relation("ft", "lnk", this.tblAnomalies, this.tblFailureThreats, "", "", false));
+    this.tblAnomalies.tableRelations.push(new Relation("lkp", "lkp", this.tblAnomalies, this.tblLookups, "AN_STATUS", "LKP_ID", false));
+    this.tblAnomalies.tableRelations.push(new Relation("node", "lkp", this.tblAnomalies, this.tblNodesAttrib, "AN_ASSET_ID", "REC_TAG", false));
+    this.tblTreeStruc.tableRelations.push(new Relation("node", "1to1", this.tblTreeStruc, this.tblNodesAttrib, "TRE_DAT_TAG", "", false));
+    this.tblTreeStruc.tableRelations.push(new Relation("tre", "1tom", this.tblTreeStruc, this.tblTreeStruc, "", "TRE_NOD_TAG_PAR", true));
 //</RELATIONS>
 
   //<DECLARE>

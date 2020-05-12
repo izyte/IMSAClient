@@ -55,13 +55,11 @@ export class AppCommonMethodsService extends AppCommonMethods {
   }
 
   AddHistoryLog(key: string) {
-    // console.log("AddHistoryLog...",key);
     let idx: number = this._historicalRequests.indexOf(key);
     if (idx == -1) this._historicalRequests.push(key);
   }
 
   ClearHistoryLog(key: string) {
-    // console.log('ClearHistoryLog', key);
     let idx: number = this._historicalRequests.indexOf(key);
     if (idx != -1) this._historicalRequests.splice(idx, 1);
   }
@@ -72,7 +70,6 @@ export class AppCommonMethodsService extends AppCommonMethods {
   }
 
   ClearRequestFlag(reqKey: string) {
-    // console.log('Clear request flag', reqKey);
     let idx: number = this._pendingRequests.indexOf(reqKey);
     if (idx != -1) this._pendingRequests.splice(idx, 1);
   }

@@ -38,7 +38,8 @@ export class TableBase extends AppCommonMethods {
 
   public tableLinkCollection: TableLinkCollection = new TableLinkCollection();
 
-  public tableRelations: Map<string, Relation> = new Map<string, Relation>();
+  //public tableRelations: Map<string, Relation> = new Map<string, Relation>();
+  public tableRelations: Array<Relation> = [];
 
   /* Dictionary of TableLink objects
    {
@@ -655,7 +656,6 @@ export class TableBase extends AppCommonMethods {
       if (linkCode.length) {
         let parentTable = this.tables[linkCode];
         rel = parentTable.tableRelations[this.tableCode];
-        console.log('returnDataParams', returnDataParams, parentTable, rel);
       }
     }
 
@@ -665,9 +665,15 @@ export class TableBase extends AppCommonMethods {
       let dataColumns: Array<ColumnInfo> = this.DataColumns(retObj.fieldNames);
 
       // get parent link fieldName index
-      const linkParentIdx = retObj.fieldNames.indexOf(this.apiCommon.FIELD_PARENT_LINK_ALIAS);
-      const childFirst = retObj.fieldNames.indexOf(this.apiCommon.FIELD_CHILD_FIRST_ALIAS);
-      const childCount = retObj.fieldNames.indexOf(this.apiCommon.FIELD_CHILD_COUNT_ALIAS);
+      const linkParentIdx = retObj.fieldNames.indexOf(
+        this.apiCommon.FIELD_PARENT_LINK_ALIAS
+      );
+      const childFirst = retObj.fieldNames.indexOf(
+        this.apiCommon.FIELD_CHILD_FIRST_ALIAS
+      );
+      const childCount = retObj.fieldNames.indexOf(
+        this.apiCommon.FIELD_CHILD_COUNT_ALIAS
+      );
 
       recs.forEach((e) => {
         // create new table row
@@ -690,10 +696,10 @@ export class TableBase extends AppCommonMethods {
         this.Add(row);
 
         // set childFirst property of the row
-        if(childFirst!=-1)row.childFirst = e[childFirst];
+        if (childFirst != -1) row.childFirst = e[childFirst];
 
         // set childCount property of the row
-        if(childCount!=-1)row.childCount = e[childCount];
+        if (childCount != -1) row.childCount = e[childCount];
 
         if (rel && linkParentIdx != -1) {
           // applicable to parent_table -> link_table -> child-table(collection) relation
@@ -916,30 +922,44 @@ export class TableBase extends AppCommonMethods {
     }
   }
 
-  GetRelation(relationCode:string):Relation{
-    if(!this.tableRelations) return null;
-    let rel:Relation = this.tableRelations[relationCode];
-    if(!rel) return null;
+  GetRelation(relationCode: string): Relation {
+    if (!this.tableRelations) return null;
+    let rel: Relation = this.tableRelations.find((r) => r.code == relationCode);
+    if (!rel) return null;
     return rel;
   }
 
-  GetLinkedRows(childTableCode: string,parentId:number): Array<any> {
-    let rel:Relation = this.GetRelation(childTableCode);
-    if(!rel) return [];
-    let row:any = this.GetRowById(parentId);
-    if(!row) return [];
-    return rel.GetLinkedRows(parentId);
+  private _ParentDetailRelation: Relation;
+  public get ParentDetailRelation() {
+    if (this._ParentDetailRelation == undefined)
+      this._ParentDetailRelation = this.tableRelations.find(
+        (r) => r.parentDetail
+      );
+    return this._ParentDetailRelation;
   }
 
+  GetLinkedRows(childTableCode: string, parentId: number): Array<any> {
+    let rel: Relation = this.GetRelation(childTableCode);
+    if (!rel) return [];
+    let row: any = this.GetRowById(parentId);
+    if (!row) return [];
+    return rel.GetLinkedRows(parentId);
+  }
 }
 
 export class Relation {
-  constructor(public type: string, public table: any, public tableChild,
-    localField?:string, foreignField?:string,parentDetail?:boolean) {
-      if(localField==undefined) localField="";
-      if(foreignField==undefined) foreignField="";
-      if(parentDetail==undefined) parentDetail=false;
-
+  constructor(
+    public code: string,
+    public type: string,
+    public table: any,
+    public tableChild,
+    public localField?: string,
+    public foreignField?: string,
+    public parentDetail?: boolean
+  ) {
+    if (localField == undefined) localField = '';
+    if (foreignField == undefined) foreignField = '';
+    if (parentDetail == undefined) parentDetail = false;
   }
 
   // if a linked type relation, this will contain the collection
@@ -957,8 +977,8 @@ export class Relation {
 
   GetLinkedRows(parentId: number): Array<any> {
     if (this.linkMapping.length == 0) return [];
-    let ret: Array<any> = this.linkMapping.filter((e) =>e.par == parentId);
-    let retVal:Array<any>=[];
+    let ret: Array<any> = this.linkMapping.filter((e) => e.par == parentId);
+    let retVal: Array<any> = [];
     ret.forEach((e) => {
       retVal.push(e.row);
       //console.log(e);
@@ -966,15 +986,14 @@ export class Relation {
     return retVal;
   }
 
-  RemoveLinkedRows(parentId?: number, childId?: number){
+  RemoveLinkedRows(parentId?: number, childId?: number) {
     if (this.linkMapping.length == 0) return;
-    let lnk:any;
+    let lnk: any;
 
     if (parentId != undefined && childId != undefined) {
       // remove specific map
       // this.linkMapping.indexOf()
-      lnk = this.linkMapping.find(e=>e.par==parentId && e.chi==childId);
-
+      lnk = this.linkMapping.find((e) => e.par == parentId && e.chi == childId);
     } else if (parentId != undefined) {
       // remove all maps with par=parentId
     } else if (childId != undefined) {

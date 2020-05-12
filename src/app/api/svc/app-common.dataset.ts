@@ -130,7 +130,7 @@ export class DatasetBase extends AppCommonMethods {
       console.log('No request to process!');
       return;
     } else {
-      console.log('There are ' + jsonParams.length + ' requests to process!');
+      //console.log('There are ' + jsonParams.length + ' requests to process!');
     }
 
     // create request internally in the Get method
@@ -144,7 +144,6 @@ export class DatasetBase extends AppCommonMethods {
 
     // form url here with encoded parameters
     let url: string = this.apiUrl + '?_p=' + btoa(JSON.stringify(jsonParams));
-    console.log(url);
 
     let ret: Subscription = this.http.get<Array<AppReturn>>(url).subscribe(
       (data: any) => {
@@ -167,10 +166,8 @@ export class DatasetBase extends AppCommonMethods {
         // unsubscrbe! to prevent memory leak
         this.apiCommon.UnSubscribe(data);
 
-        // setTimeout(() => {
-        //   console.log('Subscriptions!!!', this.apiCommon.TblSubs);
-        // }, 5000);
       }, // end of success
+
       (error: any) => {
         // call onError parameter function if defined
         if (args) if (args.onError != undefined) args.onError(error);
@@ -183,14 +180,13 @@ export class DatasetBase extends AppCommonMethods {
         jsonParamsStr.forEach((key) => this.apiCommon.ClearRequestFlag(key));
       }
     );
-    //console.log('reqSubsKey:', reqConfig.subsKey);
+
     // log subscription to the subscription collection in apiCommon
 
     if (reqConfig.subsKey != undefined && reqConfig.subsKey != null) {
       this.apiCommon.TblSubs[reqConfig.subsKey] = { subs: ret, when: Date.now };
     }
 
-    console.log('this.apiCommon.TblSubs:', this.apiCommon.TblSubs);
     return ret;
   }
 
@@ -248,6 +244,5 @@ export class DatasetBase extends AppCommonMethods {
     } else {
       return text;
     }
-    //console.log(charCodeAt(65))
   }
 }

@@ -89,7 +89,6 @@ export class MainFrameComponent implements OnInit {
       ],
       {
         onSuccess: (data) => {
-          //console.log(data,this.ds.tables);
           this.ds.Get([
             {
               code: 'tre',
@@ -98,7 +97,15 @@ export class MainFrameComponent implements OnInit {
               requestConfig:'count=tre,first=tre',
             },
             { code: 'node', key: this.currentParent, keyField: '@tre|1' },
-          ]);
+          ], {onSuccess:(retData)=>{
+            const tbl = this.ds.tblTreeStruc;
+            const row = tbl.rows[0];
+            console.log("CHILD COUNT:",row.childCount,tbl);
+            //console.log("ROW",row,tbl.ParentDetailRelation,"relend");
+            //console.log("Dataset", this.ds,row.childCount,row.childFirst);
+
+
+          }});
         },
         onError: (err) => {
           console.log(err);
