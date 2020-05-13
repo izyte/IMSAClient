@@ -1,7 +1,6 @@
 export class AppCommonMethods {
   constructor() {}
 
-
   get productionMode(): boolean {
     return false;
   }
@@ -91,5 +90,24 @@ export class AppCommonMethods {
       horizontallyScrollable: x1 !== x2 || x2 !== x3,
       verticallyScrollable: y1 !== y2 || y2 !== y3,
     };
+  }
+
+  public getDateMilliseconds(dt: Date, dt2?: Date): number {
+    const ms1 =
+      dt.getHours() * 60 * 60 * 1000 +
+      dt.getMinutes() * 60 * 1000 +
+      dt.getSeconds() * 1000 +
+      dt.getMilliseconds();
+    if (dt2 != undefined) {
+      const ms2 =
+        dt2.getHours() * 60 * 60 * 1000 +
+        dt2.getMinutes() * 60 * 1000 +
+        dt2.getSeconds() * 1000 +
+        dt2.getMilliseconds();
+
+        return ms2-ms1;
+    }
+
+    return ms1
   }
 }

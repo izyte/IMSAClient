@@ -469,6 +469,7 @@ public get childCount():number{
   // children records are not yet extracted from the server.
   //const children = this.parentTable.rows.filter()
 
+  let _dynamicChildCount:number=-1;
   if(this._childCount == -1){
     const tbl = this._parentTable;
     const rel =tbl.ParentDetailRelation;
@@ -477,11 +478,11 @@ public get childCount():number{
       const childTable = rel.tableChild;
       const children = childTable.rows.filter(r=>r[rel.foreignField]==this.keyVal);
       //console.log("TBLC",childTable,rel.foreignField,children.length,"chiend");
-      this._childCount = children.length;
+      _dynamicChildCount = children.length;
     }
   }
 
-  return this._childCount;
+  return _dynamicChildCount!=-1 ? _dynamicChildCount : this._childCount;
 }
 public set childCount(value:number){
   this._childCount = value;

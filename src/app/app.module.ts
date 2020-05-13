@@ -16,6 +16,7 @@ import { SandTestAComponent } from './cmp/sand-test-a/sand-test-a.component';
 import { AppCommonMethodsService } from './api/svc/app-common-methods.service';
 import { SandTestBComponent } from './cmp/sand-test-b/sand-test-b.component';
 import { MainFrameComponent } from './cmp/main-frame/main-frame.component';
+import { TreeViewComponent } from './api/cmp/tree-view/tree-view.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { MainFrameComponent } from './cmp/main-frame/main-frame.component';
     AppComponent,
     SandTestAComponent,
     SandTestBComponent,
-    MainFrameComponent
+    MainFrameComponent,
+    TreeViewComponent
   ],
   imports: [
     BrowserModule,

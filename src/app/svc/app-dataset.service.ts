@@ -89,5 +89,7 @@ export class AppDataset extends DatasetBase {
   this.tblTableClass = this.AddTable(new TblTableClass(this.http,this.apiUrl,this.tables));
   */
 
-  /************************** Application Specific Methods ******************************************/
+  /************************** Application Specific Declarations and Methods *****************************/
+  public mainTreeData:Array<any>=[];
+  public rootNodeId:number = 4667;
 }

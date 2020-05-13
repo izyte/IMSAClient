@@ -31,7 +31,9 @@
     <div class="card-body p-0">
       <div id="pnl-top">Header</div>
       <div id="pnl-middle">
-        <div id="pnl-left">Tree</div>
+        <div id="pnl-left">
+          <app-tree-view #mainTree [treeData]="ds.mainTreeData" [rootId]="ds.rootNodeId" [nodeHeight]="20"></app-tree-view>
+        </div>
         <div id="pnl-center">
           <p>Tree Struc:&nbsp;<span>{{ds.tblTreeStruc.rows.length}}</span></p>
           <p>Nodes Attrib:&nbsp;<span>{{ds.tblNodesAttrib.rows.length}}</span></p>
