@@ -14,12 +14,14 @@
     <div class="d-flex flex-column">
       <!--menu start-->
       <div id="menu" class="d-flex text-white justify-content-end">
-        <span *ngFor="let m of menuList" class="{{m.active ? 'active' : ''}}" (click)="menuClick(m.id)">{{m.label}}</span>
+        <span *ngFor="let m of menuList" class="{{m.active ? 'active' : ''}}"
+          (click)="menuClick(m.id)">{{m.label}}</span>
       </div>
 
       <!--sub menu start-->
       <div id="sub-menu" class="d-flex text-white justify-content-end">
-        <span *ngIf="subMenu.length==0">&nbsp;</span><span *ngFor="let s of subMenu"  class="{{s.active ? 'active' : ''}}" (click)="subMenuClick(s.id)">{{s.label}}</span>
+        <span *ngIf="subMenu.length==0">&nbsp;</span><span *ngFor="let s of subMenu"
+          class="{{s.active ? 'active' : ''}}" (click)="subMenuClick(s.id)">{{s.label}}</span>
       </div>
 
     </div>
@@ -29,32 +31,51 @@
       <h1>Header</h1>
     </div>
     <div class="card-body p-0">
-      <div id="pnl-top">Header</div>
+      <div id="pnl-top"></div>
       <div id="pnl-middle">
-        <div id="pnl-left">
-          <app-tree-view #mainTree [treeData]="ds.mainTreeData" [rootId]="ds.rootNodeId" [nodeHeight]="20"></app-tree-view>
+        <div id="pnl-left" [style.width]="this.panelSwitch.tree ? (treePanelWidth==-1 ? '' : treePanelWidth + 'px') :  '0px'">
+          <app-tree-view #mainTree [treeData]="ds.mainTreeData" (nodeClick)="TreeClick($event)" [rootId]="ds.rootNodeId" [nodeHeight]="22">
+            <span class="text-center p-3">Loading tree. Please wait...</span>
+          </app-tree-view>
         </div>
+        <div [class]="'vsp' + (!this.panelSwitch.tree ? ' vspc' : '')" (click)="SeparatorClick('tree')"></div>
         <div id="pnl-center">
-          <p>Tree Struc:&nbsp;<span>{{ds.tblTreeStruc.rows.length}}</span></p>
-          <p>Nodes Attrib:&nbsp;<span>{{ds.tblNodesAttrib.rows.length}}</span></p>
+          <!--p>Tree Struc:&nbsp;<span>{{ds.tblTreeStruc.rows.length}}</span></p>
+          <p>Nodes Attrib:&nbsp;<span>{{ds.tblNodesAttrib.rows.length}}</span></p-->
+          <!-- Modules -->
+          <app-anomaly *ngIf="activeModule==1"></app-anomaly>
+          <app-design-data *ngIf="activeModule==2"></app-design-data>
+          <app-chemical-database *ngIf="activeModule==3"></app-chemical-database>
+          <app-risk-based-inspection *ngIf="activeModule==4"></app-risk-based-inspection>
+          <app-survey-data *ngIf="activeModule==5"></app-survey-data>
+          <app-freespan *ngIf="activeModule==6"></app-freespan>
+          <app-reference-library *ngIf="activeModule==7"></app-reference-library>
+          <app-seismic *ngIf="activeModule==8"></app-seismic>
+          <!-- Tools -->
+          <app-user-management *ngIf="activeModule==9"></app-user-management>
+          <app-asset-management *ngIf="activeModule==10"></app-asset-management>
+          <app-survey-upload *ngIf="activeModule==11"></app-survey-upload>
+
         </div>
-        <div id="pnl-right">Info</div>
+        <div [class]="'vsp' + (!this.panelSwitch.info ? ' vspc' : '')"(click)="SeparatorClick('info')"></div>
+        <div id="pnl-right"  [style.width]="this.panelSwitch.info ? (infoPanelWidth==-1 ?'' : infoPanelWidth +'px') :  '0px'">
+          <ul class="list-group">
+            <li class="list-group-item py-1 px-2">Asset:&nbsp;{{ this.ds.mainTreeCurrentNode.text }}</li>
+          </ul>
+        </div>
       </div>
-      <div id="pnl-bottom">Footer</div>
+      <div id="pnl-bottom"></div>
 
     </div>
-    <div class="card-footer py-0 d-flex" title="Arrange panels in columns">
-      <span>Left footer</span>
+    <div class="card-footer py-0 d-flex">
+      <span [title]="NodePath">Path:&nbsp;</span><span id="node-path" style="overflow: hidden; text-overflow: ellipsis;">{{NodePath}}</span>
       <span class="sp">&nbsp;</span>
-      <span>Middle Footer</span>
+      <span>&nbsp;</span><!--Middle Footer-->
       <span class="sp">&nbsp;</span>
       <div class="d-flex">
         <div class="d-flex">
 
-
-
-
-          <div id="view-cols" class="d-flex bg-light">
+          <div id="view-cols" class="d-flex bg-light"  title="Arrange panels in columns">
             <div class="d-flex flex-column">
               <div></div>
               <div></div>
@@ -63,7 +84,7 @@
             <div></div>
           </div>
 
-          <div id="view-rows" class="d-flex bg-light">
+          <div id="view-rows" class="d-flex bg-light" title="Arrange panels in rows">
             <div class="d-flex flex-column">
               <div></div>
               <div></div>

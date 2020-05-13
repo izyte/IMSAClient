@@ -1,15 +1,38 @@
 // Size Variables
 $header_height: 60px;
+$footer_height: 24px;
 
-// Colour Variables
+$detail_top_height: 0px;
+$detail_bottom_height: 0px;
+
+$separator_size:6px;
+$separator_collapse_size:25px;
+
+$fixed_height_total: $header_height + $footer_height + $detail_top_height +
+  $detail_bottom_height;
+
+// ********************************* Colour Variables ****************************
 $back_color_dark: #071e3e;
 $back_color_light: #304c86;
 
 $line_color_dark: #25427f;
 $menu_undeline: #859dbf;
 
+//separators
+$separator_color: #d8dfe7;
+$separator_border:1px inset #c0c0c0;
+
+//tree
+$tree_bg_current_node:$separator_color;
+$tree_bg_toolbar:$separator_color;
+$tree_ht_toolbar:24px;
+$tree_border_toolbar:1px inset #c0c0c0;
+
+
 //$line_color_view: #c0c0c0;
-$line_color_view:$menu_undeline;
+$line_color_view: $menu_undeline;
 // Notes
 //   1. Usage of varibles in calc expression #{$varname}
 //   2.
+
+

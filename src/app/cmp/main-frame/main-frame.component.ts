@@ -12,6 +12,14 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
 
   @ViewChild(TreeViewComponent) treeView: TreeViewComponent;
 
+  // property declarations
+  public panelSwitch:any={
+    tree:true,
+    info:true
+  }
+  public treePanelWidth:number=-1;
+  public infoPanelWidth:number=-1;
+
   ngOnInit(): void {
     this.InitComponent();
   }
@@ -36,10 +44,15 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
         { id: 8, label: 'Seismic', active: false },
       ],
     },
-    { id: 2, label: 'Tools', active: false },
+    { id: 2, label: 'Tools', active: false, subMenu:[
+      { id: 9, label: 'User Management', active: false },
+      { id: 10, label: 'Asset Management', active: false },
+      { id: 11, label: 'Survey Upload', active: false },
+    ]},
     { id: 3, label: 'Help', active: false },
     { id: 4, label: 'Hi User Name [id]', active: false },
   ];
+
 
   private get activeMenu(): any {
     return this.menuList.find((e) => e.active);
@@ -80,6 +93,15 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     if (changeMenu) subm.find((e) => e.id == menuId).active = true;
   }
 
+  public get activeModule(){
+    const menu = this.menuList.find(m=>m.active);
+    if(!menu == null) return -1;
+
+    const subMenu = menu.subMenu.find(sm=>sm.active);
+    if(subMenu==null) return -1;
+    return subMenu.id;
+  }
+
   public get subMenu(): Array<any> {
     const menu = this.activeMenu;
     if (!menu) return [];
@@ -111,20 +133,23 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
           this.ds.tblTreeStruc.rows.forEach((r) => {
             //const node = this.ds.tblNodesAttrib.rows.find(n=>n.REC_TAG==r.TRE_DAT_TAG);
             const node = this.ds.tblNodesAttrib.GetRowById(r.TRE_DAT_TAG);
-            const expArr = [this.treeView.rootId, 2830,3745,4877];
+            //const expArr = [this.treeView.rootId, 2830,3745,4877];
+            const expArr = [this.treeView.rootId];
+
             this.ds.mainTreeData.push({
               id: r.TRE_NOD_TAG,
               text: node.NODE_DESC,
               pid: r.TRE_NOD_TAG_PAR,
               ccnt: r.childCount,
               exp: expArr.indexOf(r.TRE_NOD_TAG) != -1,
+              //exp: true,
             });
           });
 
           setTimeout(() => {
             // need to use setTimeout method for the treeView.ProcessTree() method to work properly!
             this.treeView.ProcessTree();
-          }, 1);
+          }, 100);
 
           console.log(
             'Time Elapsed:',
@@ -132,11 +157,11 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
           );
 
           //let treeData:Array<any> = JSON.parse(JSON.stringify(this.ds.tblTreeStruc.rows));
-          console.log(
-            'NEW TREE DATA:',
-            this.ds.mainTreeData.length,
-            this.ds.mainTreeData
-          );
+          // console.log(
+          //   'NEW TREE DATA:',
+          //   this.ds.mainTreeData.length,
+          //   this.ds.mainTreeData
+          // );
 
           return;
           this.ds.Get(
@@ -165,5 +190,22 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
         },
       }
     );
+  }
+
+  TreeClick(n:any){
+    this.ds.mainTreeCurrentNode = n;
+  }
+
+  SeparatorClick(item:string){
+    console.log("item",item,this.panelSwitch,this.infoPanelWidth);
+    this.panelSwitch[item] = !this.panelSwitch[item];
+  }
+
+  _NodePath:string = "-"
+  get NodePath():string{
+    if(!this.treeView) return this._NodePath;
+    // using setTimeout suppresses the ExpressionChangedAfterItHasBeenCheckedError
+    setTimeout(()=>{this._NodePath = this.treeView.NodePath;},0);
+    return this._NodePath;
   }
 }

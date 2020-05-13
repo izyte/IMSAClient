@@ -92,4 +92,5 @@ export class AppDataset extends DatasetBase {
   /************************** Application Specific Declarations and Methods *****************************/
   public mainTreeData:Array<any>=[];
   public rootNodeId:number = 4667;
+  public mainTreeCurrentNode:any={};
 }

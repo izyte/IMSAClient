@@ -1,1 +1,46 @@
 @import "../../../../appcssvars.scss";
+
+
+#tree-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  height: 100%;
+  font-family: Roboto-Light;
+  //background-color: red;
+
+  #tree-toolbar{
+    height:$tree_ht_toolbar;
+    background-color: $tree_bg_toolbar;
+    border-bottom: $tree_border_toolbar;
+    margin-bottom:5px;
+    box-sizing: border-box;
+  }
+
+  #tree-view-port {
+    display: flex;
+    flex-direction: column;
+    //background: moccasin;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+
+    div.current {
+      background-color: $tree_bg_current_node;
+    }
+
+    div.node {
+      white-space: nowrap;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -o-user-select: none;
+      > span:last-child {
+        // node text
+        font-size: .85em;
+        cursor: default;
+      }
+    }
+  }
+}

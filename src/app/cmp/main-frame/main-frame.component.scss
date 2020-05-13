@@ -37,42 +37,72 @@
     }
     #pnl-top {
       background-color: lime;
+      height: $detail_top_height;
     }
 
     #pnl-middle {
       display: flex;
-      justify-content:space-between;
-      background-color: greenyellow;
-      >div{
-        //flex-grow: 1;
+      justify-content: space-between;
+      //background-color: greenyellow;
+
+      height: calc(100vh - #{$fixed_height_total});
+
+      .vsp, .vspc {
+        // vertical separator
+        background-color: $separator_color;
+        box-sizing: border-box;
+
+        border-left: $separator_border;
+        border-right: $separator_border;
+        //border-right:$separator_border;
+        width: $separator_size;
+        cursor: ew-resize;
       }
-      >div:first-child{
-        width:200px;
+      .vspc{
+        width: $separator_collapse_size;
+        cursor: default;
       }
-      >div:last-child{
-        width:200px;
+      .hsp {
+        // horizontal separator
+        background-color: $separator_color;
+        box-sizing: border-box;
+        height: $separator_size;
       }
+
       #pnl-left {
-        background-color: yellow;
+        //background-color: yellow;
+        width: 250px;
       }
       #pnl-center {
         flex-grow: 1;
-        background-color: beige;
+        //background-color: beige;
       }
       #pnl-right {
-        background-color: cyan;
+        //background-color: cyan;
+        width: 250px;
       }
     }
 
     #pnl-bottom {
       background-color: green;
+      height: $detail_bottom_height;
     }
   }
   .card-footer {
     //border-top:1px solid $line_color_dark;
-    font-size: 0.8em;
-    height: 24px;
+
+    font-size: 0.9em;
+    height: $footer_height;
     padding: 0px 5px;
+    white-space: nowrap;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
+    span#node-path{
+      overflow: hidden;
+    }
     .sp {
       // spacers
       margin: auto auto;

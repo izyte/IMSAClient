@@ -1,1 +1,19 @@
-<p>tree-view works!</p>
+<div id="tree-wrapper">
+  <div *ngIf="false" style="background: beige;padding: 10px;">{{TreeData()}}</div>
+  <div id="tree-toolbar"></div>
+  <ng-content *ngIf="treeData.length==0"></ng-content>
+  <cdk-virtual-scroll-viewport *ngIf="treeData.length!=0" id="tree-view-port" [itemSize]="nodeHeight">
+  <div [attr.id] = "'n_' + n.id" [class]="'node' + (n.current ? ' current' : '')"
+    *cdkVirtualFor="let n of FlatTree"
+      [style.padding-left.px] = "treeLeftPadding + (n.level * nodeIndent)"
+      [style.height.px]="nodeHeight" (click)="NodeClick(n)">
+      <span class="nodePM"
+          (click)="NodePMClick(n)"
+          [style.cursor]="NodePMCursor(n)"
+          [style.color]="NodePMColor(n)"
+          [style.margin-left.px]="NodePM(n)=='' ? 10 : 0"
+          >{{NodePM(n)}}</span>
+          <span class="ml-1">{{n.text}}</span>
+  </div>
+  </cdk-virtual-scroll-viewport>
+</div>
