@@ -10,15 +10,15 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 export class MainFrameComponent implements OnInit, AfterViewInit {
   constructor(public ds: AppDataset) {}
 
-  @ViewChild(TreeViewComponent) treeView: TreeViewComponent;
+  @ViewChild('mainTree', { static: false }) treeView: TreeViewComponent;
 
   // property declarations
-  public panelSwitch:any={
-    tree:true,
-    info:true
-  }
-  public treePanelWidth:number=-1;
-  public infoPanelWidth:number=-1;
+  public panelSwitch: any = {
+    tree: true,
+    info: true,
+  };
+  public treePanelWidth: number = -1;
+  public infoPanelWidth: number = -1;
 
   ngOnInit(): void {
     this.InitComponent();
@@ -44,15 +44,19 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
         { id: 8, label: 'Seismic', active: false },
       ],
     },
-    { id: 2, label: 'Tools', active: false, subMenu:[
-      { id: 9, label: 'User Management', active: false },
-      { id: 10, label: 'Asset Management', active: false },
-      { id: 11, label: 'Survey Upload', active: false },
-    ]},
+    {
+      id: 2,
+      label: 'Tools',
+      active: false,
+      subMenu: [
+        { id: 9, label: 'User Management', active: false },
+        { id: 10, label: 'Asset Management', active: false },
+        { id: 11, label: 'Survey Upload', active: false },
+      ],
+    },
     { id: 3, label: 'Help', active: false },
     { id: 4, label: 'Hi User Name [id]', active: false },
   ];
-
 
   private get activeMenu(): any {
     return this.menuList.find((e) => e.active);
@@ -93,12 +97,12 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     if (changeMenu) subm.find((e) => e.id == menuId).active = true;
   }
 
-  public get activeModule(){
-    const menu = this.menuList.find(m=>m.active);
-    if(!menu == null) return -1;
+  public get activeModule() {
+    const menu = this.menuList.find((m) => m.active);
+    if (!menu == null) return -1;
 
-    const subMenu = menu.subMenu.find(sm=>sm.active);
-    if(subMenu==null) return -1;
+    const subMenu = menu.subMenu.find((sm) => sm.active);
+    if (subMenu == null) return -1;
     return subMenu.id;
   }
 
@@ -130,11 +134,16 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
           console.log('ROWS:', this.ds.tblTreeStruc.rows.length, 'start:', st);
           this.ds.mainTreeData = [];
           //{id:1,pid:0,text:"Level 1 Node 1",exp:true},
+
+          // DO NOT PUT ANY REFERENCE TO this.treeView INSIDE THE
+          // this.ds.tblTreeStruc.rows.forEach LOOP this will
+          // RUIN THE AUTO REFRESH OF THE BROWSER !!!!!
+          const expArr = [this.treeView.rootId];
+
           this.ds.tblTreeStruc.rows.forEach((r) => {
             //const node = this.ds.tblNodesAttrib.rows.find(n=>n.REC_TAG==r.TRE_DAT_TAG);
             const node = this.ds.tblNodesAttrib.GetRowById(r.TRE_DAT_TAG);
             //const expArr = [this.treeView.rootId, 2830,3745,4877];
-            const expArr = [this.treeView.rootId];
 
             this.ds.mainTreeData.push({
               id: r.TRE_NOD_TAG,
@@ -150,6 +159,8 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
             // need to use setTimeout method for the treeView.ProcessTree() method to work properly!
             this.treeView.ProcessTree();
           }, 100);
+          console.log(this.treeView, this.treeView.rootId);
+          return;
 
           console.log(
             'Time Elapsed:',
@@ -192,20 +203,25 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     );
   }
 
-  TreeClick(n:any){
+  TreeClick(n: any) {
     this.ds.mainTreeCurrentNode = n;
+    this._NodePath = this.treeView.NodePath;
   }
 
-  SeparatorClick(item:string){
-    console.log("item",item,this.panelSwitch,this.infoPanelWidth);
+  SeparatorClick(item: string) {
+    console.log('item', item, this.panelSwitch, this.infoPanelWidth);
     this.panelSwitch[item] = !this.panelSwitch[item];
   }
 
-  _NodePath:string = "-"
-  get NodePath():string{
-    if(!this.treeView) return this._NodePath;
+  _NodePath: string = '-';
+  get NodePath(): string {
+    //if (!this.treeView) return this._NodePath;
     // using setTimeout suppresses the ExpressionChangedAfterItHasBeenCheckedError
-    setTimeout(()=>{this._NodePath = this.treeView.NodePath;},0);
+
+    // USING THE METHOD ON THE NEXT LINE WILL SIGNIFICANTLY SLOW DOWN
+    // THE SYSTEM!!!!
+    //setTimeout(()=>{this._NodePath = this.treeView.NodePath;},0);
+
     return this._NodePath;
   }
 }

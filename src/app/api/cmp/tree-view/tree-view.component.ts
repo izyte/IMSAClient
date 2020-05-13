@@ -17,11 +17,11 @@ export class TreeViewComponent implements OnInit {
 
 
   //20 +
-  constructor(public ds:AppDataset) { }
+  constructor() { }
 
   ngOnInit(): void {
     // console.log(this.td,this.FlatTree());
-    this.ProcessTree();
+    //this.ProcessTree();
   }
 
   public ProcessTree(){
@@ -54,8 +54,6 @@ export class TreeViewComponent implements OnInit {
   }
   SetFlatTree(node?:any,level?:number):Array<any>{
     if(this.treeData.length==0)return [];
-
-    console.log("FlatTree...");
 
     let ret:Array<any> = [];
 

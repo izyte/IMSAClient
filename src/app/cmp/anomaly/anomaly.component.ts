@@ -1,3 +1,4 @@
+import { AppDataset } from './../../svc/app-dataset.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AnomalyComponent implements OnInit {
 
-  constructor() { }
+  constructor(public ds:AppDataset) { }
 
   ngOnInit(): void {
   }

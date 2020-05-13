@@ -1,5 +1,4 @@
 <div id="tree-wrapper">
-  <div *ngIf="false" style="background: beige;padding: 10px;">{{TreeData()}}</div>
   <div id="tree-toolbar"></div>
   <ng-content *ngIf="treeData.length==0"></ng-content>
   <cdk-virtual-scroll-viewport *ngIf="treeData.length!=0" id="tree-view-port" [itemSize]="nodeHeight">

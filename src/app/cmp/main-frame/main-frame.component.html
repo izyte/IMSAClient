@@ -34,7 +34,7 @@
       <div id="pnl-top"></div>
       <div id="pnl-middle">
         <div id="pnl-left" [style.width]="this.panelSwitch.tree ? (treePanelWidth==-1 ? '' : treePanelWidth + 'px') :  '0px'">
-          <app-tree-view #mainTree [treeData]="ds.mainTreeData" (nodeClick)="TreeClick($event)" [rootId]="ds.rootNodeId" [nodeHeight]="22">
+          <app-tree-view *ngIf="true"  #mainTree [treeData]="ds.mainTreeData" (nodeClick)="TreeClick($event)" [rootId]="ds.rootNodeId" [nodeHeight]="22">
             <span class="text-center p-3">Loading tree. Please wait...</span>
           </app-tree-view>
         </div>
