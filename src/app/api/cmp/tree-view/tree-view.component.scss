@@ -38,9 +38,20 @@
       -ms-user-select: none;
       user-select: none;
       -o-user-select: none;
-      > span:last-child {
+      display: flex;
+      > div:first-child{
+        font-size:1em;
+        padding:0px;
+        //background-color: lime;
+        text-align: center;
+        cursor: pointer;
+        width:12px;
+      }
+      > div.node-text{
         // node text
+        font-family: Roboto-Light;
         font-size: .85em;
+        //background-color: magenta;
         cursor: default;
       }
     }

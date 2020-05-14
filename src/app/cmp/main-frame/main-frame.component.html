@@ -15,7 +15,7 @@
       <!--menu start-->
       <div id="menu" class="d-flex text-white justify-content-end">
         <span *ngFor="let m of menuList" class="{{m.active ? 'active' : ''}}"
-          (click)="menuClick(m.id)">{{m.label}}</span>
+          (click)="menuClick(m.id)"><i *ngIf="m.icon" [class]="m.icon + ' mr-1'"></i>{{m.label}}</span>
       </div>
 
       <!--sub menu start-->
@@ -34,9 +34,15 @@
       <div id="pnl-top"></div>
       <div id="pnl-middle">
         <div id="pnl-left" [style.width]="this.panelSwitch.tree ? (treePanelWidth==-1 ? '' : treePanelWidth + 'px') :  '0px'">
-          <app-tree-view *ngIf="true"  #mainTree [treeData]="ds.mainTreeData" (nodeClick)="TreeClick($event)" [rootId]="ds.rootNodeId" [nodeHeight]="22">
+
+          <app-tree-view *ngIf="true"  #mainTree [treeData]="ds.mainTreeData"
+          (nodeClick)="TreeClick($event)"
+          (nodePMClick)="TreePMClick($event)"
+
+          [rootId]="ds.rootNodeId" [nodeHeight]="22">
             <span class="text-center p-3">Loading tree. Please wait...</span>
           </app-tree-view>
+
         </div>
         <div [class]="'vsp' + (!this.panelSwitch.tree ? ' vspc' : '')" (click)="SeparatorClick('tree')"></div>
         <div id="pnl-center">

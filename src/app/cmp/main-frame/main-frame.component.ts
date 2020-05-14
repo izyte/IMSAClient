@@ -1,3 +1,4 @@
+import { TblTreeStrucRow } from './../../svc/app.tables';
 import { TreeViewComponent } from './../../api/cmp/tree-view/tree-view.component';
 import { AppDataset } from './../../svc/app-dataset.service';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
@@ -28,11 +29,16 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     //console.log("treeView",this.treeView,this.treeView.treeData);
   }
 
+  GetModuleData() {
+    // Request data based on selected module....
+  }
+
   public menuList: Array<any> = [
     {
       id: 1,
       label: 'Modules',
       active: true,
+      icon: 'fa fa-window-maximize',
       subMenu: [
         { id: 1, label: 'Anomaly', active: true },
         { id: 2, label: 'Design Data', active: false },
@@ -48,14 +54,20 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
       id: 2,
       label: 'Tools',
       active: false,
+      icon: 'fa fa-wrench',
       subMenu: [
         { id: 9, label: 'User Management', active: false },
         { id: 10, label: 'Asset Management', active: false },
         { id: 11, label: 'Survey Upload', active: false },
       ],
     },
-    { id: 3, label: 'Help', active: false },
-    { id: 4, label: 'Hi User Name [id]', active: false },
+    { id: 3, label: 'Help', active: false, icon: 'fa fa-question-circle' },
+    {
+      id: 4,
+      label: 'Hi User Name [id]',
+      active: false,
+      icon: 'fa fa-user ml-2',
+    },
   ];
 
   private get activeMenu(): any {
@@ -116,85 +128,114 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
   public currentParent: string = '4667';
 
   InitComponent(): void {
+    this.GetInitialTreeData();
+  }
+
+  private _InitialNodesLocations: string = '$$,$$__,$$____,$$______';
+  private _ExtractNodeFields: string = 'REC_TAG`NODE_ID`NODE_DESC';
+  private _ExtracTreeFields: string =
+    'TRE_NOD_TAG`TRE_NOD_TAG_PAR`TRE_NOD_LOC`TRE_DAT_TAG';
+
+  LoadChildrenTreeData(parentNode: any) {
+    // set loading flag to true
+    parentNode.isChildNodesLoading = true;
+    const parentId = parentNode.id;
+
+    // search parent node record from this.ds.tblTreeStruc
+    let row:TblTreeStrucRow = this.ds.tblTreeStruc.GetRowById(parentId);
+
+    console.log('parentId', parentId);
+
+    this.ds.Get([
+      {
+        code: 'tre',
+        key: row.TRE_NOD_LOC + '%',
+        keyField: 'TRE_NOD_LOC',
+        includedFields: this._ExtracTreeFields,
+        requestConfig: 'count=tre,first=tre',
+      },
+      {
+        code: 'node',
+        key: row.TRE_NOD_LOC + '%',
+        includedFields: this._ExtractNodeFields,
+        keyField: '@tre|TRE_NOD_LOC',
+      },
+    ], { onSuccess: (e) => {
+      // turn off loading flag
+      parentNode.isChildNodesLoading = false;
+      // add nodes to this.ds.mainTreeData
+
+      this.treeView.ProcessTree();
+    }, onError: (e) => console.log(e) });
+  }
+
+  GetInitialTreeData() {
     this.ds.Get(
       [
         {
           code: 'tre',
           //key: this.currentParent,
-          key: '1',
-          keyField: 'TRE_DAT_TYPE',
+          key: this._InitialNodesLocations,
+          keyField: 'TRE_NOD_LOC',
+          includedFields: this._ExtracTreeFields,
+          requestConfig: 'count=tre,first=tre',
         },
         //{ code: 'node', key: '0', keyField: '@tre|1' },
-        { code: 'node', key: '1', keyField: '@tre|TRE_DAT_TYPE' },
-        //http://soga-alv/NgArbi/api/app/node/1/@tre|TRE_DAT_TYPE
+        {
+          code: 'node',
+          key: this._InitialNodesLocations,
+          includedFields: this._ExtractNodeFields,
+          keyField: '@tre|TRE_NOD_LOC',
+        },
       ],
       {
         onSuccess: (data) => {
           let st: Date = new Date();
-          console.log('ROWS:', this.ds.tblTreeStruc.rows.length, 'start:', st);
+          console.log(
+            'ROWS:',
+            this.ds.tblTreeStruc.rows.length,
+            this.ds.tblTreeStruc,
+            'start:',
+            st
+          );
+
+          // initialize tree data source
           this.ds.mainTreeData = [];
-          //{id:1,pid:0,text:"Level 1 Node 1",exp:true},
 
           // DO NOT PUT ANY REFERENCE TO this.treeView INSIDE THE
           // this.ds.tblTreeStruc.rows.forEach LOOP this will
           // RUIN THE AUTO REFRESH OF THE BROWSER !!!!!
           const expArr = [this.treeView.rootId];
 
+          // iterate through all rows in the tblTreeStruc table
           this.ds.tblTreeStruc.rows.forEach((r) => {
-            //const node = this.ds.tblNodesAttrib.rows.find(n=>n.REC_TAG==r.TRE_DAT_TAG);
             const node = this.ds.tblNodesAttrib.GetRowById(r.TRE_DAT_TAG);
             //const expArr = [this.treeView.rootId, 2830,3745,4877];
 
-            this.ds.mainTreeData.push({
-              id: r.TRE_NOD_TAG,
-              text: node.NODE_DESC,
-              pid: r.TRE_NOD_TAG_PAR,
-              ccnt: r.childCount,
-              exp: expArr.indexOf(r.TRE_NOD_TAG) != -1,
-              //exp: true,
-            });
+            // create tree node data
+            let treeNode: any = {};
+
+            treeNode.id = r.TRE_NOD_TAG;
+            treeNode.text = node ? node.NODE_DESC : 'Node ' + treeNode.id;
+            treeNode.pid = r.TRE_NOD_TAG_PAR;
+            treeNode.ccnt = r.childCount;
+            treeNode.exp = expArr.indexOf(r.TRE_NOD_TAG) != -1;
+
+            // add tree node data
+            this.ds.mainTreeData.push(treeNode);
           });
 
           setTimeout(() => {
+            // refresh tree
             // need to use setTimeout method for the treeView.ProcessTree() method to work properly!
             this.treeView.ProcessTree();
           }, 100);
-          console.log(this.treeView, this.treeView.rootId);
-          return;
 
           console.log(
             'Time Elapsed:',
             this.ds.getDateMilliseconds(st, new Date())
           );
-
-          //let treeData:Array<any> = JSON.parse(JSON.stringify(this.ds.tblTreeStruc.rows));
-          // console.log(
-          //   'NEW TREE DATA:',
-          //   this.ds.mainTreeData.length,
-          //   this.ds.mainTreeData
-          // );
-
-          return;
-          this.ds.Get(
-            [
-              {
-                code: 'tre',
-                key: this.currentParent,
-                keyField: '1',
-                requestConfig: 'count=tre,first=tre',
-              },
-              { code: 'node', key: this.currentParent, keyField: '@tre|1' },
-            ],
-            {
-              onSuccess: (retData) => {
-                const tbl = this.ds.tblTreeStruc;
-                const row = tbl.rows[0];
-                console.log('CHILD COUNT:', row.childCount, tbl);
-                //console.log("ROW",row,tbl.ParentDetailRelation,"relend");
-                //console.log("Dataset", this.ds,row.childCount,row.childFirst);
-              },
-            }
-          );
+          // end of onSuccess
         },
         onError: (err) => {
           console.log(err);
@@ -206,6 +247,15 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
   TreeClick(n: any) {
     this.ds.mainTreeCurrentNode = n;
     this._NodePath = this.treeView.NodePath;
+  }
+  TreePMClick(e: any) {
+    if (e.options.childNodesMissing) {
+      let node = e.node;
+      this.LoadChildrenTreeData(e.node);
+      //
+    } else {
+    }
+    //console.log('PM Clicked', e);
   }
 
   SeparatorClick(item: string) {

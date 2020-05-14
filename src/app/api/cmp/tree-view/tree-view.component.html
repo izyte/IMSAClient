@@ -6,13 +6,8 @@
     *cdkVirtualFor="let n of FlatTree"
       [style.padding-left.px] = "treeLeftPadding + (n.level * nodeIndent)"
       [style.height.px]="nodeHeight" (click)="NodeClick(n)">
-      <span class="nodePM"
-          (click)="NodePMClick(n)"
-          [style.cursor]="NodePMCursor(n)"
-          [style.color]="NodePMColor(n)"
-          [style.margin-left.px]="NodePM(n)=='' ? 10 : 0"
-          >{{NodePM(n)}}</span>
-          <span class="ml-1">{{n.text}}</span>
+      <div (click)="NodePMClick(n)">{{NodePM(n)}}</div>
+          <div class="node-text ml-1">{{n.text}}</div>
   </div>
 
   </cdk-virtual-scroll-viewport>
