@@ -581,6 +581,8 @@ export class TableBase extends AppCommonMethods {
 
     // url alteration begins here
     let urlParams: string = '';
+    let rows:Array<any>=null;
+
     if (args.subsKey != undefined)
       urlParams = (url.indexOf('?') == -1 ? '?' : '&') + 'skey=' + args.subsKey;
 
@@ -612,13 +614,16 @@ export class TableBase extends AppCommonMethods {
           retTables.forEach((t) => {
             let tbl: any = this.tables[t.returnCode];
 
-            if (tbl) tbl.ProcessRequestedRecords(t);
+            if (tbl) rows = tbl.ProcessRequestedRecords(t);
             else console.log("Table object '" + t.returnCode + "' not found!");
           });
         }
 
         // call onSuccess parameter function if defined
-        if (args) if (args.onSuccess != undefined) args.onSuccess(data);
+        if (args)
+          if (args.onSuccess != undefined)
+            args.onSuccess({ raw: data, rows: rows });
+
         this.pendingRequest = false;
 
         // add request to history log. this log will be checked for subsequent requests
@@ -644,8 +649,10 @@ export class TableBase extends AppCommonMethods {
     return ret;
   }
 
-  public ProcessRequestedRecords(retObj: any): void {
-    if (!retObj) return;
+  public ProcessRequestedRecords(retObj: any): Array<any> {
+    if (!retObj) return [];
+
+    let ret: Array<any> = [];
 
     const returnDataParams = retObj.returnDataParams;
     let rel: Relation = null;
@@ -695,6 +702,8 @@ export class TableBase extends AppCommonMethods {
         // push row to table rows collection
         this.Add(row);
 
+        ret.push(row); // append new row to return record array
+
         // set childFirst property of the row
         if (childFirst != -1) row.childFirst = e[childFirst];
 
@@ -708,6 +717,8 @@ export class TableBase extends AppCommonMethods {
         }
       });
     }
+
+    return ret;
   }
 
   private _GetRowsByGroup: any = {}; // groups that were already requested previously

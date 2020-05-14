@@ -1,4 +1,4 @@
-import { TblTreeStrucRow } from './../../svc/app.tables';
+import { TblTreeStrucRow, TblNodesAttribRow } from './../../svc/app.tables';
 import { TreeViewComponent } from './../../api/cmp/tree-view/tree-view.component';
 import { AppDataset } from './../../svc/app-dataset.service';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
@@ -142,31 +142,62 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     const parentId = parentNode.id;
 
     // search parent node record from this.ds.tblTreeStruc
-    let row:TblTreeStrucRow = this.ds.tblTreeStruc.GetRowById(parentId);
+    let row: TblTreeStrucRow = this.ds.tblTreeStruc.GetRowById(parentId);
 
-    console.log('parentId', parentId);
-
-    this.ds.Get([
+    this.ds.Get(
+      [
+        {
+          code: 'tre',
+          key: row.TRE_NOD_LOC + '%',
+          keyField: 'TRE_NOD_LOC',
+          includedFields: this._ExtracTreeFields,
+          requestConfig: 'count=tre,first=tre',
+        },
+        {
+          code: 'node',
+          key: row.TRE_NOD_LOC + '%',
+          includedFields: this._ExtractNodeFields,
+          keyField: '@tre|TRE_NOD_LOC',
+        },
+      ],
       {
-        code: 'tre',
-        key: row.TRE_NOD_LOC + '%',
-        keyField: 'TRE_NOD_LOC',
-        includedFields: this._ExtracTreeFields,
-        requestConfig: 'count=tre,first=tre',
-      },
-      {
-        code: 'node',
-        key: row.TRE_NOD_LOC + '%',
-        includedFields: this._ExtractNodeFields,
-        keyField: '@tre|TRE_NOD_LOC',
-      },
-    ], { onSuccess: (e) => {
-      // turn off loading flag
-      parentNode.isChildNodesLoading = false;
-      // add nodes to this.ds.mainTreeData
+        onSuccess: (e) => {
+          console.log('Processed Rows:', e);
+          // turn off loading flag
+          parentNode.isChildNodesLoading = false;
 
-      this.treeView.ProcessTree();
-    }, onError: (e) => console.log(e) });
+          // add nodes to this.ds.mainTreeData
+          const mainTreeData = this.ds.mainTreeData;
+          const treRows = e.rows[0];
+          const nodeRows = e.rows[1];
+
+          treRows.forEach((r: TblTreeStrucRow) => {
+            // check if row is not yet in the treeData
+            if (!mainTreeData.find((e) => e.id == r.TRE_NOD_TAG)) {
+              // if not yet in the tree table, add record
+              // find record in nodeAttrib table
+              let node:TblNodesAttribRow = this.ds.tblNodesAttrib.GetRowById(r.TRE_DAT_TAG);
+
+              // create tree node data
+              let treeNode: any = {};
+
+              treeNode.id = r.TRE_NOD_TAG;
+              treeNode.text = node ? node.NODE_DESC : 'Node ' + treeNode.id;
+              treeNode.pid = r.TRE_NOD_TAG_PAR;
+              treeNode.ccnt = r.childCount;
+              treeNode.exp = false;
+
+              // add tree node data
+              this.ds.mainTreeData.push(treeNode);
+            }
+          });
+
+          parentNode.exp = true;
+          this.treeView.ProcessTree();
+        },
+        onError: (e) => console.log(e),
+      }
+    );
   }
 
   GetInitialTreeData() {
@@ -189,14 +220,16 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
         },
       ],
       {
-        onSuccess: (data) => {
+        onSuccess: (args) => {
           let st: Date = new Date();
           console.log(
             'ROWS:',
             this.ds.tblTreeStruc.rows.length,
             this.ds.tblTreeStruc,
             'start:',
-            st
+            st,
+            'args',
+            args
           );
 
           // initialize tree data source

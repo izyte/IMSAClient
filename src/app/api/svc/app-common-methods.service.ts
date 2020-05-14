@@ -84,9 +84,11 @@ export class AppCommonMethodsService extends AppCommonMethods {
     tables?: any,
     url?: string,
     reqTableCodes?: Array<string>
-  ) {
+  ):Array<Array<any>> {
     if (!data || !tables) return;
     if (reqTableCodes == undefined) reqTableCodes = [];
+
+    let tableRows:Array<Array<any>> = [];
 
     // find config object
     //config
@@ -96,6 +98,7 @@ export class AppCommonMethodsService extends AppCommonMethods {
     let retTables: Array<any> = data.filter((o) => o.returnType == 'table');
 
     // loop through objects and call the local ProcessRequestedRecords method
+
     retTables.forEach((t) => {
       let tbl: any = tables[t.returnCode];
 
@@ -103,9 +106,11 @@ export class AppCommonMethodsService extends AppCommonMethods {
       tbl.pendingRequest = false;
 
       // populate/update record(s) in the table object
-      if (tbl) tbl.ProcessRequestedRecords(t);
+      if (tbl) tableRows.push(tbl.ProcessRequestedRecords(t));
       else console.log("Table object '" + t.returnCode + "' not found!");
     });
+
+    return tableRows;
   }
   // *******************************************************************
   // **********************  Subscription Management ****************************

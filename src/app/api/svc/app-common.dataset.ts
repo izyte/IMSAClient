@@ -17,8 +17,6 @@ export class DatasetBase extends AppCommonMethods {
 
   public tables: any = {};
 
-
-
   public AddTable(dataTable: any) {
     this.tables[dataTable.tableCode] = dataTable;
     return dataTable;
@@ -118,6 +116,8 @@ export class DatasetBase extends AppCommonMethods {
               // set request flag
               this.apiCommon.AddRequestFlag(jStr);
               jsonParamsStr.push(jStr);
+            }else{
+              console.log("Null Table for " + paramCode);
             }
           }
           jsonParams.push(p);
@@ -145,11 +145,13 @@ export class DatasetBase extends AppCommonMethods {
     // form url here with encoded parameters
     let url: string = this.apiUrl + '?_p=' + btoa(JSON.stringify(jsonParams));
 
+    let tableRows: Array<Array<any>> = [];
+console.log("About to subscribe!",url);
     let ret: Subscription = this.http.get<Array<AppReturn>>(url).subscribe(
       (data: any) => {
         // process data including setting pendingRequest flag
         // for each table.
-        this.apiCommon.ProcessRequestData(data, this.tables, url);
+        tableRows = this.apiCommon.ProcessRequestData(data, this.tables, url);
 
         // add request to history log. this log will be checked for subsequent requests
         // where calls for existing entries will be bypassed to improve performance efficiency
@@ -161,11 +163,12 @@ export class DatasetBase extends AppCommonMethods {
         jsonParamsStr.forEach((key) => this.apiCommon.ClearRequestFlag(key));
 
         // call onSuccess parameter function if defined
-        if (args) if (args.onSuccess != undefined) args.onSuccess(data);
+        if (args)
+          if (args.onSuccess != undefined)
+            args.onSuccess({ raw: data, rows: tableRows });
 
         // unsubscrbe! to prevent memory leak
         this.apiCommon.UnSubscribe(data);
-
       }, // end of success
 
       (error: any) => {
