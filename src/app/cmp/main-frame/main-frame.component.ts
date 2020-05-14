@@ -143,19 +143,21 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
 
     // search parent node record from this.ds.tblTreeStruc
     let row: TblTreeStrucRow = this.ds.tblTreeStruc.GetRowById(parentId);
+    let location:string =row.TRE_NOD_LOC + '%';
+    console.log("Location:",location);
 
     this.ds.Get(
       [
         {
           code: 'tre',
-          key: row.TRE_NOD_LOC + '%',
+          key: location,
           keyField: 'TRE_NOD_LOC',
           includedFields: this._ExtracTreeFields,
           requestConfig: 'count=tre,first=tre',
         },
         {
           code: 'node',
-          key: row.TRE_NOD_LOC + '%',
+          key: location,
           includedFields: this._ExtractNodeFields,
           keyField: '@tre|TRE_NOD_LOC',
         },
