@@ -34,6 +34,7 @@ import { UserManagementComponent } from './cmp/user-management/user-management.c
 import { AssetManagementComponent } from './cmp/asset-management/asset-management.component';
 import { RiskBasedInspectionComponent } from './cmp/risk-based-inspection/risk-based-inspection.component';
 import { SurveyUploadComponent } from './cmp/survey-upload/survey-upload.component';
+import { FormHeaderComponent } from './cmp/form-header/form-header.component';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { SurveyUploadComponent } from './cmp/survey-upload/survey-upload.compone
     UserManagementComponent,
     AssetManagementComponent,
     RiskBasedInspectionComponent,
-    SurveyUploadComponent
+    SurveyUploadComponent,
+    FormHeaderComponent
   ],
   imports: [
     BrowserModule,

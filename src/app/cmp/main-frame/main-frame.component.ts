@@ -131,7 +131,10 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     this.GetInitialTreeData();
   }
 
-  private _InitialNodesLocations: string = '$$,$$__,$$____,$$______';
+  //private _InitialNodesLocations: string = '$$,$$__,$$____,$$______,$$________,$$__________,$$____________,$$______________';
+  private _InitialNodesLocations: string = '$$,$$__,$$____,$$______,$$________';
+  //private _InitialNodesLocations: string = '$$,$$__,$$____,$$______';
+  //private _InitialNodesLocations: string = '$$%';
   private _ExtractNodeFields: string = 'REC_TAG`NODE_ID`NODE_DESC';
   private _ExtracTreeFields: string =
     'TRE_NOD_TAG`TRE_NOD_TAG_PAR`TRE_NOD_LOC`TRE_DAT_TAG';
@@ -143,7 +146,8 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
 
     // search parent node record from this.ds.tblTreeStruc
     let row: TblTreeStrucRow = this.ds.tblTreeStruc.GetRowById(parentId);
-    let location:string =row.TRE_NOD_LOC + '%';
+    const par = row.TRE_NOD_LOC
+    let location:string =par + '__,' + par + '____,'+ par + '______,'+ par + '________,'+ par + '__________,'+ par + '____________';
     console.log("Location:",location);
 
     this.ds.Get(
