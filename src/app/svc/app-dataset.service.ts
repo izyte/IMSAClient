@@ -67,6 +67,7 @@ export class AppDataset extends DatasetBase {
 
   // setup aplication source api url
   public apiUrl: string = 'http://soga-alv/NgArbi/api/app';
+  //public apiUrl: string = 'http://ngimsa.ivideolib.com/api/app';
   //public apiUrl: string = "http://soga-alv/NgIMSAPub/api/app";
   // public apiUrl: string = "http://107.180.71.181/plesk-site-preview/ngimsa.ivideolib.com/107.180.71.181/api/app";
 
