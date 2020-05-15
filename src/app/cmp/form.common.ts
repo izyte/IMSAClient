@@ -21,6 +21,6 @@ export class FormCommon {
         }
       });
     }
-    return this._moduleTitle;
+    return this._moduleTitle + " Module";
   }
 }

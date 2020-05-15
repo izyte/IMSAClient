@@ -3,10 +3,12 @@
 #header-wrapper{
   box-sizing: border-box;
   border-bottom: 1px solid $line_very_light_gray;
-  padding: 6px 12px;
+  //padding: 6px 12px;
+  padding: 0px 12px;
   background-color:$back_color_very_light_blue;
+  height:$form_header_height;
 
-  h1,h2{
+  h1,h2,h3{
     color: $fore_color_dark;
     font-family: 'Montserrat-SemiBoldItalic';
     font-weight: bolder;
@@ -16,12 +18,12 @@
   >i:first-child{
     color: $fore_color_light;
     margin-right:6px;
-    margin-top:3px;
-    font-size: 2em;
+    margin-top:5px;
+    font-size: 1.3em;
   }
   >div:last-child{
     //background-color: red;
-    padding-top: 6px;
+    padding-top: 3px;
     padding-bottom: 0px;
     button{
       font-family: 'Roboto-Light';

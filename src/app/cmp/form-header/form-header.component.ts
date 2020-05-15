@@ -11,6 +11,10 @@ export class FormHeaderComponent implements OnInit {
 
   constructor(public ds:AppDataset) { }
 
+  SetButtonTitle(type:string):string{
+    return "Sorry. This action is not yet avialable..."
+  }
+
   ngOnInit(): void {
   }
 

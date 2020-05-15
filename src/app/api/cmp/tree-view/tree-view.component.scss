@@ -12,11 +12,20 @@
   //background-color: red;
 
   #tree-toolbar{
+    display: flex;
     height:$tree_ht_toolbar;
     background-color: $tree_bg_toolbar;
     border-bottom: $tree_border_toolbar;
     margin-bottom:5px;
     box-sizing: border-box;
+    padding-left: 6px;
+    padding-right: 6px;
+    >div{
+      font-family: Roboto-Light;
+    }
+    >div:last-child{
+      margin-left:auto;
+    }
   }
 
   #tree-view-port {

@@ -5,6 +5,8 @@ $footer_height: 24px;
 $detail_top_height: 0px;
 $detail_bottom_height: 0px;
 
+$toolbar_height:30px;
+
 $separator_size:6px;
 $separator_collapse_size:25px;
 
@@ -30,9 +32,9 @@ $separator_border:1px inset #c0c0c0;
 
 //tree
 $tree_bg_current_node:$separator_color;
-$tree_bg_toolbar:$separator_color;
-$tree_ht_toolbar:24px;
-$tree_border_toolbar:1px inset #c0c0c0;
+$tree_bg_toolbar:$back_color_very_light_blue;
+$tree_ht_toolbar:$toolbar_height;
+$tree_border_toolbar:1px inset $line_very_light_gray;
 
 
 //$line_color_view: #c0c0c0;
@@ -41,4 +43,5 @@ $line_color_view: $menu_undeline;
 //   1. Usage of varibles in calc expression #{$varname}
 //   2.
 
-
+// Form Header
+$form_header_height:$toolbar_height;

@@ -15,6 +15,7 @@ export class TreeViewComponent implements OnInit {
 
   @Output() nodeClick: EventEmitter<any> = new EventEmitter();
   @Output() nodePMClick: EventEmitter<any> = new EventEmitter();
+  //@Output() nodePMClick: EventEmitter<any> = new EventEmitter();
 
   //20 +
   constructor() {}
@@ -22,6 +23,10 @@ export class TreeViewComponent implements OnInit {
   ngOnInit(): void {
     // console.log(this.td,this.FlatTree());
     //this.ProcessTree();
+  }
+
+  SetButtonTitle(type:string):string{
+    return "Sorry. This action is not yet avialable..."
   }
 
   public ProcessTree() {

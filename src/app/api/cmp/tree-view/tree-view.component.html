@@ -1,14 +1,20 @@
 <div id="tree-wrapper">
-  <div id="tree-toolbar"></div>
+  <div id="tree-toolbar">
+    <div>
+      <button [title]="SetButtonTitle('exp_all')" class="btn btn-sm text-secondary"><i class="fa fa-angle-double-down"></i></button>
+    </div>
+    <div>
+      <button [title]="SetButtonTitle('exp_all')" class="btn btn-sm text-secondary"><i class="fa fa-thumbtack"></i></button>
+    </div>
+  </div>
   <ng-content *ngIf="treeData.length==0"></ng-content>
   <cdk-virtual-scroll-viewport *ngIf="treeData.length!=0" id="tree-view-port" [itemSize]="nodeHeight">
-  <div [attr.id] = "'n_' + n.id" [class]="'node' + (n.current ? ' current' : '')"
-    *cdkVirtualFor="let n of FlatTree"
-      [style.padding-left.px] = "treeLeftPadding + (n.level * nodeIndent)"
-      [style.height.px]="nodeHeight" (click)="NodeClick(n)">
+    <div [attr.id]="'n_' + n.id" [class]="'node' + (n.current ? ' current' : '')" *cdkVirtualFor="let n of FlatTree"
+      [style.padding-left.px]="treeLeftPadding + (n.level * nodeIndent)" [style.height.px]="nodeHeight"
+      (click)="NodeClick(n)">
       <div (click)="NodePMClick(n)">{{NodePM(n)}}</div>
-          <div class="node-text ml-1">{{n.text}}</div>
-  </div>
+      <div class="node-text ml-1">{{n.text}}</div>
+    </div>
 
   </cdk-virtual-scroll-viewport>
 </div>
