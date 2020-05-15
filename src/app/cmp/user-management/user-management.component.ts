@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { AppDataset } from './../../svc/app-dataset.service';
+import { FormCommon } from './../form.common';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-user-management',
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss']
 })
-export class UserManagementComponent implements OnInit {
+export class UserManagementComponent extends FormCommon implements OnInit{
 
-  constructor() { }
-
+  constructor(public ds:AppDataset) {
+    super(ds);
+  }
   ngOnInit(): void {
   }
 

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { AppDataset } from './../../svc/app-dataset.service';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-form-header',
@@ -6,8 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./form-header.component.scss']
 })
 export class FormHeaderComponent implements OnInit {
+  @Input() title:string
 
-  constructor() { }
+  constructor(public ds:AppDataset) { }
 
   ngOnInit(): void {
   }

@@ -94,4 +94,42 @@ export class AppDataset extends DatasetBase {
   public mainTreeData:Array<any>=[];
   public rootNodeId:number = 4667;
   public mainTreeCurrentNode:any={};
+
+  public menuList: Array<any> = [
+    {
+      id: 1,
+      label: 'Modules',
+      active: true,
+      icon: 'fa fa-window-maximize',
+      subMenu: [
+        { id: 1, label: 'Anomaly', active: true },
+        { id: 2, label: 'Design Data', active: false },
+        { id: 3, label: 'Chemical Database', active: false },
+        { id: 4, label: 'Risk Based Inspection', active: false },
+        { id: 5, label: 'Survey Data', active: false },
+        { id: 6, label: 'Freespan', active: false },
+        { id: 7, label: 'Reference Library', active: false },
+        { id: 8, label: 'Seismic', active: false },
+      ],
+    },
+    {
+      id: 2,
+      label: 'Tools',
+      active: false,
+      icon: 'fa fa-wrench',
+      subMenu: [
+        { id: 9, label: 'User Management', active: false },
+        { id: 10, label: 'Asset Management', active: false },
+        { id: 11, label: 'Survey Upload', active: false },
+      ],
+    },
+    { id: 3, label: 'Help', active: false, icon: 'fa fa-question-circle' },
+    {
+      id: 4,
+      label: 'Hi User Name [id]',
+      active: false,
+      icon: 'fa fa-user ml-2',
+    },
+  ];
+
 }

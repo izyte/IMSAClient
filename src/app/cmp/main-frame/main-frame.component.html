@@ -49,18 +49,18 @@
           <!--p>Tree Struc:&nbsp;<span>{{ds.tblTreeStruc.rows.length}}</span></p>
           <p>Nodes Attrib:&nbsp;<span>{{ds.tblNodesAttrib.rows.length}}</span></p-->
           <!-- Modules -->
-          <app-anomaly *ngIf="activeModule==1"></app-anomaly>
-          <app-design-data *ngIf="activeModule==2"></app-design-data>
-          <app-chemical-database *ngIf="activeModule==3"></app-chemical-database>
-          <app-risk-based-inspection *ngIf="activeModule==4"></app-risk-based-inspection>
-          <app-survey-data *ngIf="activeModule==5"></app-survey-data>
-          <app-freespan *ngIf="activeModule==6"></app-freespan>
-          <app-reference-library *ngIf="activeModule==7"></app-reference-library>
-          <app-seismic *ngIf="activeModule==8"></app-seismic>
+          <app-anomaly [moduleId]="1" *ngIf="activeModule==1"></app-anomaly>
+          <app-design-data [moduleId]="2"  *ngIf="activeModule==2"></app-design-data>
+          <app-chemical-database [moduleId]="3" *ngIf="activeModule==3"></app-chemical-database>
+          <app-risk-based-inspection [moduleId]="4" *ngIf="activeModule==4"></app-risk-based-inspection>
+          <app-survey-data [moduleId]="5" *ngIf="activeModule==5"></app-survey-data>
+          <app-freespan [moduleId]="6" *ngIf="activeModule==6"></app-freespan>
+          <app-reference-library [moduleId]="7" *ngIf="activeModule==7"></app-reference-library>
+          <app-seismic [moduleId]="8" *ngIf="activeModule==8"></app-seismic>
           <!-- Tools -->
-          <app-user-management *ngIf="activeModule==9"></app-user-management>
-          <app-asset-management *ngIf="activeModule==10"></app-asset-management>
-          <app-survey-upload *ngIf="activeModule==11"></app-survey-upload>
+          <app-user-management [moduleId]="9" *ngIf="activeModule==9"></app-user-management>
+          <app-asset-management [moduleId]="10" *ngIf="activeModule==10"></app-asset-management>
+          <app-survey-upload [moduleId]="11" *ngIf="activeModule==11"></app-survey-upload>
 
         </div>
         <div [class]="'vsp' + (!this.panelSwitch.info ? ' vspc' : '')"(click)="SeparatorClick('info')"></div>

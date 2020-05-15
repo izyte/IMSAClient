@@ -1,0 +1,33 @@
+@import "../../../appcssvars.scss";
+
+#header-wrapper{
+  box-sizing: border-box;
+  border-bottom: 1px solid $line_very_light_gray;
+  padding: 6px 12px;
+  background-color:$back_color_very_light_blue;
+
+  h1,h2{
+    color: $fore_color_dark;
+    font-family: 'Montserrat-SemiBoldItalic';
+    font-weight: bolder;
+    margin: 0px;
+    text-shadow: gray 2px 2px 2px;
+  }
+  >i:first-child{
+    color: $fore_color_light;
+    margin-right:6px;
+    margin-top:3px;
+    font-size: 2em;
+  }
+  >div:last-child{
+    //background-color: red;
+    padding-top: 6px;
+    padding-bottom: 0px;
+    button{
+      font-family: 'Roboto-Light';
+      font-size: .85em;
+      margin-bottom: 0px;
+      padding-bottom: 0px;
+    }
+  }
+}

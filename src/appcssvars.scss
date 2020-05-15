@@ -14,9 +14,15 @@ $fixed_height_total: $header_height + $footer_height + $detail_top_height +
 // ********************************* Colour Variables ****************************
 $back_color_dark: #071e3e;
 $back_color_light: #304c86;
+$back_color_very_light_blue:#ebf1fa;
+
+$fore_color_dark: $back_color_light;
+$fore_color_light: #6479a4;
 
 $line_color_dark: #25427f;
 $menu_undeline: #859dbf;
+
+$line_very_light_gray:#dfdfdf;
 
 //separators
 $separator_color: #d8dfe7;

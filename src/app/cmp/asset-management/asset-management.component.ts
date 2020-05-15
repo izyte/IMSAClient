@@ -1,3 +1,5 @@
+import { AppDataset } from './../../svc/app-dataset.service';
+import { FormCommon } from './../form.common';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -5,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './asset-management.component.html',
   styleUrls: ['./asset-management.component.scss']
 })
-export class AssetManagementComponent implements OnInit {
+export class AssetManagementComponent extends FormCommon implements OnInit{
 
-  constructor() { }
-
+  constructor(public ds:AppDataset) {
+    super(ds);
+  }
   ngOnInit(): void {
   }
 

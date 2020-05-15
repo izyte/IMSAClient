@@ -1,3 +1,5 @@
+import { AppDataset } from './../../svc/app-dataset.service';
+import { FormCommon } from './../form.common';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -5,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './survey-upload.component.html',
   styleUrls: ['./survey-upload.component.scss']
 })
-export class SurveyUploadComponent implements OnInit {
+export class SurveyUploadComponent extends FormCommon implements OnInit{
 
-  constructor() { }
+  constructor(public ds:AppDataset) {
+    super(ds);
+  }
 
   ngOnInit(): void {
   }

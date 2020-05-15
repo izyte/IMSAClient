@@ -33,42 +33,9 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     // Request data based on selected module....
   }
 
-  public menuList: Array<any> = [
-    {
-      id: 1,
-      label: 'Modules',
-      active: true,
-      icon: 'fa fa-window-maximize',
-      subMenu: [
-        { id: 1, label: 'Anomaly', active: true },
-        { id: 2, label: 'Design Data', active: false },
-        { id: 3, label: 'Chemical Database', active: false },
-        { id: 4, label: 'Risk Based Inspection', active: false },
-        { id: 5, label: 'Survey Data', active: false },
-        { id: 6, label: 'Freespan', active: false },
-        { id: 7, label: 'Reference Library', active: false },
-        { id: 8, label: 'Seismic', active: false },
-      ],
-    },
-    {
-      id: 2,
-      label: 'Tools',
-      active: false,
-      icon: 'fa fa-wrench',
-      subMenu: [
-        { id: 9, label: 'User Management', active: false },
-        { id: 10, label: 'Asset Management', active: false },
-        { id: 11, label: 'Survey Upload', active: false },
-      ],
-    },
-    { id: 3, label: 'Help', active: false, icon: 'fa fa-question-circle' },
-    {
-      id: 4,
-      label: 'Hi User Name [id]',
-      active: false,
-      icon: 'fa fa-user ml-2',
-    },
-  ];
+
+
+  public menuList:Array<any> = this.ds.menuList;
 
   private get activeMenu(): any {
     return this.menuList.find((e) => e.active);
@@ -132,7 +99,7 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
   }
 
   //private _InitialNodesLocations: string = '$$,$$__,$$____,$$______,$$________,$$__________,$$____________,$$______________';
-  private _InitialNodesLocations: string = '$$,$$__,$$____,$$______,$$________';
+  private _InitialNodesLocations: string = '$$,$$__,$$____,$$______,$$________,$$__________';
   //private _InitialNodesLocations: string = '$$,$$__,$$____,$$______';
   //private _InitialNodesLocations: string = '$$%';
   private _ExtractNodeFields: string = 'REC_TAG`NODE_ID`NODE_DESC';

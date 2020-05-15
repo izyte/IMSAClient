@@ -1,3 +1,5 @@
+import { FormCommon } from './../form.common';
+import { AppDataset } from './../../svc/app-dataset.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -5,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './seismic.component.html',
   styleUrls: ['./seismic.component.scss']
 })
-export class SeismicComponent implements OnInit {
+export class SeismicComponent  extends FormCommon implements OnInit{
 
-  constructor() { }
+  constructor(public ds:AppDataset) {
+    super(ds);
+  }
 
   ngOnInit(): void {
   }
