@@ -1,3 +1,11 @@
 <!-- <p>Tree: {{ds.tblTreeStruc.rows.length}}</p>
 <p>Nodes: {{ds.tblNodesAttrib.rows.length}}</p> -->
 <app-form-header [title]="moduleTitle"></app-form-header>
+<div class="container-fluid p-0 m-0">
+  <ul class="list-group list-group-sm">
+    <li class="list-group-item">Anomaly Data Information</li>
+    <li class="list-group-item d-flex"><label class="form-label">Rows:</label><span class="badge badge-success p-2 ml-auto">{{ds.tblAnomalies.rows.length}}</span></li>
+    <li *ngIf="!ds.isDeployed" class="list-group-item">Anomaly records: {{ds.childExtractLevels("$$")}}</li>
+
+  </ul>
+</div>

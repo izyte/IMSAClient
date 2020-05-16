@@ -40,8 +40,78 @@
       "icon": "fa fa-user ml-2"
     }
   ],
+  "general":{
+    "url_local":"http://soga-alv/ngarbi/api/app",
+    "url_deploy":"http://ngimsa.ivideolib.com/api/app",
+    "url_use_deploy":false,
+    "color_defs":{
+      "danger": "#dc3545",
+      "warning": "#ffc107",
+      "success": "#28a745",
+      "info": "#17a2b8",
+      "secondary": "#6c757d",
+      "primary": "#007bff",
+      "default":"#6479a4"
+    }
+  },
 
-  "tree_init_config":{
+  "tree_init_config": {
+    "tree_location_filter_pattern": "$$,$$__",
+    "tree_location_filter_pattern_deploy": "$$,$$__,$$____,$$______,$$________",
+    "tree_extract_node_fields": "REC_TAG`NODE_ID`NODE_DESC",
+    "tree_extract_tree_fields": "TRE_NOD_TAG`TRE_NOD_TAG_PAR`TRE_NOD_LOC`TRE_DAT_TAG",
+    "tree_child_extract_levels": 8
+  },
 
+
+
+  "temp_config": {
+    "app_menu": [
+      {
+        "id": 1,
+        "label": "Modules",
+        "active": true,
+        "icon": "fa fa-window-maximize",
+        "subMenu": [
+          { "id": 1, "label": "Anomaly", "active": true },
+          { "id": 2, "label": "Design Data", "active": false },
+          { "id": 3, "label": "Chemical Database", "active": false },
+          { "id": 4, "label": "Risk Based Inspection", "active": false },
+          { "id": 5, "label": "Survey Data", "active": false },
+          { "id": 6, "label": "Freespan", "active": false },
+          { "id": 7, "label": "Reference Library", "active": false },
+          { "id": 8, "label": "Seismic", "active": false }
+        ]
+      },
+      {
+        "id": 2,
+        "label": "Tools",
+        "active": false,
+        "icon": "fa fa-wrench",
+        "subMenu": [
+          { "id": 9, "label": "User Management", "active": false },
+          { "id": 10, "label": "Asset Management", "active": false },
+          { "id": 11, "label": "Survey Upload", "active": false }
+        ]
+      },
+      {
+        "id": 3,
+        "label": "Help",
+        "active": false,
+        "icon": "fa fa-question-circle"
+      },
+      {
+        "id": 4,
+        "label": "Hi User Name [id]",
+        "active": false,
+        "icon": "fa fa-user ml-2"
+      }
+    ],
+
+    "tree_init_config": {
+      "tree_location_filter_pattern": "$$,$$__,$$____,$$______,$$________,$$__________",
+      "tree_extract_node_fields": "REC_TAG`NODE_ID`NODE_DESC",
+      "tree_extract_tree_fields": "TRE_NOD_TAG`TRE_NOD_TAG_PAR`TRE_NOD_LOC`TRE_DAT_TAG"
+    }
   }
 }

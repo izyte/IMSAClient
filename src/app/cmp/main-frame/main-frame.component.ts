@@ -99,15 +99,6 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     this.GetInitialTreeData();
   }
 
-  //private _InitialNodesLocations: string = '$$,$$__,$$____,$$______,$$________,$$__________,$$____________,$$______________';
-  private _InitialNodesLocations: string = '$$,$$__,$$____,$$______,$$________,$$__________';
-  //private _InitialNodesLocations: string = '$$,$$__,$$____,$$______';
-  //private _InitialNodesLocations: string = '$$,$$__';
-  //private _InitialNodesLocations: string = '$$%';
-  private _ExtractNodeFields: string = 'REC_TAG`NODE_ID`NODE_DESC';
-  private _ExtracTreeFields: string =
-    'TRE_NOD_TAG`TRE_NOD_TAG_PAR`TRE_NOD_LOC`TRE_DAT_TAG';
-
   LoadChildrenTreeData(parentNode: any) {
     // set loading flag to true
     parentNode.isChildNodesLoading = true;
@@ -115,9 +106,7 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
 
     // search parent node record from this.ds.tblTreeStruc
     let row: TblTreeStrucRow = this.ds.tblTreeStruc.GetRowById(parentId);
-    const par = row.TRE_NOD_LOC
-    let location:string =par + '__,' + par + '____,'+ par + '______,'+ par + '________,'+ par + '__________,'+ par + '____________';
-    console.log("Location:",location);
+    let location:string =this.ds.childExtractLevels(row.TRE_NOD_LOC);
 
     this.ds.Get(
       [
@@ -125,13 +114,13 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
           code: 'tre',
           key: location,
           keyField: 'TRE_NOD_LOC',
-          includedFields: this._ExtracTreeFields,
+          includedFields: this.ds.extractTreeFields,
           requestConfig: 'count=tre,first=tre',
         },
         {
           code: 'node',
           key: location,
-          includedFields: this._ExtractNodeFields,
+          includedFields: this.ds.extractNodeFields,
           keyField: '@tre|TRE_NOD_LOC',
         },
       ],
@@ -184,17 +173,15 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
       [
         {
           code: 'tre',
-          //key: this.currentParent,
-          key: this._InitialNodesLocations,
+          key: this.ds.treeInitLocationPattern,
           keyField: 'TRE_NOD_LOC',
-          includedFields: this._ExtracTreeFields,
+          includedFields: this.ds.extractTreeFields,
           requestConfig: 'count=tre,first=tre',
         },
-        //{ code: 'node', key: '0', keyField: '@tre|1' },
         {
           code: 'node',
-          key: this._InitialNodesLocations,
-          includedFields: this._ExtractNodeFields,
+          key: this.ds.treeInitLocationPattern,
+          includedFields: this.ds.extractNodeFields,
           keyField: '@tre|TRE_NOD_LOC',
         },
       ],

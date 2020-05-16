@@ -16,8 +16,12 @@
     <div [attr.id]="'n_' + n.id" [class]="'node' + (n.current ? ' current' : '')" *cdkVirtualFor="let n of FlatTree"
       [style.padding-left.px]="treeLeftPadding + (n.level * nodeIndent)" [style.height.px]="nodeHeight">
       <div (click)="NodePMClick(n)">{{NodePM(n)}}</div>
-      <div class="node-icon"><i [class]="NodeIcon(n)" [style.color]="NodeIconColor(n)"></i></div>
-      <div class="node-text"  (click)="NodeClick(n)">{{n.text}}</div>
+      <span class="node-icon fa-stack">
+        <i [class]="NodeIcon(n)+' fa-stack-1x'" [style.color]="NodeIconColor(n)"></i>
+        <i *ngIf="n.isChildNodesLoading"
+          class="fa fa-spinner fa-spin fa-3x fa-fw fa-stack-1x m-0 node-working"></i>
+      </span>
+      <div [class]="'node-text'" [style.color]="n.isChildNodesLoading ? colorDefinitions.danger : ''" (click)="NodeClick(n)">{{n.text}}</div>
     </div>
 
   </cdk-virtual-scroll-viewport>

@@ -70,14 +70,17 @@ export class TreeViewComponent implements OnInit {
     node.level = level;
 
     // temporarily assign node color
-    switch(node.level){
+    switch (node.level) {
       case 0:
-        node.sta = 'red'; break;
-        case 1:
-          node.sta = 'ora'; break;
-          case 2:
-            node.sta = 'grn'; break;
-        }
+        node.sta = 'red';
+        break;
+      case 1:
+        node.sta = 'ora';
+        break;
+      case 2:
+        node.sta = 'grn';
+        break;
+    }
 
     ret.push(node);
 
@@ -142,13 +145,14 @@ export class TreeViewComponent implements OnInit {
     return ret;
   }
 
-  private _defaultColor = '#6479a4';
   NodeIconColor(n): string {
-    if(this.colorDefinitions==null) return this._defaultColor;
     const cdef = this.colorDefinitions;
+
+    if (this.colorDefinitions == null) return cdef.default;
+
     switch (n.sta) {
       case undefined:
-        return this._defaultColor;
+        return cdef.default;
       case 'red':
         return cdef.danger;
       case 'ora':
@@ -158,7 +162,6 @@ export class TreeViewComponent implements OnInit {
       default:
         return cdef.secondary;
     }
-
   }
   NodeIcon(n): string {
     return n.exp ? 'fa fa-folder-open' : 'fa fa-folder';

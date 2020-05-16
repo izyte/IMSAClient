@@ -5,18 +5,27 @@ $footer_height: 24px;
 $detail_top_height: 0px;
 $detail_bottom_height: 0px;
 
-$toolbar_height:30px;
+$toolbar_height: 30px;
 
-$separator_size:6px;
-$separator_collapse_size:25px;
+$separator_size: 6px;
+$separator_collapse_size: 25px;
 
 $fixed_height_total: $header_height + $footer_height + $detail_top_height +
   $detail_bottom_height;
 
+// ********************************** bootstrap colors ******************************
+$bs_danger: #dc3545;
+$bs_warning: #ffc107;
+$bs_success: #28a745;
+$bs_info: #17a2b8;
+$bs_secondary: #6c757d;
+$bs_primary: #007bff;
+$bs_default: #6479a4;
+
 // ********************************* Colour Variables ****************************
 $back_color_dark: #071e3e;
 $back_color_light: #304c86;
-$back_color_very_light_blue:#ebf1fa;
+$back_color_very_light_blue: #ebf1fa;
 
 $fore_color_dark: $back_color_light;
 $fore_color_light: #6479a4;
@@ -24,18 +33,17 @@ $fore_color_light: #6479a4;
 $line_color_dark: #25427f;
 $menu_undeline: #859dbf;
 
-$line_very_light_gray:#dfdfdf;
+$line_very_light_gray: #dfdfdf;
 
 //separators
 $separator_color: #d8dfe7;
-$separator_border:1px inset #c0c0c0;
+$separator_border: 1px inset #c0c0c0;
 
 //tree
-$tree_bg_current_node:$separator_color;
-$tree_bg_toolbar:$back_color_very_light_blue;
-$tree_ht_toolbar:$toolbar_height;
-$tree_border_toolbar:1px inset $line_very_light_gray;
-
+$tree_bg_current_node: $separator_color;
+$tree_bg_toolbar: $back_color_very_light_blue;
+$tree_ht_toolbar: $toolbar_height;
+$tree_border_toolbar: 1px inset $line_very_light_gray;
 
 //$line_color_view: #c0c0c0;
 $line_color_view: $menu_undeline;
@@ -44,4 +52,4 @@ $line_color_view: $menu_undeline;
 //   2.
 
 // Form Header
-$form_header_height:$toolbar_height;
+$form_header_height: $toolbar_height;

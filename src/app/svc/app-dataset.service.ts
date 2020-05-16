@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import * as config from '../../assets/config/cfg.json';
+
 /**Application tables *****/
 /*
 import { TblParent, TblParentRow, TblUsers, TblAnomalies } from './app.tables';
@@ -50,6 +52,7 @@ export class AppDataset extends DatasetBase {
     this.tblAnomalies.tableRelations.push(new Relation("node", "lkp", this.tblAnomalies, this.tblNodesAttrib, "AN_ASSET_ID", "REC_TAG", false));
     this.tblTreeStruc.tableRelations.push(new Relation("node", "1to1", this.tblTreeStruc, this.tblNodesAttrib, "TRE_DAT_TAG", "", false));
     this.tblTreeStruc.tableRelations.push(new Relation("tre", "1tom", this.tblTreeStruc, this.tblTreeStruc, "", "TRE_NOD_TAG_PAR", true));
+    this.tblTreeStruc.tableRelations.push(new Relation("an", "1tom", this.tblTreeStruc, this.tblAnomalies, "", "AN_ASSET_ID", true));
 //</RELATIONS>
 
     //<DECLARE>
@@ -81,43 +84,36 @@ export class AppDataset extends DatasetBase {
 
   /************************** Application Specific Declarations and Methods *****************************/
   // setup aplication source api url
-  //public apiUrl: string = 'http://ngimsa.ivideolib.com/api/app';
 
   public get apiUrl(): string {
-    if(location.hostname == 'localhost'){
-      // during development, data will be extracted
-      // from the configured a local deployment of the server side api application
-      return 'http://soga-alv/NgIMSA/api/app';
-    }else{
-      // when application is deployed to the web server,
-      // data will be extracted from the configured
-      // api server
-      return 'http://ngimsa.ivideolib.com/api/app';
-    }
+    return this.isDeployed
+      ? config.general.url_deploy
+      : config.general.url_local;
   }
 
-  public colorDefinitions:any = {
-    danger:'#dc3545',
-    warning:'#ffc107',
-    success:'#28a745',
-    info:'#17a2b8',
-    secondary:'#6c757d',
-    primary:'#007bff'
+  public get isDeployed(): boolean {
+    return location.hostname != 'localhost' || config.general.url_use_deploy;
   }
+
+  public colorDefinitions: any = config.general.color_defs;
 
   public get debugText(): string {
     return '<b>Debug:</b>';
+  }
+
+  public get appConfig(): any {
+    return config;
   }
 
   private _errorObject: any = { type: '', trace: [] };
   public get errorObject(): any {
     return this._errorObject;
   }
-  public clearError(){
+  public clearError() {
     this._errorObject = { type: '', trace: [] };
   }
   public set errorObject(value: any) {
-    let err:any = {};
+    let err: any = {};
 
     if (value.status == 500) {
       err.type = value.statusText;
@@ -133,40 +129,23 @@ export class AppDataset extends DatasetBase {
   public rootNodeId: number = 4667;
   public mainTreeCurrentNode: any = {};
 
-  public menuList: Array<any> = [
-    {
-      id: 1,
-      label: 'Modules',
-      active: true,
-      icon: 'fa fa-window-maximize',
-      subMenu: [
-        { id: 1, label: 'Anomaly', active: true },
-        { id: 2, label: 'Design Data', active: false },
-        { id: 3, label: 'Chemical Database', active: false },
-        { id: 4, label: 'Risk Based Inspection', active: false },
-        { id: 5, label: 'Survey Data', active: false },
-        { id: 6, label: 'Freespan', active: false },
-        { id: 7, label: 'Reference Library', active: false },
-        { id: 8, label: 'Seismic', active: false },
-      ],
-    },
-    {
-      id: 2,
-      label: 'Tools',
-      active: false,
-      icon: 'fa fa-wrench',
-      subMenu: [
-        { id: 9, label: 'User Management', active: false },
-        { id: 10, label: 'Asset Management', active: false },
-        { id: 11, label: 'Survey Upload', active: false },
-      ],
-    },
-    { id: 3, label: 'Help', active: false, icon: 'fa fa-question-circle' },
-    {
-      id: 4,
-      label: 'Hi User Name [id]',
-      active: false,
-      icon: 'fa fa-user ml-2',
-    },
-  ];
+  // read setup configuration properties
+  public menuList: Array<any> = config.app_menu;
+  public treeInitLocationPattern = this.isDeployed
+    ? config.tree_init_config.tree_location_filter_pattern_deploy
+    : config.tree_init_config.tree_location_filter_pattern;
+  public extractNodeFields = config.tree_init_config.tree_extract_node_fields;
+  public extractTreeFields = config.tree_init_config.tree_extract_tree_fields;
+
+  public childExtractLevels(parentTreeLocation: string): string {
+    const childLevels = config.tree_init_config.tree_child_extract_levels;
+    let ret: string = '';
+    for (let idx = 1; idx <= childLevels; idx++) {
+      ret += (idx > 1 ? ',' : '') + parentTreeLocation;
+      for (let h = 1; h <= idx; h++) {
+        ret += '__';
+      }
+    }
+    return ret;
+  }
 }
