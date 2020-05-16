@@ -65,11 +65,6 @@ export class AppDataset extends DatasetBase {
 
 
 
-  // setup aplication source api url
-  //public apiUrl: string = 'http://soga-alv/NgArbi/api/app';
-  public apiUrl: string = 'http://ngimsa.ivideolib.com/api/app';
-  //public apiUrl: string = "http://soga-alv/NgIMSAPub/api/app";
-  // public apiUrl: string = "http://107.180.71.181/plesk-site-preview/ngimsa.ivideolib.com/107.180.71.181/api/app";
 
   //<INSTANTIATE>
   public tblAnomalies:TblAnomalies = this.AddTable(new TblAnomalies(this.http, this.apiUrl, this.tables, this.apiCommon));
@@ -91,6 +86,17 @@ export class AppDataset extends DatasetBase {
   */
 
   /************************** Application Specific Declarations and Methods *****************************/
+// setup aplication source api url
+  //public apiUrl: string = 'http://ngimsa.ivideolib.com/api/app';
+
+  public get apuUrl():string{
+    return "http://soga-alv/NgIMSAPub/api/app";
+  }
+
+  public get debugText():string{
+    return "<b>Debug:</b>";
+  }
+
   public mainTreeData:Array<any>=[];
   public rootNodeId:number = 4667;
   public mainTreeCurrentNode:any={};
@@ -131,5 +137,7 @@ export class AppDataset extends DatasetBase {
       icon: 'fa fa-user ml-2',
     },
   ];
+
+
 
 }
