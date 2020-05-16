@@ -43,8 +43,7 @@ export class AppDataset extends DatasetBase {
   ) {
     super(http);
 
-
-//<RELATIONS>
+    //<RELATIONS>
     this.tblAnomalies.tableRelations.push(new Relation("rf", "lnk", this.tblAnomalies, this.tblRefFiles, "", "", false));
     this.tblAnomalies.tableRelations.push(new Relation("ft", "lnk", this.tblAnomalies, this.tblFailureThreats, "", "", false));
     this.tblAnomalies.tableRelations.push(new Relation("lkp", "lkp", this.tblAnomalies, this.tblLookups, "AN_STATUS", "LKP_ID", false));
@@ -53,18 +52,14 @@ export class AppDataset extends DatasetBase {
     this.tblTreeStruc.tableRelations.push(new Relation("tre", "1tom", this.tblTreeStruc, this.tblTreeStruc, "", "TRE_NOD_TAG_PAR", true));
 //</RELATIONS>
 
-  //<DECLARE>
+    //<DECLARE>
   this.apiCommon.PARAMS_DELIM_CHAR = '`';
   this.apiCommon.PARAMS_VAL_DELIM_CHAR = ',';
   this.apiCommon.FIELD_PARENT_LINK_ALIAS = 'lnk_id';
   this.apiCommon.FIELD_CHILD_FIRST_ALIAS = 'lnk_child_first';
   this.apiCommon.FIELD_CHILD_COUNT_ALIAS = 'lnk_child_count';
   //</DECLARE>
-
   }
-
-
-
 
   //<INSTANTIATE>
   public tblAnomalies:TblAnomalies = this.AddTable(new TblAnomalies(this.http, this.apiUrl, this.tables, this.apiCommon));
@@ -80,26 +75,63 @@ export class AppDataset extends DatasetBase {
   public tblUsers:TblUsers = this.AddTable(new TblUsers(this.http, this.apiUrl, this.tables, this.apiCommon));
 //</INSTANTIATE>
 
-
   /*
   this.tblTableClass = this.AddTable(new TblTableClass(this.http,this.apiUrl,this.tables));
   */
 
   /************************** Application Specific Declarations and Methods *****************************/
-// setup aplication source api url
+  // setup aplication source api url
   //public apiUrl: string = 'http://ngimsa.ivideolib.com/api/app';
 
-  public get apuUrl():string{
-    return "http://soga-alv/NgIMSAPub/api/app";
+  public get apiUrl(): string {
+    if(location.hostname == 'localhost'){
+      // during development, data will be extracted
+      // from the configured a local deployment of the server side api application
+      return 'http://soga-alv/NgIMSA/api/app';
+    }else{
+      // when application is deployed to the web server,
+      // data will be extracted from the configured
+      // api server
+      return 'http://ngimsa.ivideolib.com/api/app';
+    }
   }
 
-  public get debugText():string{
-    return "<b>Debug:</b>";
+  public colorDefinitions:any = {
+    danger:'#dc3545',
+    warning:'#ffc107',
+    success:'#28a745',
+    info:'#17a2b8',
+    secondary:'#6c757d',
+    primary:'#007bff'
   }
 
-  public mainTreeData:Array<any>=[];
-  public rootNodeId:number = 4667;
-  public mainTreeCurrentNode:any={};
+  public get debugText(): string {
+    return '<b>Debug:</b>';
+  }
+
+  private _errorObject: any = { type: '', trace: [] };
+  public get errorObject(): any {
+    return this._errorObject;
+  }
+  public clearError(){
+    this._errorObject = { type: '', trace: [] };
+  }
+  public set errorObject(value: any) {
+    let err:any = {};
+
+    if (value.status == 500) {
+      err.type = value.statusText;
+      err.url = value.url;
+      err.name = value.name;
+      err.message = value.message;
+      err.status = value.status;
+    }
+    this._errorObject = err;
+  }
+
+  public mainTreeData: Array<any> = [];
+  public rootNodeId: number = 4667;
+  public mainTreeCurrentNode: any = {};
 
   public menuList: Array<any> = [
     {
@@ -137,7 +169,4 @@ export class AppDataset extends DatasetBase {
       icon: 'fa fa-user ml-2',
     },
   ];
-
-
-
 }

@@ -1,3 +1,4 @@
+import { SurveyUploadComponent } from './../survey-upload/survey-upload.component';
 import { TblTreeStrucRow, TblNodesAttribRow } from './../../svc/app.tables';
 import { TreeViewComponent } from './../../api/cmp/tree-view/tree-view.component';
 import { AppDataset } from './../../svc/app-dataset.service';
@@ -101,6 +102,7 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
   //private _InitialNodesLocations: string = '$$,$$__,$$____,$$______,$$________,$$__________,$$____________,$$______________';
   private _InitialNodesLocations: string = '$$,$$__,$$____,$$______,$$________,$$__________';
   //private _InitialNodesLocations: string = '$$,$$__,$$____,$$______';
+  //private _InitialNodesLocations: string = '$$,$$__';
   //private _InitialNodesLocations: string = '$$%';
   private _ExtractNodeFields: string = 'REC_TAG`NODE_ID`NODE_DESC';
   private _ExtracTreeFields: string =
@@ -174,6 +176,10 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
   }
 
   GetInitialTreeData() {
+
+    this.ds.clearError();
+    this.treeLoadingReset();
+
     this.ds.Get(
       [
         {
@@ -226,6 +232,7 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
             treeNode.pid = r.TRE_NOD_TAG_PAR;
             treeNode.ccnt = r.childCount;
             treeNode.exp = expArr.indexOf(r.TRE_NOD_TAG) != -1;
+            //treeNode.sta = 'ora';
 
             // add tree node data
             this.ds.mainTreeData.push(treeNode);
@@ -244,7 +251,8 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
           // end of onSuccess
         },
         onError: (err) => {
-          console.log(err);
+          // process error result
+          this.ds.errorObject = err;
         },
       }
     );
@@ -265,8 +273,21 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
   }
 
   SeparatorClick(item: string) {
-    console.log('item', item, this.panelSwitch, this.infoPanelWidth);
     this.panelSwitch[item] = !this.panelSwitch[item];
+  }
+
+  private _treeLoadingMessage="Loading tree. Please wait...";
+  private treeLoadingReset(){
+    this._treeLoadingMessage="Loading tree. Please wait...";
+  }
+  public get treeLoadingMessage():string{
+    if(this.ds.errorObject.type != ''){
+      const err = this.ds.errorObject;
+      this._treeLoadingMessage = err.type + ", " +  err.message.split('?')[0];
+    }else{
+      this.treeLoadingReset();
+    }
+    return this._treeLoadingMessage;
   }
 
   _NodePath: string = '-';

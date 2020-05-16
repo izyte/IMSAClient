@@ -1,7 +1,4 @@
-
-
 @import "../../../../appcssvars.scss";
-
 
 #tree-wrapper {
   display: flex;
@@ -11,20 +8,25 @@
   font-family: Roboto-Light;
   //background-color: red;
 
-  #tree-toolbar{
+  #tree-toolbar {
     display: flex;
-    height:$tree_ht_toolbar;
+    height: $tree_ht_toolbar;
     background-color: $tree_bg_toolbar;
     border-bottom: $tree_border_toolbar;
-    margin-bottom:5px;
+    margin-bottom: 5px;
     box-sizing: border-box;
     padding-left: 6px;
     padding-right: 6px;
-    >div{
+    > div {
       font-family: Roboto-Light;
     }
-    >div:last-child{
-      margin-left:auto;
+    > div:last-child {
+      margin-left: auto;
+    }
+    button {
+      i {
+        font-size: 0.8em;
+      }
     }
   }
 
@@ -48,20 +50,32 @@
       user-select: none;
       -o-user-select: none;
       display: flex;
-      > div:first-child{
-        font-size:1em;
-        padding:0px;
+      > div:first-child {
+        font-size: 1em;
+        padding: 0px;
         //background-color: lime;
         text-align: center;
         cursor: pointer;
-        width:12px;
+        width: 12px;
+        //background-color: yellow;
       }
-      > div.node-text{
+      > div.node-icon {
+        //background-color: greenyellow;
+        width:18px;
+        margin-right: 0px;
+        text-align: center;
+        font-size:.85em;
+      }
+      > div.node-text {
         // node text
         font-family: Roboto-Light;
-        font-size: .85em;
+        font-size: 0.85em;
+        white-space: nowrap;
         //background-color: magenta;
         cursor: default;
+        //background-color: lime;
+        margin-left:0px;
+        flex: 1 1 0;
       }
     }
   }

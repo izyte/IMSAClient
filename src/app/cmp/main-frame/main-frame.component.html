@@ -38,9 +38,10 @@
           <app-tree-view *ngIf="true"  #mainTree [treeData]="ds.mainTreeData"
           (nodeClick)="TreeClick($event)"
           (nodePMClick)="TreePMClick($event)"
+          [colorDefinitions]="ds.colorDefinitions"
 
           [rootId]="ds.rootNodeId" [nodeHeight]="22">
-            <span class="text-center p-3">Loading tree. Please wait...</span>
+            <span class="text-center p-3">{{treeLoadingMessage}}</span>
           </app-tree-view>
 
         </div>
@@ -67,7 +68,9 @@
         <div id="pnl-right"  [style.width]="this.panelSwitch.info ? (infoPanelWidth==-1 ?'' : infoPanelWidth +'px') :  '0px'">
           <ul class="list-group">
             <li class="list-group-item py-1 px-2">Asset:&nbsp;{{ this.ds.mainTreeCurrentNode.text }}</li>
+            <li class="list-group-item py-1 px-2">URL:&nbsp;{{ this.ds.apiUrl }}</li>
           </ul>
+
         </div>
       </div>
       <div id="pnl-bottom"></div>

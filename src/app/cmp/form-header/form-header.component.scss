@@ -1,33 +1,51 @@
 @import "../../../appcssvars.scss";
 
-#header-wrapper{
+#header-wrapper {
   box-sizing: border-box;
   border-bottom: 1px solid $line_very_light_gray;
   //padding: 6px 12px;
   padding: 0px 12px;
-  background-color:$back_color_very_light_blue;
-  height:$form_header_height;
+  background-color: $back_color_very_light_blue;
+  height: $form_header_height;
 
-  h1,h2,h3{
+  h1,
+  h2,
+  h3 {
     color: $fore_color_dark;
-    font-family: 'Montserrat-SemiBoldItalic';
+    font-family: "Montserrat-SemiBoldItalic";
     font-weight: bolder;
     margin: 0px;
     text-shadow: gray 2px 2px 2px;
   }
-  >i:first-child{
+  > i:first-child {
     color: $fore_color_light;
-    margin-right:6px;
-    margin-top:5px;
+    margin-right: 6px;
+    margin-top: 5px;
     font-size: 1.3em;
   }
-  >div:last-child{
+  #search-div {
+    input#search {
+      margin-top: 4px;
+      font-size: 0.8em;
+      padding-top: 0px;
+      padding-bottom: 0px;
+      padding-left: 8px;
+      padding-right: 8px;
+      width: 200px;
+      border: 1px solid $line_very_light_gray;
+      border-radius: 10px;
+    }
+    button i{
+      font-size:.85em;
+    }
+  }
+  > div:last-child {
     //background-color: red;
     padding-top: 3px;
     padding-bottom: 0px;
-    button{
-      font-family: 'Roboto-Light';
-      font-size: .85em;
+    button {
+      font-family: "Roboto-Light";
+      font-size: 0.85em;
       margin-bottom: 0px;
       padding-bottom: 0px;
     }

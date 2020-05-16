@@ -1,7 +1,11 @@
 <div class="container-fluid m-0 p-0">
   <div id="header-wrapper" class="d-flex">
    <i class="fa fa-window-maximize"></i> <h3>{{title}}</h3>
-<div id="right-header" class="ml-auto ">
+   <div id="search-div" class="ml-auto">
+     <input type="text" id="search" placeholder="Search" aria-label="Search">
+     <button class="btn btn-sm p-0 m-0 mx-1 text-secondary"><i class="fa fa-filter"></i></button>
+    </div>
+<div id="right-header">
   <button class="btn btn-sm btn-link m-0" [title]="SetButtonTitle('add')"><i class="fa fa-plus mr-1"></i>Add</button>
   <button class="btn btn-sm btn-link m-0" [title]="SetButtonTitle('edit')"><i class="fa fa-edit mr-1 text-success"></i>Edit</button>
   <button class="btn btn-sm btn-link m-0" [title]="SetButtonTitle('delete')"><i class="fa fa-times mr-1 text-danger"></i>Delete</button>

@@ -12,6 +12,7 @@ export class TreeViewComponent implements OnInit {
   @Input() nodeHeight: number = 20;
   @Input() nodeIndent: number = 20;
   @Input() treeLeftPadding: number = 5;
+  @Input() colorDefinitions: any = null;
 
   @Output() nodeClick: EventEmitter<any> = new EventEmitter();
   @Output() nodePMClick: EventEmitter<any> = new EventEmitter();
@@ -25,8 +26,8 @@ export class TreeViewComponent implements OnInit {
     //this.ProcessTree();
   }
 
-  SetButtonTitle(type:string):string{
-    return "Sorry. This action is not yet avialable..."
+  SetButtonTitle(type: string): string {
+    return 'Sorry. This action is not yet avialable...';
   }
 
   public ProcessTree() {
@@ -67,6 +68,17 @@ export class TreeViewComponent implements OnInit {
     if (node.id == this.rootId) level = 0;
 
     node.level = level;
+
+    // temporarily assign node color
+    switch(node.level){
+      case 0:
+        node.sta = 'red'; break;
+        case 1:
+          node.sta = 'ora'; break;
+          case 2:
+            node.sta = 'grn'; break;
+        }
+
     ret.push(node);
 
     if (node.exp) {
@@ -88,12 +100,14 @@ export class TreeViewComponent implements OnInit {
   }
 
   NodePMClick(node: any) {
-
     // skip routine if pm is not available
-    if(this.NodePM(node)=='') return;
+    if (this.NodePM(node) == '') return;
 
     if (this.treeData.find((n) => n.pid == node.id) == null) {
-      this.nodePMClick.emit({ node: node, options: { childNodesMissing: true } });
+      this.nodePMClick.emit({
+        node: node,
+        options: { childNodesMissing: true },
+      });
       return;
     }
     node.exp = !node.exp;
@@ -126,5 +140,27 @@ export class TreeViewComponent implements OnInit {
     }
 
     return ret;
+  }
+
+  private _defaultColor = '#6479a4';
+  NodeIconColor(n): string {
+    if(this.colorDefinitions==null) return this._defaultColor;
+    const cdef = this.colorDefinitions;
+    switch (n.sta) {
+      case undefined:
+        return this._defaultColor;
+      case 'red':
+        return cdef.danger;
+      case 'ora':
+        return cdef.warning;
+      case 'grn':
+        return cdef.success;
+      default:
+        return cdef.secondary;
+    }
+
+  }
+  NodeIcon(n): string {
+    return n.exp ? 'fa fa-folder-open' : 'fa fa-folder';
   }
 }
