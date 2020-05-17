@@ -1,6 +1,9 @@
 import { SurveyUploadComponent } from './../survey-upload/survey-upload.component';
 import { TblTreeStrucRow, TblNodesAttribRow } from './../../svc/app.tables';
-import { TreeViewComponent } from './../../api/cmp/tree-view/tree-view.component';
+import {
+  TreeViewComponent,
+  TreeViewNode,
+} from './../../api/cmp/tree-view/tree-view.component';
 import { AppDataset } from './../../svc/app-dataset.service';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 
@@ -34,9 +37,7 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     // Request data based on selected module....
   }
 
-
-
-  public menuList:Array<any> = this.ds.menuList;
+  public menuList: Array<any> = this.ds.menuList;
 
   private get activeMenu(): any {
     return this.menuList.find((e) => e.active);
@@ -99,14 +100,14 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     this.GetInitialTreeData();
   }
 
-  LoadChildrenTreeData(parentNode: any) {
+  LoadChildrenTreeData(parentNode: TreeViewNode) {
     // set loading flag to true
     parentNode.isChildNodesLoading = true;
     const parentId = parentNode.id;
 
     // search parent node record from this.ds.tblTreeStruc
     let row: TblTreeStrucRow = this.ds.tblTreeStruc.GetRowById(parentId);
-    let location:string =this.ds.childExtractLevels(row.TRE_NOD_LOC);
+    let location: string = this.ds.childExtractLevels(row.TRE_NOD_LOC);
 
     this.ds.Get(
       [
@@ -140,19 +141,21 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
             if (!mainTreeData.find((e) => e.id == r.TRE_NOD_TAG)) {
               // if not yet in the tree table, add record
               // find record in nodeAttrib table
-              let node:TblNodesAttribRow = this.ds.tblNodesAttrib.GetRowById(r.TRE_DAT_TAG);
-
-              // create tree node data
-              let treeNode: any = {};
-
-              treeNode.id = r.TRE_NOD_TAG;
-              treeNode.text = node ? node.NODE_DESC : 'Node ' + treeNode.id;
-              treeNode.pid = r.TRE_NOD_TAG_PAR;
-              treeNode.ccnt = r.childCount;
-              treeNode.exp = false;
+              let node: TblNodesAttribRow = this.ds.tblNodesAttrib.GetRowById(
+                r.TRE_DAT_TAG
+              );
 
               // add tree node data
-              this.ds.mainTreeData.push(treeNode);
+              this.ds.mainTreeData.push(
+                new TreeViewNode(
+                  r.TRE_NOD_TAG,
+                  r.TRE_NOD_TAG_PAR,
+                  node ? node.NODE_DESC : 'Node ' + r.TRE_NOD_TAG,
+                  false,
+                  false,
+                  r.childCount
+                )
+              );
             }
           });
 
@@ -165,7 +168,6 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
   }
 
   GetInitialTreeData() {
-
     this.ds.clearError();
     this.treeLoadingReset();
 
@@ -173,7 +175,9 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
       [
         {
           code: 'tre',
-          key: this.ds.treeInitLocationPattern,
+          //key: this.ds.treeInitLocationPattern,
+          //key: "$$,$$__,$$____,$$______,$$________,$$__________" ,
+          //key: this.ds.childExtractLevels(),
           keyField: 'TRE_NOD_LOC',
           includedFields: this.ds.extractTreeFields,
           requestConfig: 'count=tre,first=tre',
@@ -209,20 +213,18 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
           // iterate through all rows in the tblTreeStruc table
           this.ds.tblTreeStruc.rows.forEach((r) => {
             const node = this.ds.tblNodesAttrib.GetRowById(r.TRE_DAT_TAG);
-            //const expArr = [this.treeView.rootId, 2830,3745,4877];
-
-            // create tree node data
-            let treeNode: any = {};
-
-            treeNode.id = r.TRE_NOD_TAG;
-            treeNode.text = node ? node.NODE_DESC : 'Node ' + treeNode.id;
-            treeNode.pid = r.TRE_NOD_TAG_PAR;
-            treeNode.ccnt = r.childCount;
-            treeNode.exp = expArr.indexOf(r.TRE_NOD_TAG) != -1;
-            //treeNode.sta = 'ora';
 
             // add tree node data
-            this.ds.mainTreeData.push(treeNode);
+            this.ds.mainTreeData.push(
+              new TreeViewNode(
+                r.TRE_NOD_TAG,
+                r.TRE_NOD_TAG_PAR,
+                node ? node.NODE_DESC : 'Node ' + r.TRE_NOD_TAG,
+                expArr.indexOf(r.TRE_NOD_TAG) != -1,
+                false,
+                r.childCount
+              )
+            );
           });
 
           setTimeout(() => {
@@ -263,15 +265,15 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     this.panelSwitch[item] = !this.panelSwitch[item];
   }
 
-  private _treeLoadingMessage="Loading tree. Please wait...";
-  private treeLoadingReset(){
-    this._treeLoadingMessage="Loading tree. Please wait...";
+  private _treeLoadingMessage = 'Loading tree. Please wait...';
+  private treeLoadingReset() {
+    this._treeLoadingMessage = 'Loading tree. Please wait...';
   }
-  public get treeLoadingMessage():string{
-    if(this.ds.errorObject.type != ''){
+  public get treeLoadingMessage(): string {
+    if (this.ds.errorObject.type != '') {
       const err = this.ds.errorObject;
-      this._treeLoadingMessage = err.type + ", " +  err.message.split('?')[0];
-    }else{
+      this._treeLoadingMessage = err.type + ', ' + err.message.split('?')[0];
+    } else {
       this.treeLoadingReset();
     }
     return this._treeLoadingMessage;

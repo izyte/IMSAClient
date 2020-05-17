@@ -43,7 +43,7 @@
   "general":{
     "url_local":"http://soga-alv/ngarbi/api/app",
     "url_deploy":"http://ngimsa.ivideolib.com/api/app",
-    "url_use_deploy":false,
+    "url_use_deploy":true,
     "color_defs":{
       "danger": "#dc3545",
       "warning": "#ffc107",
@@ -56,6 +56,7 @@
   },
 
   "tree_init_config": {
+    "tree_root_location":"$$",
     "tree_location_filter_pattern": "$$,$$__",
     "tree_location_filter_pattern_deploy": "$$,$$__,$$____,$$______,$$________",
     "tree_extract_node_fields": "REC_TAG`NODE_ID`NODE_DESC",

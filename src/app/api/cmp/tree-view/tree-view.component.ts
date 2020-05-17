@@ -7,7 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./tree-view.component.scss'],
 })
 export class TreeViewComponent implements OnInit {
-  @Input() treeData: Array<any> = [];
+  @Input() treeData: Array<TreeViewNode> = [];
   @Input() rootId: number = 0;
   @Input() nodeHeight: number = 20;
   @Input() nodeIndent: number = 20;
@@ -54,14 +54,14 @@ export class TreeViewComponent implements OnInit {
     return ret;
   }
 
-  private _FlatTree: Array<any> = [];
-  get FlatTree(): Array<any> {
+  private _FlatTree: Array<TreeViewNode> = [];
+  get FlatTree(): Array<TreeViewNode> {
     return this._FlatTree;
   }
-  SetFlatTree(node?: any, level?: number): Array<any> {
+  SetFlatTree(node?: TreeViewNode, level?: number): Array<TreeViewNode> {
     if (this.treeData.length == 0) return [];
 
-    let ret: Array<any> = [];
+    let ret: Array<TreeViewNode> = [];
 
     if (node == undefined)
       node = this.treeData.find((n) => n.id == this.rootId);
@@ -85,7 +85,7 @@ export class TreeViewComponent implements OnInit {
     ret.push(node);
 
     if (node.exp) {
-      let children: Array<any> = this.treeData.filter(
+      let children: Array<TreeViewNode> = this.treeData.filter(
         (n) => n.pid == node.id && n.id != 0
       );
       children.forEach((n) => {
@@ -173,11 +173,18 @@ export class TreeViewNode {
     public id: number,
     public pid: number,
     public text?: string,
-    public exp?: boolean
+    public exp?: boolean,
+    public current?: boolean,
+    public ccnt?: number
   ) {
     if (text == undefined) text = 'Node ' + id;
     if (exp == undefined) exp = false;
+    if (current == undefined) current = false;
+    if (ccnt == undefined) ccnt = 0;
   }
+
+  public level: number = 0;
+  public isChildNodesLoading:boolean=false;
 
   private _dataIndex: number = 0;
   public get dataIndex(): number {
@@ -205,12 +212,15 @@ export class TreeViewNode {
     0,
   ];
 
-  public get ccnt(): string {
-    return this._statsArray[this.dataIndex];
-  }
-  public set ccnt(value: string) {
-    this._statsArray[this.dataIndex] = value;
-  }
+  // private _childCount: number = 0;
+  // public get ccnt(): number {
+  //   return this._childCount;
+  //   //return this._countsArray[this.dataIndex];
+  // }
+  // public set ccnt(value: number) {
+  //   this._childCount = value;
+  //   //this._countsArray[this.dataIndex] = value;
+  // }
 
   private _statsArray: Array<string> = [
     '',

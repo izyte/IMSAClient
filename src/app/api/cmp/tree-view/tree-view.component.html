@@ -5,6 +5,9 @@
         <i class="fa fa-angle-double-down"></i>
       </button>
     </div>
+    <div class="pt-1">
+      Nodes: {{treeData.length}}
+    </div>
     <div>
       <button [title]="SetButtonTitle('exp_all')" class="btn btn-sm text-secondary">
         <i class="fa fa-thumbtack"></i>
@@ -13,7 +16,8 @@
   </div>
   <ng-content *ngIf="treeData.length==0"></ng-content>
   <cdk-virtual-scroll-viewport *ngIf="treeData.length!=0" id="tree-view-port" [itemSize]="nodeHeight">
-    <div [attr.id]="'n_' + n.id" [class]="'node' + (n.current ? ' current' : '')" *cdkVirtualFor="let n of FlatTree"
+    <div [attr.id]="'n_' + n.id" [class]="'node' + (n.current ? ' current' : '')"
+      *cdkVirtualFor="let n of FlatTree"
       [style.padding-left.px]="treeLeftPadding + (n.level * nodeIndent)" [style.height.px]="nodeHeight">
       <div (click)="NodePMClick(n)">{{NodePM(n)}}</div>
       <span class="node-icon fa-stack">
