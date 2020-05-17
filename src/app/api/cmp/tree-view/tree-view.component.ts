@@ -31,6 +31,8 @@ export class TreeViewComponent implements OnInit {
       return 'Expand all nodes.';
     } else if (type == 'col_all') {
       return 'Collapse all nodes to level after root node.';
+    } else if (type == 'col_level') {
+      return 'Collapse nodes one level up.';
     }
     return 'Sorry. This action is not yet avialable...';
   }
@@ -52,6 +54,24 @@ export class TreeViewComponent implements OnInit {
       this.isGlobalAction = false;
     }, 20);
   }
+
+  public CollapseAllToLevel() {
+    if (this._maxLevel <= 1) return; // cannot collpase anymore
+
+    this.isGlobalAction = true;
+    console.log('maxlevel!', this._maxLevel);
+
+    setTimeout(() => {
+      console.log('Collapse 1 level');
+      this.treeData.forEach((n: TreeViewNode) => {
+        n.exp = n.level < this._maxLevel && n.ccnt > 0;
+      });
+      this._maxLevel--;
+      this.ProcessTree();
+      this.isGlobalAction = false;
+    }, 20);
+  }
+
   public ProcessTree() {
     this._FlatTree = this.SetFlatTree();
     //console.log("FLATTREE!:",this.FlatTree);
@@ -62,6 +82,10 @@ export class TreeViewComponent implements OnInit {
     if (currentNode != null) currentNode.current = false;
     n.current = true;
     this.nodeClick.emit(n);
+  }
+
+  public get currNode():TreeViewNode{
+    return this.treeData.find((r) => r.current);
   }
 
   public get NodePath(): string {
@@ -80,13 +104,18 @@ export class TreeViewComponent implements OnInit {
   get FlatTree(): Array<TreeViewNode> {
     return this._FlatTree;
   }
+
+  private _maxLevel: number = 0;
   SetFlatTree(node?: TreeViewNode, level?: number): Array<TreeViewNode> {
     if (this.treeData.length == 0) return [];
 
     let ret: Array<TreeViewNode> = [];
 
-    if (node == undefined)
+    if (node == undefined) {
       node = this.treeData.find((n) => n.id == this.rootId);
+      this._maxLevel = 0;
+    }
+
     if (node.id == this.rootId) level = 0;
 
     node.level = level;
@@ -104,6 +133,7 @@ export class TreeViewComponent implements OnInit {
         break;
     }
 
+    this._maxLevel = node.level;
     ret.push(node);
 
     if (node.exp) {
@@ -194,15 +224,19 @@ export class TreeViewNode {
   constructor(
     public id: number,
     public pid: number,
+    public did?: number,
     public text?: string,
     public exp?: boolean,
     public current?: boolean,
-    public ccnt?: number
+    public ccnt?: number,
+    public loc?: string
   ) {
     if (text == undefined) text = 'Node ' + id;
     if (exp == undefined) exp = false;
     if (current == undefined) current = false;
     if (ccnt == undefined) ccnt = 0;
+    if (did == undefined) did = 0;
+    if (loc == undefined) loc = '';
   }
 
   public level: number = 0;
@@ -234,15 +268,12 @@ export class TreeViewNode {
     0,
   ];
 
-  // private _childCount: number = 0;
-  // public get ccnt(): number {
-  //   return this._childCount;
-  //   //return this._countsArray[this.dataIndex];
-  // }
-  // public set ccnt(value: number) {
-  //   this._childCount = value;
-  //   //this._countsArray[this.dataIndex] = value;
-  // }
+  public getDataCount(index:number): number {
+    return this._countsArray[index];
+  }
+  public setDataCount(value: number,index:number) {
+    this._countsArray[index] = value;
+  }
 
   private _statsArray: Array<string> = [
     '',

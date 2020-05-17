@@ -3,9 +3,19 @@
 <app-form-header [title]="moduleTitle"></app-form-header>
 <div class="container-fluid p-0 m-0">
   <ul class="list-group list-group-sm">
-    <li class="list-group-item">Anomaly Data Information</li>
-    <li class="list-group-item d-flex"><label class="form-label">Rows:</label><span class="badge badge-success p-2 ml-auto">{{ds.tblAnomalies.rows.length}}</span></li>
-    <li *ngIf="!ds.isDeployed" class="list-group-item">Anomaly records: {{ds.childExtractLevels()}}</li>
+    <li class="list-group-item text-danger">Anomaly Information (DEBUG MODE ONLY, STILL UNDER DEVELOPMENT)</li>
+    <li *ngIf="currTreeNode" class="list-group-item d-flex"><label class="form-label">Current Node:</label><span class="ml-auto">{{"id:" + currTreeNode.id + ", Location:" + currTreeNode.loc + ", Name:" + currTreeNode.text}}</span></li>
+    <li *ngIf="currTreeNode" class="list-group-item d-flex py-1">
+      <label class="form-label m-0">Anomalies under {{currTreeNode.text}}</label><span class="badge badge-success p-1 ml-auto">{{mainData.length}}</span>
+    </li>
+    <li class="list-group-item d-flex p-0">
+
+      <div style="width:100%;max-height: 300px;min-height: 50px;overflow-y: auto;overflow-x: hidden; ">
+        <ul class="list-group">
+          <li [title]="anom.AN_TITLE" class="list-group-item" *ngFor="let anom of mainData" style="text-overflow: ellipsis; white-space: nowrap;">{{ anom.AN_TITLE }}</li>
+        </ul>
+      </div>
+    </li>
     <li *ngIf="!ds.isDeployed" class="list-group-item">Anomaly records: {{ds.childExtractLevels("$$")}}</li>
 
   </ul>

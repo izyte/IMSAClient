@@ -1,3 +1,4 @@
+import { AnomalyComponent } from './../anomaly/anomaly.component';
 import { SurveyUploadComponent } from './../survey-upload/survey-upload.component';
 import { TblTreeStrucRow, TblNodesAttribRow } from './../../svc/app.tables';
 import {
@@ -15,7 +16,8 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 export class MainFrameComponent implements OnInit, AfterViewInit {
   constructor(public ds: AppDataset) {}
 
-  @ViewChild('mainTree', { static: false }) treeView: TreeViewComponent;
+  @ViewChild('mainTree') treeView: TreeViewComponent;
+  @ViewChild(AnomalyComponent ) modAnomaly: AnomalyComponent;
 
   // property declarations
   public panelSwitch: any = {
@@ -150,10 +152,12 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
                 new TreeViewNode(
                   r.TRE_NOD_TAG,
                   r.TRE_NOD_TAG_PAR,
+                  r.TRE_DAT_TAG,
                   node ? node.NODE_DESC : 'Node ' + r.TRE_NOD_TAG,
                   false,
                   false,
-                  r.childCount
+                  r.childCount,
+                  r.TRE_NOD_LOC
                 )
               );
             }
@@ -217,10 +221,12 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
               new TreeViewNode(
                 r.TRE_NOD_TAG,
                 r.TRE_NOD_TAG_PAR,
+                r.TRE_DAT_TAG,
                 node ? node.NODE_DESC : 'Node ' + r.TRE_NOD_TAG,
                 expArr.indexOf(r.TRE_NOD_TAG) != -1,
                 false,
-                r.childCount
+                r.childCount,
+                r.TRE_NOD_LOC
               )
             );
           });
@@ -245,11 +251,14 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     );
   }
 
-  TreeClick(n: any) {
+  TreeClick(n:TreeViewNode) {
     this.ds.mainTreeCurrentNode = n;
     this._NodePath = this.treeView.NodePath;
+
+    this.modAnomaly.UpdateData();
   }
-  TreePMClick(e: any) {
+
+  TreePMClick(e:any) {
     if (e.options.childNodesMissing) {
       let node = e.node;
       this.LoadChildrenTreeData(e.node);

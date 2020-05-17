@@ -23,6 +23,22 @@
     > div:last-child {
       margin-left: auto;
     }
+
+    > div:nth-child(3) {
+
+      input#search {
+        margin-top: 4px;
+        font-size: 0.8em;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 8px;
+        padding-right: 8px;
+        width: 150px;
+        border: 1px solid $line_very_light_gray;
+        border-radius: 10px;
+      }
+    }
+
     button {
       i {
         font-size: 0.8em;
@@ -54,21 +70,21 @@
         //background-color: lime;
         font-size: 1em;
         padding: 0px;
-        padding-top:2px;
+        padding-top: 2px;
         text-align: center;
         cursor: pointer;
         width: 12px;
       }
       > span.node-icon {
         //background-color: red;
-        width:18px;
+        width: 18px;
         padding-top: 0px;
-        margin-top:0px;
+        margin-top: 0px;
         margin-right: 0px;
         text-align: center;
-        font-size:.85em;
-        > i.node-working{
-          font-size:1.6em;
+        font-size: 0.85em;
+        > i.node-working {
+          font-size: 1.6em;
           //color: $bs_default;
           color: darkolivegreen;
           //text-shadow:  gray 1px 1px 1px;
@@ -81,9 +97,9 @@
         font-size: 0.85em;
         white-space: nowrap;
         cursor: default;
-        padding-top:2px;
-        padding-left:2px;
-        margin-left:0px;
+        padding-top: 2px;
+        padding-left: 2px;
+        margin-left: 0px;
         flex: 1 1 0;
       }
     }

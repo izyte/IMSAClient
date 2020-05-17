@@ -1,3 +1,4 @@
+import { TreeViewNode } from './../api/cmp/tree-view/tree-view.component';
 import { AppDataset } from './../svc/app-dataset.service';
 import { Input } from '@angular/core';
 
@@ -22,5 +23,13 @@ export class FormCommon {
       });
     }
     return this._moduleTitle + " Module";
+  }
+
+  public get moduleData():any{
+    return 'data';
+  }
+
+  public get currTreeNode():TreeViewNode{
+    return this.ds.currTreeNode;
   }
 }

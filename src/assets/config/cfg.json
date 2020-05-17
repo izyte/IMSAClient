@@ -6,7 +6,7 @@
       "active": true,
       "icon": "fa fa-window-maximize",
       "subMenu": [
-        { "id": 1, "label": "Anomaly", "active": true },
+        { "id": 1, "label": "Anomaly", "active": true, "init_fields":"AN_ID`AN_TITLE`ASSET_ID`AN_ORIG_CLASS`AN_CURR_CLASS" },
         { "id": 2, "label": "Design Data", "active": false },
         { "id": 3, "label": "Chemical Database", "active": false },
         { "id": 4, "label": "Risk Based Inspection", "active": false },

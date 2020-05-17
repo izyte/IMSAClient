@@ -7,11 +7,15 @@
       <button (click)="CollapseAll()" [disabled]="isGlobalAction" [title]="SetButtonTitle('col_all')" class="btn btn-sm text-secondary p-1">
         <i class="fa fa-angle-double-up"></i>
       </button>
-    </div>
+      <button *ngIf="false" (click)="CollapseAllToLevel()" [disabled]="isGlobalAction" [title]="SetButtonTitle('col_level')" class="btn btn-sm text-secondary p-1">
+        <i class="fa fa-angle-double-left"></i>
+      </button>    </div>
     <div class="p-2">
       Nodes: {{treeData.length}}
     </div>
-    <div>
+
+    <div id="search-div" class="ml-auto">
+      <input type="text" id="search" placeholder="Search" aria-label="Search">
       <button [title]="SetButtonTitle('pin_tree')" class="btn btn-sm text-secondary">
         <i class="fa fa-thumbtack"></i>
       </button>

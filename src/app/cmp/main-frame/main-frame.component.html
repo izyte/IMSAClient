@@ -14,8 +14,8 @@
     <div class="d-flex flex-column">
       <!--menu start-->
       <div id="menu" class="d-flex text-white justify-content-end">
-        <span *ngFor="let m of menuList" class="{{m.active ? 'active' : ''}}"
-          (click)="menuClick(m.id)"><i *ngIf="m.icon" [class]="m.icon + ' mr-1'"></i>{{m.label}}</span>
+        <span *ngFor="let m of menuList" class="{{m.active ? 'active' : ''}}" (click)="menuClick(m.id)"><i
+            *ngIf="m.icon" [class]="m.icon + ' mr-1'"></i>{{m.label}}</span>
       </div>
 
       <!--sub menu start-->
@@ -33,14 +33,12 @@
     <div class="card-body p-0">
       <div id="pnl-top"></div>
       <div id="pnl-middle">
-        <div id="pnl-left" [style.width]="this.panelSwitch.tree ? (treePanelWidth==-1 ? '' : treePanelWidth + 'px') :  '0px'">
+        <div id="pnl-left"
+          [style.width]="this.panelSwitch.tree ? (treePanelWidth==-1 ? '' : treePanelWidth + 'px') :  '0px'">
 
-          <app-tree-view *ngIf="true"  #mainTree [treeData]="ds.mainTreeData"
-          (nodeClick)="TreeClick($event)"
-          (nodePMClick)="TreePMClick($event)"
-          [colorDefinitions]="ds.colorDefinitions"
-
-          [rootId]="ds.rootNodeId" [nodeHeight]="22">
+          <app-tree-view *ngIf="true" #mainTree [treeData]="ds.mainTreeData" (nodeClick)="TreeClick($event)"
+            (nodePMClick)="TreePMClick($event)" [colorDefinitions]="ds.colorDefinitions" [rootId]="ds.rootNodeId"
+            [nodeHeight]="22">
             <span class="text-center p-3">
               <i class="fa fa-spinner fa-spin fa-3x fa-fw mr-1" [style.font-size.em]="1.6"></i>{{treeLoadingMessage}}
             </span>
@@ -53,7 +51,7 @@
           <p>Nodes Attrib:&nbsp;<span>{{ds.tblNodesAttrib.rows.length}}</span></p-->
           <!-- Modules -->
           <app-anomaly [moduleId]="1" *ngIf="activeModule==1"></app-anomaly>
-          <app-design-data [moduleId]="2"  *ngIf="activeModule==2"></app-design-data>
+          <app-design-data [moduleId]="2" *ngIf="activeModule==2"></app-design-data>
           <app-chemical-database [moduleId]="3" *ngIf="activeModule==3"></app-chemical-database>
           <app-risk-based-inspection [moduleId]="4" *ngIf="activeModule==4"></app-risk-based-inspection>
           <app-survey-data [moduleId]="5" *ngIf="activeModule==5"></app-survey-data>
@@ -66,8 +64,9 @@
           <app-survey-upload [moduleId]="11" *ngIf="activeModule==11"></app-survey-upload>
 
         </div>
-        <div [class]="'vsp' + (!this.panelSwitch.info ? ' vspc' : '')"(click)="SeparatorClick('info')"></div>
-        <div id="pnl-right"  [style.width]="this.panelSwitch.info ? (infoPanelWidth==-1 ?'' : infoPanelWidth +'px') :  '0px'">
+        <div [class]="'vsp' + (!this.panelSwitch.info ? ' vspc' : '')" (click)="SeparatorClick('info')"></div>
+        <div id="pnl-right"
+          [style.width]="this.panelSwitch.info ? (infoPanelWidth==-1 ?'' : infoPanelWidth +'px') :  '0px'">
           <ul class="list-group">
             <li class="list-group-item py-1 px-2">Asset:&nbsp;{{ this.ds.mainTreeCurrentNode.text }}</li>
             <li class="list-group-item py-1 px-2">URL:&nbsp;{{ this.ds.apiUrl }}</li>
@@ -79,14 +78,16 @@
 
     </div>
     <div class="card-footer py-0 d-flex">
-      <span [title]="NodePath">Path:&nbsp;</span><span id="node-path" style="overflow: hidden; text-overflow: ellipsis;">{{NodePath}}</span>
+      <span [title]="NodePath">Path:&nbsp;</span><span id="node-path"
+        style="overflow: hidden; text-overflow: ellipsis;">{{NodePath}}</span>
       <span class="sp">&nbsp;</span>
-      <span>&nbsp;</span><!--Middle Footer-->
+      <span>&nbsp;</span>
+      <!--Middle Footer-->
       <span class="sp">&nbsp;</span>
       <div class="d-flex">
         <div class="d-flex">
 
-          <div id="view-cols" class="d-flex bg-light"  title="Arrange panels in columns">
+          <div id="view-cols" class="d-flex bg-light" title="Arrange panels in columns">
             <div class="d-flex flex-column">
               <div></div>
               <div></div>

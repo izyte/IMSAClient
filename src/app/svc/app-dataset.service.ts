@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import * as config from '../../assets/config/cfg.json';
+import * as appConfig from '../../assets/config/cfg.json';
 
 /**Application tables *****/
 /*
@@ -47,129 +47,37 @@ export class AppDataset extends DatasetBase {
     super(http);
 
     //<RELATIONS>
-    this.tblAnomalies.tableRelations.push(
-      new Relation(
-        'rf',
-        'lnk',
-        this.tblAnomalies,
-        this.tblRefFiles,
-        '',
-        '',
-        false
-      )
-    );
-    this.tblAnomalies.tableRelations.push(
-      new Relation(
-        'ft',
-        'lnk',
-        this.tblAnomalies,
-        this.tblFailureThreats,
-        '',
-        '',
-        false
-      )
-    );
-    this.tblAnomalies.tableRelations.push(
-      new Relation(
-        'lkp',
-        'lkp',
-        this.tblAnomalies,
-        this.tblLookups,
-        'AN_STATUS',
-        'LKP_ID',
-        false
-      )
-    );
-    this.tblAnomalies.tableRelations.push(
-      new Relation(
-        'node',
-        'lkp',
-        this.tblAnomalies,
-        this.tblNodesAttrib,
-        'AN_ASSET_ID',
-        'REC_TAG',
-        false
-      )
-    );
-    this.tblTreeStruc.tableRelations.push(
-      new Relation(
-        'node',
-        '1to1',
-        this.tblTreeStruc,
-        this.tblNodesAttrib,
-        'TRE_DAT_TAG',
-        '',
-        false
-      )
-    );
-    this.tblTreeStruc.tableRelations.push(
-      new Relation(
-        'tre',
-        '1tom',
-        this.tblTreeStruc,
-        this.tblTreeStruc,
-        '',
-        'TRE_NOD_TAG_PAR',
-        true
-      )
-    );
-    this.tblTreeStruc.tableRelations.push(
-      new Relation(
-        'an',
-        '1tom',
-        this.tblTreeStruc,
-        this.tblAnomalies,
-        'TRE_DAT_TAG',
-        'AN_ASSET_ID',
-        true
-      )
-    );
-    //</RELATIONS>
+    this.tblAnomalies.tableRelations.push(new Relation("rf", "lnk", this.tblAnomalies, this.tblRefFiles, "", "", false));
+    this.tblAnomalies.tableRelations.push(new Relation("ft", "lnk", this.tblAnomalies, this.tblFailureThreats, "", "", false));
+    this.tblAnomalies.tableRelations.push(new Relation("lkp", "lkp", this.tblAnomalies, this.tblLookups, "AN_STATUS", "LKP_ID", false));
+    this.tblAnomalies.tableRelations.push(new Relation("node", "lkp", this.tblAnomalies, this.tblNodesAttrib, "AN_ASSET_ID", "REC_TAG", false));
+    this.tblTreeStruc.tableRelations.push(new Relation("node", "1to1", this.tblTreeStruc, this.tblNodesAttrib, "TRE_DAT_TAG", "", false));
+    this.tblTreeStruc.tableRelations.push(new Relation("tre", "1tom", this.tblTreeStruc, this.tblTreeStruc, "", "TRE_NOD_TAG_PAR", true));
+    this.tblTreeStruc.tableRelations.push(new Relation("an", "1tom", this.tblTreeStruc, this.tblAnomalies, "TRE_DAT_TAG", "AN_ASSET_ID", true));
+//</RELATIONS>
 
     //<DECLARE>
-    this.apiCommon.PARAMS_DELIM_CHAR = '`';
-    this.apiCommon.PARAMS_VAL_DELIM_CHAR = ',';
-    this.apiCommon.FIELD_PARENT_LINK_ALIAS = 'lnk_id';
-    this.apiCommon.FIELD_CHILD_FIRST_ALIAS = 'lnk_child_first';
-    this.apiCommon.FIELD_CHILD_COUNT_ALIAS = 'lnk_child_count';
-    //</DECLARE>
+  this.apiCommon.PARAMS_DELIM_CHAR = '`';
+  this.apiCommon.PARAMS_VAL_DELIM_CHAR = ',';
+  this.apiCommon.FIELD_PARENT_LINK_ALIAS = 'lnk_id';
+  this.apiCommon.FIELD_CHILD_FIRST_ALIAS = 'lnk_child_first';
+  this.apiCommon.FIELD_CHILD_COUNT_ALIAS = 'lnk_child_count';
+  //</DECLARE>
   }
 
   //<INSTANTIATE>
-  public tblAnomalies: TblAnomalies = this.AddTable(
-    new TblAnomalies(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  public tblChangeTracker: TblChangeTracker = this.AddTable(
-    new TblChangeTracker(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  public tblFailureThreats: TblFailureThreats = this.AddTable(
-    new TblFailureThreats(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  public tblLookups: TblLookups = this.AddTable(
-    new TblLookups(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  public tblNodesAttrib: TblNodesAttrib = this.AddTable(
-    new TblNodesAttrib(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  public tblUserParam: TblUserParam = this.AddTable(
-    new TblUserParam(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  public tblRefFiles: TblRefFiles = this.AddTable(
-    new TblRefFiles(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  public tblSurveyHeader: TblSurveyHeader = this.AddTable(
-    new TblSurveyHeader(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  public tblSurveyPosition: TblSurveyPosition = this.AddTable(
-    new TblSurveyPosition(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  public tblTreeStruc: TblTreeStruc = this.AddTable(
-    new TblTreeStruc(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  public tblUsers: TblUsers = this.AddTable(
-    new TblUsers(this.http, this.apiUrl, this.tables, this.apiCommon)
-  );
-  //</INSTANTIATE>
+  public tblAnomalies:TblAnomalies = this.AddTable(new TblAnomalies(this.http, this.apiUrl, this.tables, this.apiCommon));
+  public tblChangeTracker:TblChangeTracker = this.AddTable(new TblChangeTracker(this.http, this.apiUrl, this.tables, this.apiCommon));
+  public tblFailureThreats:TblFailureThreats = this.AddTable(new TblFailureThreats(this.http, this.apiUrl, this.tables, this.apiCommon));
+  public tblLookups:TblLookups = this.AddTable(new TblLookups(this.http, this.apiUrl, this.tables, this.apiCommon));
+  public tblNodesAttrib:TblNodesAttrib = this.AddTable(new TblNodesAttrib(this.http, this.apiUrl, this.tables, this.apiCommon));
+  public tblUserParam:TblUserParam = this.AddTable(new TblUserParam(this.http, this.apiUrl, this.tables, this.apiCommon));
+  public tblRefFiles:TblRefFiles = this.AddTable(new TblRefFiles(this.http, this.apiUrl, this.tables, this.apiCommon));
+  public tblSurveyHeader:TblSurveyHeader = this.AddTable(new TblSurveyHeader(this.http, this.apiUrl, this.tables, this.apiCommon));
+  public tblSurveyPosition:TblSurveyPosition = this.AddTable(new TblSurveyPosition(this.http, this.apiUrl, this.tables, this.apiCommon));
+  public tblTreeStruc:TblTreeStruc = this.AddTable(new TblTreeStruc(this.http, this.apiUrl, this.tables, this.apiCommon));
+  public tblUsers:TblUsers = this.AddTable(new TblUsers(this.http, this.apiUrl, this.tables, this.apiCommon));
+//</INSTANTIATE>
 
   /*
   this.tblTableClass = this.AddTable(new TblTableClass(this.http,this.apiUrl,this.tables));
@@ -180,22 +88,18 @@ export class AppDataset extends DatasetBase {
 
   public get apiUrl(): string {
     return this.isDeployed
-      ? config.general.url_deploy
-      : config.general.url_local;
+      ? appConfig.general.url_deploy
+      : appConfig.general.url_local;
   }
 
   public get isDeployed(): boolean {
-    return location.hostname != 'localhost' || config.general.url_use_deploy;
+    return location.hostname != 'localhost' || appConfig.general.url_use_deploy;
   }
 
-  public colorDefinitions: any = config.general.color_defs;
+  public colorDefinitions: any = appConfig.general.color_defs;
 
   public get debugText(): string {
     return '<b>Debug:</b>';
-  }
-
-  public get appConfig(): any {
-    return config;
   }
 
   private _errorObject: any = { type: '', trace: [] };
@@ -222,20 +126,24 @@ export class AppDataset extends DatasetBase {
   public rootNodeId: number = 4667;
   public mainTreeCurrentNode: any = {};
 
+  public get currTreeNode():TreeViewNode{
+    return this.mainTreeData.find((r:TreeViewNode)=>r.current);
+  }
+
   // read setup configuration properties
-  public menuList: Array<any> = config.app_menu;
+  public menuList: Array<any> = appConfig.app_menu;
   public treeInitLocationPattern = this.isDeployed
-    ? config.tree_init_config.tree_location_filter_pattern_deploy
-    : config.tree_init_config.tree_location_filter_pattern;
-  public extractNodeFields = config.tree_init_config.tree_extract_node_fields;
-  public extractTreeFields = config.tree_init_config.tree_extract_tree_fields;
+    ? appConfig.tree_init_config.tree_location_filter_pattern_deploy
+    : appConfig.tree_init_config.tree_location_filter_pattern;
+  public extractNodeFields = appConfig.tree_init_config.tree_extract_node_fields;
+  public extractTreeFields = appConfig.tree_init_config.tree_extract_tree_fields;
 
   public childExtractLevels(parentTreeLocation?: string): string {
 
     if (parentTreeLocation == undefined)
-      parentTreeLocation = config.tree_init_config.tree_root_location;
+      parentTreeLocation = appConfig.tree_init_config.tree_root_location;
 
-    const childLevels = config.tree_init_config.tree_child_extract_levels;
+    const childLevels = appConfig.tree_init_config.tree_child_extract_levels;
 
     let ret: string = '';
     for (let idx = 1; idx <= childLevels; idx++) {
