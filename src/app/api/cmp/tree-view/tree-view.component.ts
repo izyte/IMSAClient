@@ -27,9 +27,31 @@ export class TreeViewComponent implements OnInit {
   }
 
   SetButtonTitle(type: string): string {
+    if (type == 'exp_all') {
+      return 'Expand all nodes.';
+    } else if (type == 'col_all') {
+      return 'Collapse all nodes to level after root node.';
+    }
     return 'Sorry. This action is not yet avialable...';
   }
 
+  public isGlobalAction: boolean;
+  public ExpandAll() {
+    this.isGlobalAction = true;
+    setTimeout(() => {
+      this.treeData.forEach((n: TreeViewNode) => (n.exp = n.ccnt != 0));
+      this.ProcessTree();
+      this.isGlobalAction = false;
+    }, 20);
+  }
+  public CollapseAll() {
+    this.isGlobalAction = true;
+    setTimeout(() => {
+      this.treeData.forEach((n: TreeViewNode) => (n.exp = n.level == 0));
+      this.ProcessTree();
+      this.isGlobalAction = false;
+    }, 20);
+  }
   public ProcessTree() {
     this._FlatTree = this.SetFlatTree();
     //console.log("FLATTREE!:",this.FlatTree);
@@ -184,7 +206,7 @@ export class TreeViewNode {
   }
 
   public level: number = 0;
-  public isChildNodesLoading:boolean=false;
+  public isChildNodesLoading: boolean = false;
 
   private _dataIndex: number = 0;
   public get dataIndex(): number {

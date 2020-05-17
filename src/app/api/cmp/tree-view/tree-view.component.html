@@ -1,15 +1,18 @@
 <div id="tree-wrapper">
   <div id="tree-toolbar">
     <div>
-      <button [title]="SetButtonTitle('exp_all')" class="btn btn-sm text-secondary">
+      <button (click)="ExpandAll()" [disabled]="isGlobalAction" [title]="SetButtonTitle('exp_all')" class="btn btn-sm text-secondary p-1">
         <i class="fa fa-angle-double-down"></i>
       </button>
+      <button (click)="CollapseAll()" [disabled]="isGlobalAction" [title]="SetButtonTitle('col_all')" class="btn btn-sm text-secondary p-1">
+        <i class="fa fa-angle-double-up"></i>
+      </button>
     </div>
-    <div class="pt-1">
+    <div class="p-2">
       Nodes: {{treeData.length}}
     </div>
     <div>
-      <button [title]="SetButtonTitle('exp_all')" class="btn btn-sm text-secondary">
+      <button [title]="SetButtonTitle('pin_tree')" class="btn btn-sm text-secondary">
         <i class="fa fa-thumbtack"></i>
       </button>
     </div>

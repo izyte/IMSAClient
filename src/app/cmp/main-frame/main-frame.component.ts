@@ -175,9 +175,7 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
       [
         {
           code: 'tre',
-          //key: this.ds.treeInitLocationPattern,
-          //key: "$$,$$__,$$____,$$______,$$________,$$__________" ,
-          //key: this.ds.childExtractLevels(),
+          key: this.ds.treeInitLocationPattern,
           keyField: 'TRE_NOD_LOC',
           includedFields: this.ds.extractTreeFields,
           requestConfig: 'count=tre,first=tre',
