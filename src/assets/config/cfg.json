@@ -43,7 +43,7 @@
   "general":{
     "url_local":"http://soga-alv/ngarbi/api/app",
     "url_deploy":"http://ngimsa.ivideolib.com/api/app",
-    "url_use_deploy":true,
+    "url_use_deploy":false,
     "color_defs":{
       "danger": "#dc3545",
       "warning": "#ffc107",

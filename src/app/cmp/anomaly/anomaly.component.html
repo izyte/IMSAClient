@@ -10,9 +10,10 @@
     </li>
     <li class="list-group-item d-flex p-0">
 
-      <div style="width:100%;max-height: 300px;min-height: 50px;overflow-y: auto;overflow-x: hidden; ">
+      <div style="width:100%;max-height: 450px;min-height: 50px;overflow-y: auto;overflow-x: hidden; ">
         <ul class="list-group">
-          <li [title]="anom.AN_TITLE" class="list-group-item" *ngFor="let anom of mainData" style="text-overflow: ellipsis; white-space: nowrap;">{{ anom.AN_TITLE }}</li>
+          <li [title]="anom.AN_TITLE" class="list-group-item" *ngFor="let anom of mainData"
+          style="overflow-x: hidden; text-overflow: ellipsis; max-width: 700px; white-space: nowrap;">{{ anom.AN_TITLE }}</li>
         </ul>
       </div>
     </li>
