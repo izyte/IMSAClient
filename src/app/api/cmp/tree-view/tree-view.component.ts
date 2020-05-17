@@ -167,3 +167,75 @@ export class TreeViewComponent implements OnInit {
     return n.exp ? 'fa fa-folder-open' : 'fa fa-folder';
   }
 }
+
+export class TreeViewNode {
+  constructor(
+    public id: number,
+    public pid: number,
+    public text?: string,
+    public exp?: boolean
+  ) {
+    if (text == undefined) text = 'Node ' + id;
+    if (exp == undefined) exp = false;
+  }
+
+  private _dataIndex: number = 0;
+  public get dataIndex(): number {
+    return this._dataIndex;
+  }
+  public set dataIndex(value: number) {
+    this._dataIndex = value;
+  }
+
+  private _countsArray: Array<number> = [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ];
+
+  public get ccnt(): string {
+    return this._statsArray[this.dataIndex];
+  }
+  public set ccnt(value: string) {
+    this._statsArray[this.dataIndex] = value;
+  }
+
+  private _statsArray: Array<string> = [
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+  ];
+
+  public get sta(): string {
+    return this._statsArray[this.dataIndex];
+  }
+  public set sta(value: string) {
+    this._statsArray[this.dataIndex] = value;
+  }
+}

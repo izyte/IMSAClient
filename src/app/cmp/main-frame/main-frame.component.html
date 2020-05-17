@@ -41,7 +41,9 @@
           [colorDefinitions]="ds.colorDefinitions"
 
           [rootId]="ds.rootNodeId" [nodeHeight]="22">
-            <span class="text-center p-3">{{treeLoadingMessage}}</span>
+            <span class="text-center p-3">
+              <i class="fa fa-spinner fa-spin fa-3x fa-fw mr-1" [style.font-size.em]="1.6"></i>{{treeLoadingMessage}}
+            </span>
           </app-tree-view>
 
         </div>
