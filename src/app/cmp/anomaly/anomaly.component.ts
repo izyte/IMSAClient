@@ -18,7 +18,11 @@ export class AnomalyComponent extends FormCommon implements OnInit {
     console.log('module data:', this.moduleData);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+    this.ds.UpdateData(this.ds.tblAnomalies);
+
+  }
 
   private _mainData: Array<TblAnomaliesRow> = null;
   private _subData: Array<TblAnomaliesRow> = [];

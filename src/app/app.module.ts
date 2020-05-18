@@ -35,6 +35,7 @@ import { AssetManagementComponent } from './cmp/asset-management/asset-managemen
 import { RiskBasedInspectionComponent } from './cmp/risk-based-inspection/risk-based-inspection.component';
 import { SurveyUploadComponent } from './cmp/survey-upload/survey-upload.component';
 import { FormHeaderComponent } from './cmp/form-header/form-header.component';
+import { DataGridComponent } from './api/cmp/data-grid/data-grid.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { FormHeaderComponent } from './cmp/form-header/form-header.component';
     AssetManagementComponent,
     RiskBasedInspectionComponent,
     SurveyUploadComponent,
-    FormHeaderComponent
+    FormHeaderComponent,
+    DataGridComponent
   ],
   imports: [
     BrowserModule,

@@ -154,4 +154,60 @@ export class AppDataset extends DatasetBase {
     }
     return ret;
   }
+
+  //*********************** Common Data Filter by Tree Location *****************************************/
+  // dictionary of filtered table data array where keys are set to the tableCode
+  private _subData = {};
+  // dictionary of asset id where keys are set to the tableCode
+  private _prevAsset = {};
+  public treeFilteredData(dataTable:any,filterField:string): Array<any> {
+    const treeNode = this.currTreeNode;
+    const treeData = this.mainTreeData;
+    const rows = dataTable.rows;
+    const tableCode = dataTable.tableCode;
+
+    if (treeData == null || treeNode == null || rows.length == 0) return [];
+
+    if (this._prevAsset[tableCode] != treeNode.id) {
+      this._subData[tableCode] = [];
+
+      // get all assets under the selected location
+      const subLocations = treeData.filter((n: TreeViewNode) =>n.loc.startsWith(treeNode.loc));
+
+      if (subLocations) {
+        // iterate through the selected nodes and filter all anomalies under each location
+        subLocations.forEach((r: TreeViewNode) => {
+          const anoms = rows.filter((row) => row[filterField] == r.did);
+          anoms.forEach((ar: TblAnomaliesRow) => this._subData[tableCode].push(ar));
+        });
+      }
+      this._prevAsset = treeNode.id;
+    }
+    return this._subData[tableCode];
+  }
+  //***************************************************************************************/
+
+  //***************************** Extract data *********************************/
+
+  private _mainData:any = {};
+  public UpdateData(dataTable:any, getDataForBranch?:boolean) {
+    if(!getDataForBranch) getDataForBranch =false;
+    const treeNode = this.currTreeNode;
+    if(!treeNode)return; // no current node is selected, exit nothing to process
+
+    const tableCode = dataTable.tableCode;
+    if (!this._mainData[tableCode]) {
+      // get all anomaly records if retrieval has not been made yet
+      this.Get([{ code: tableCode }], {
+        onSuccess: (data) => {
+          console.log(data);
+          this._mainData[tableCode] = dataTable.rows;
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      });
+    }
+  }
+
 }

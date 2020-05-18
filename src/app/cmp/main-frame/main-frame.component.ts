@@ -255,7 +255,7 @@ export class MainFrameComponent implements OnInit, AfterViewInit {
     this.ds.mainTreeCurrentNode = n;
     this._NodePath = this.treeView.NodePath;
 
-    this.modAnomaly.UpdateData();
+    if(this.modAnomaly) this.ds.UpdateData(this.ds.tblAnomalies);
   }
 
   TreePMClick(e:any) {

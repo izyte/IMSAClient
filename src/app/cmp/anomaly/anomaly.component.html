@@ -2,7 +2,7 @@
 <p>Nodes: {{ds.tblNodesAttrib.rows.length}}</p> -->
 <app-form-header [title]="moduleTitle"></app-form-header>
 <div class="container-fluid p-0 m-0">
-  <ul class="list-group list-group-sm">
+  <ul *ngIf="true" class="list-group list-group-sm">
     <li class="list-group-item text-danger">Anomaly Information (DEBUG MODE ONLY, STILL UNDER DEVELOPMENT)</li>
     <li *ngIf="currTreeNode" class="list-group-item d-flex"><label class="form-label">Current Node:</label><span class="ml-auto">{{"id:" + currTreeNode.id + ", Location:" + currTreeNode.loc + ", Name:" + currTreeNode.text}}</span></li>
     <li *ngIf="currTreeNode" class="list-group-item d-flex py-1">
@@ -12,7 +12,7 @@
 
       <div style="width:100%;max-height: 450px;min-height: 50px;overflow-y: auto;overflow-x: hidden; ">
         <ul class="list-group">
-          <li [title]="anom.AN_TITLE" class="list-group-item" *ngFor="let anom of mainData"
+          <li [title]="anom.AN_TITLE" class="list-group-item" *ngFor="let anom of ds.treeFilteredData(ds.tblAnomalies,'AN_ASSET_ID')"
           style="overflow-x: hidden; text-overflow: ellipsis; max-width: 700px; white-space: nowrap;">{{ anom.AN_TITLE }}</li>
         </ul>
       </div>
