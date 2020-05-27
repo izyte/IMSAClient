@@ -1,5 +1,5 @@
 /***********************************************************************
-* Automatically generated on 5/23/2020 10:34:57 AM
+* Automatically generated on 5/27/2020 8:27:44 PM
 ***********************************************************************/
 
 import { AppCommonMethodsService } from '../api/svc/app-common-methods.service';
@@ -662,9 +662,9 @@ export class TblRefFiles extends TableBase {
 
     this.tableCode="rf";
 
-	this.columns.push(new ColumnInfo('RF_ID', 'number', 'ID', '', 0, -1, -1, -1, -1, false, false, false, this));
-	this.columns.push(new ColumnInfo('RF_TYPE', 'number', 'Type', '', -1, -1, 0, -1, -1, false, false, false, this));
-	this.columns.push(new ColumnInfo('RF_DESC', 'string', 'Title', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('RF_ID', 'number', '', '', 0, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('RF_TYPE', 'number', '', '', -1, -1, 0, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('RF_DESC', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_CLASS', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_UPLDATE', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_REF_NO', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
@@ -674,7 +674,7 @@ export class TblRefFiles extends TableBase {
 	this.columns.push(new ColumnInfo('RF_PATH', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_REFNOX', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_CONTRACTOR', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
-	this.columns.push(new ColumnInfo('RF_ASSET', 'number', 'Asset', '', -1, -1, -1, -1, -1, false, false, false, this));
+	this.columns.push(new ColumnInfo('RF_ASSET', 'number', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_LLID', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_UPDBY', 'string', '', '', -1, -1, -1, -1, -1, false, false, false, this));
 	this.columns.push(new ColumnInfo('RF_UPDDATE', 'Date', '', '', -1, -1, -1, -1, -1, false, false, false, this));
